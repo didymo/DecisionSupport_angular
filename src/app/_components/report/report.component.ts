@@ -6,7 +6,6 @@
  */
 
 import { ChangeDetectionStrategy, Component, OnInit, signal, computed, ViewChild } from '@angular/core';
-
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatRadioModule } from '@angular/material/radio';
@@ -27,24 +26,28 @@ import {
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
 import { ActivatedRoute } from '@angular/router';
+import {MatCard, MatCardContent} from "@angular/material/card";
+import {DocumentUploadService} from "../../_services/document-upload.service";
+import {DocumentService} from "../../_services/document.service";
 
 
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle],
+  imports: [MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatCard, MatCardContent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './report.component.html',
   styleUrl: './report.component.scss'
 })
 
 export class ReportComponent implements OnInit {
-  panelOpenState = false;
+  documentList: any[] = [];
+  filteredDocumentList: any[] = [];
 
   decisionSupportDetails: any;
   supportId: any;
 
-  constructor( private reportService: ReportService, private route: ActivatedRoute) { 
+  constructor( private reportService: ReportService, private route: ActivatedRoute, private documentService: DocumentService) {
     this.supportId = this.route.snapshot.params['id'];
   }
   ngOnInit(): void {
@@ -53,6 +56,7 @@ export class ReportComponent implements OnInit {
     console.log(this.decisionSupportDetails);
     console.log('yo yo');
     this.downloadJson();
+    this.getDocumentList();
 
   }
 
@@ -82,6 +86,17 @@ export class ReportComponent implements OnInit {
     link.href = window.URL.createObjectURL(blob);
     link.download = 'Test' + '.txt';
     link.click();
+  }
+
+  getDocumentList(): void {
+    this.reportService.getDocumentlist(this.documentService.getDecisionSupportId()).subscribe({
+      next: (data) => {
+        this.documentList = data;
+        const stepId = this.documentService.getStepId();
+        this.filteredDocumentList = this.documentList.filter(d => d.stepId == stepId);
+      },
+      error: (err) => console.error('Error fetching reports', err)
+    });
   }
 
 }

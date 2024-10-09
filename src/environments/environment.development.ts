@@ -2,30 +2,32 @@ export const environment = {
   production: false,
 
   //Authentication Endpoints
-  apiUrl: 'http://decisionsupportprojectdrupal.local/oauth/token',
-  csrfTokenUrl: 'http://decisionsupportprojectdrupal.local/session/token',
+  apiUrl: 'http://drupaldecisionsupport.local/oauth/token',
+  csrfTokenUrl: 'http://drupaldecisionsupport.local/session/token',
 
   //Process Endpoints
-  getProcessURL: 'http://decisionsupportprojectdrupal.local/rest/process/get/',
-  getProcessListURL: 'http://decisionsupportprojectdrupal.local/rest/process/list',
-  postProcessURL: 'http://decisionsupportprojectdrupal.local/rest/process/post',
-  duplicateProcessURL: 'http://decisionsupportprojectdrupal.local/rest/process/duplicate',
-  patchProcessURL: 'http://decisionsupportprojectdrupal.local/rest/process/patch/',
-  updateProcessURL:'http://decisionsupportprojectdrupal.local/rest/process/update/',
-  archiveProcessURL: 'http://decisionsupportprojectdrupal.local/rest/process/delete/',
+  getProcessURL: 'http://drupaldecisionsupport.local/rest/process/get/',
+  getProcessListURL: 'http://drupaldecisionsupport.local/rest/process/list',
+  postProcessURL: 'http://drupaldecisionsupport.local/rest/process/post',
+  duplicateProcessURL: 'http://drupaldecisionsupport.local/rest/process/duplicate',
+  patchProcessURL: 'http://drupaldecisionsupport.local/rest/process/patch/',
+  updateProcessURL:'http://drupaldecisionsupport.local/rest/process/update/',
+  archiveProcessURL: 'http://drupaldecisionsupport.local/rest/process/delete/',
 
   //Decision Support Endpoints
-  getDecisionSupportURL: 'http://decisionsupportprojectdrupal.local/rest/support/get/',
-  getDecisionSupportListURL: 'http://decisionsupportprojectdrupal.local/rest/support/list',
-  postDecisionSupportURL: 'http://decisionsupportprojectdrupal.local/rest/support/post',
-  patchDecisionSupportURL: 'http://decisionsupportprojectdrupal.local/rest/support/update/',
-  archiveDecisionSupportURL: 'http://decisionsupportprojectdrupal.local/rest/support/archive/',
+  getDecisionSupportURL: 'http://drupaldecisionsupport.local/rest/support/get/',
+  getDecisionSupportReportURL: 'http://drupaldecisionsupport.local/rest/support/report/',
+  getDecisionSupportReportListURL: 'http://drupaldecisionsupport.local/rest/support/reportlist',
+  getDecisionSupportListURL: 'http://drupaldecisionsupport.local/rest/support/list',
+  postDecisionSupportURL: 'http://drupaldecisionsupport.local/rest/support/post',
+  patchDecisionSupportURL: 'http://drupaldecisionsupport.local/rest/support/update/',
+  archiveDecisionSupportURL: 'http://drupaldecisionsupport.local/rest/support/archive/',
 
  //Document Upload Endpoints
- fileUploadURL: 'http://decisionsupportprojectdrupal.local/file/upload/decision_support_file/_/file',
- postDecisionSupportDocumentsURL: 'http://decisionsupportprojectdrupal.local/rest/support/file/post',
- getDecisionSupportDocumentsURL: 'http://decisionsupportprojectdrupal.local/rest/support/file/get/',
- archiveDecisionSupportDocumentsURL: 'http://decisionsupportprojectdrupal.local/rest/support/file/delete/',
+ fileUploadURL: 'http://drupaldecisionsupport.local/file/upload/decision_support_file/_/file',
+ postDecisionSupportDocumentsURL: 'http://drupaldecisionsupport.local/rest/support/file/post',
+ getDecisionSupportDocumentsURL: 'http://drupaldecisionsupport.local/rest/support/file/get/',
+ archiveDecisionSupportDocumentsURL: 'http://drupaldecisionsupport.local/rest/support/file/delete/',
 
   //Client
   clientId: 'your-client-id',

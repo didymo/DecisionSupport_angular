@@ -25,8 +25,50 @@
                     <b>Additional Explanation:</b> {{support.textAnswer	}} <br/> </p>
                     <hr class="rounded">
                 </div>
+           </div>
+          <div>
+            <h2 class="Tile"> Decision Support Files </h2>
+          </div>
+          <div class="container">
+            <div *ngFor="let document of filteredDocumentList">
+              <br />
+              <div *ngIf="document.isVisible">
+                <mat-card appearance="outlined">
+                  <mat-card-content class="card-content">
+                    <div class="content">
+                      Document: {{document.label}}
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+              <br />
+              <mat-divider></mat-divider>
+            </div>
+          </div>
+
+      </div>
+ </div>
+
+<!--
+<div class="wrapper">
+     <div class="top-container">
+       <h2 class="Tile"> Decision Support Files </h2>
+     </div>
+    <div class="container">
+      <div *ngFor="let document of filteredDocumentList">
+        <br />
+        <div *ngIf="document.isVisible">
+          <mat-card appearance="outlined">
+            <mat-card-content class="card-content">
+              <div class="content">
+                Document: {{document.label}}
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <br />
+        <mat-divider></mat-divider>
+      </div>
     </div>
- </div>
-
- </div>
-
+</div>
+-->

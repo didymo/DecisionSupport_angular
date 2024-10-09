@@ -17,4 +17,9 @@ export class ReportService {
     const headers = this.authService.getHeaders();
     return this.http.get<any>(`${environment.getDecisionSupportReportURL}${decisionSupportId}?_format=json`,{ headers });
   }
+
+  getDocumentlist(decisionSupportId:string){
+    const headers =this.authService.getHeaders();
+    return this.http.get<any[]>(`${environment.getDecisionSupportDocumentsURL}${decisionSupportId}`, {headers});
+  }
 }

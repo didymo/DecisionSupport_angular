@@ -23,20 +23,20 @@ body {
 .top-container h2 {
     font-size: 24px;
     font-weight: 600;
-    color: #7a9bbf;
+    color: #143354;
 
 }
 
 .createbutton {
   color:#ffff;
-  background-color: #accbe3;
+  background-color: #143354;
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
   padding: 12px 24px;
   transition: background-color 0.3s ease;
   cursor: pointer;
-  box-shadow: none;
+  box-shadow: 0 4px 10px rgba(33, 150, 243, 0.2);
   border: none;
 }
 
@@ -67,7 +67,7 @@ body {
 
 /* Table styling */
 .mat-mdc-header-row{
-  background-color: #7a9bbf !important;
+  background-color: #143354 !important;
   color: white;
   border-radius: 10px;
   font-size: 16px;
@@ -79,7 +79,10 @@ body {
   overflow:hidden !important;
 }
 
-.mat-mdc-row:nth-child {
+.mat-mdc-row:nth-child(even) {
+  background-color: #ebebeb;
+}
+.mat-mdc-row:nth-child(odd) {
   background-color: #fff;
 }
 mat-cell {
@@ -102,7 +105,7 @@ mat-cell button {
 .mat-column-label {
     flex: 0 0 20%;
 }
-
+  
 */
 
 .searchIcon{
@@ -156,7 +159,7 @@ a:visited {
 }
 
 .iconButton{
-  background-color: #accbe3;
+  background-color: #143354;
   color: #fff;
   border-radius: 6px;
   margin-right: 10px;
@@ -202,11 +205,4 @@ a:visited {
   border-bottom: 4px;
   padding-right: 20px;
   padding-left: 20px;
-}
-
-.div-spinner{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
 }

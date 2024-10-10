@@ -5,8 +5,8 @@
  *  This component takes the JSON string from the backend and renders a form to be filled out.
  */
 
-import { Component, OnInit, signal, computed, ViewChild, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, signal, computed, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatRadioModule } from '@angular/material/radio';
@@ -25,15 +25,11 @@ import { AuthService } from '../../_services/auth.service';
 import { DocumentUploadComponent } from '../document-upload/document-upload.component';
 import { DocumentService } from '../../_services/document.service';
 import { MatTooltip } from "@angular/material/tooltip";
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SaveDecisionSupportDialogComponent } from '../dialog-components/decision-support-dialog/save-decision-support-dialog/save-decision-support-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-decision-support',
   standalone: true,
-  imports: [QuillModule, MatProgressSpinnerModule, MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent],
+  imports: [QuillModule, MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent],
   templateUrl: './decision-support.component.html',
   styleUrl: './decision-support.component.scss'
 })
@@ -41,8 +37,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class DecisionSupportComponent implements OnInit {
   // Variables: Rendering of the form. 
   @ViewChild(DocumentUploadComponent) documentUploadComponent!: DocumentUploadComponent;
-  /** Inject Mat Snack Bar */
-  private snackBar = inject(MatSnackBar);
   decisionSupport: DecisionSupport | undefined; // Object of the decision support.
   decisionSupportId: string;
   decisionSupportDetails: any;
@@ -52,76 +46,33 @@ export class DecisionSupportComponent implements OnInit {
   oneStep: any; // Holds the step that is currently selected.
   userChoices: Map<string, string> = new Map(); // Map holding the user's choices for a radiobutton or checkbox.
   editorContent: any; // content of the quill enditor
-  response: boolean = false; //Boolean value for spinner
-  lastStep: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     private decisionSupportService: DecisionSupportService,
-    private documentService: DocumentService,
-    private router: Router,
-    private dialog: MatDialog
-
+    private documentService: DocumentService
+   
   ) {
     this.decisionSupportId = this.route.snapshot.params['id'];
     this.decisionSupportDetails = this.route.snapshot.params['json_string'];
+
   }
 
   ngOnInit() {
+    console.log('In an Decision Support.');
     this.getDecisionSupportDetail();
-    
-    // I really don't like this...
-    //setTimeout(() => {
-    //  this.updateSteps();
-    //}, 500);
-  }
-
-  onSaveDraft() {
-    this.decisionSupportService.patchDecisionSupport(this.decisionSupportDetails.entityId, this.decisionSupportDetails).subscribe(
-      (data) => {
-        console.log("Successfully saved a draft of decision support");
-        localStorage.removeItem("decision_support_data");
-        this.snackBar.open('Successfully saved changes as draft', 'Ok', {
-          duration: 3000
-        });
-      },
-      (error) => {
-        console.error('Error saving decision support answers:', error);
-        this.snackBar.open('Error saving changes as draft - Try Again', 'Ok', {
-          duration: 3000
-        });
-      }
-    );
   }
 
   onSave() {
     // Handle the form submission logic here
-    const dialogRef = this.dialog.open(SaveDecisionSupportDialogComponent, { width: '800px' });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        //If the user click save 
-        this.decisionSupportDetails.isCompleted = true;
-        this.decisionSupportService.patchDecisionSupport(this.decisionSupportDetails.entityId, this.decisionSupportDetails).subscribe(
-          (data) => {
-            console.log("Successfully saved decision support");
-            localStorage.removeItem("decision_support_data");
-            this.router.navigate(['/support']);
-            this.snackBar.open('Successfully Saved Decision Support', 'Ok', {
-              duration: 3000
-            });
-          },
-          (error) => {
-            console.error('Error saving decision support answers:', error);
-            this.snackBar.open('Error saving Decision Support - Try Again', 'Ok', {
-              duration: 3000
-            });
-          }
-        );
+    console.log('Form submitted:', this.decisionSupportDetails);
+    this.decisionSupportService.patchDecisionSupport(this.decisionSupportDetails.entityId, this.decisionSupportDetails).subscribe(
+      (error) => {
+        console.error('Error saving decision support answers:', error)
       }
-
-    })
+    );
   }
-
 
   // Initialises the Decision Support
   getDecisionSupportDetail(): void {
@@ -130,20 +81,15 @@ export class DecisionSupportComponent implements OnInit {
     this.decisionSupportService.getDecisionSupport(this.decisionSupportId, headers).subscribe(
       (data) => {
         this.decisionSupportDetails = data;
-        this.checkUnSavedData();
-        this.response = true;
         if (this.decisionSupportDetails.steps) {
           this.decisionSupportDetails.steps[0].isVisible = true;
           this.oneStep = this.decisionSupportDetails.steps[0];
-          this.documentService.setDocumentDetails(this.decisionSupportDetails.entityId, this.decisionSupportDetails.decisionSupportLabel, this.oneStep.id);
+          this.documentService.setDocumentDetails(this.decisionSupportDetails.entityId, this.decisionSupportDetails.decisionSupportLabel,this.oneStep.id);
 
-          // Update the steps once they've come.
-          this.updateSteps();
         }
       },
       (error) => {
         console.error('Error fetching decision support details:', error);
-        this.response = true;
       }
     );
   }
@@ -153,9 +99,9 @@ export class DecisionSupportComponent implements OnInit {
     for (const step of this.decisionSupportDetails.steps) {
       if (step && step.stepUuid == stepUuid) {
         this.oneStep = step;
-        this.documentService.setDocumentDetails(this.decisionSupportDetails.entityId, this.decisionSupportDetails.label, this.oneStep.id);
+        this.documentService.setDocumentDetails(this.decisionSupportDetails.entityId, this.decisionSupportDetails.label,this.oneStep.id);
         this.documentUploadComponent.getDocumentList();
-        //this.decisionSupport = new DecisionSupport(this.oneStep.entityId, this.oneStep.decisionSupportLabel, this.oneStep.decisionSupportId, this.oneStep.isCompleted);
+        this.decisionSupport = new DecisionSupport(this.oneStep.entityId, this.oneStep.decisionSupportLabel, this.oneStep.decisionSupportId);
 
       }
     }
@@ -165,11 +111,15 @@ export class DecisionSupportComponent implements OnInit {
   onRadioChange(event: any, step: Step) {
     //store the choice in userChoices
     this.userChoices.set(step.stepUuid, event.value);
-    step.answerLabel = this.getChoiceLabel(event.value);
     step.isCompleted = true;
-    this.updateLocalStorage();
+
     var currentindex = step.id;
-    this.clearFields(currentindex);
+    for (currentindex; currentindex < this.decisionSupportDetails.steps.length; currentindex++) {
+      this.decisionSupportDetails.steps[currentindex].isVisible = false;
+      this.userChoices.delete(this.decisionSupportDetails.steps[currentindex].stepUuid);
+      this.decisionSupportDetails.steps[currentindex].isCompleted = false;
+      this.decisionSupportDetails.steps[currentindex].answer = "";
+    }
     //determine the next step based on conditions
     this.updateSteps();
   }
@@ -182,16 +132,18 @@ export class DecisionSupportComponent implements OnInit {
     const selectedChoices = step.choices.filter(c => c.selected);
     console.log("Selected", selectedChoices)
     step.answer = selectedChoices.map(c => c.description).join(', ');
+
     var currentindex = step.id;
-    this.clearFields(currentindex);
+    for (currentindex; currentindex < this.decisionSupportDetails.steps.length; currentindex++) {
+      this.decisionSupportDetails.steps[currentindex].isVisible = false;
+      this.userChoices.delete(this.decisionSupportDetails.steps[currentindex].stepUuid);
+      this.decisionSupportDetails.steps[currentindex].isCompleted = false;
+      this.decisionSupportDetails.steps[currentindex].answer = "";
+    }
     //determine the next step based on conditions
     if (choice.selected) {
       this.updateSteps();
     }
-  }
-  
-  onTextAnswerChange(step: Step){
-    step.isCompleted = true;
   }
 
   // Returns the description of a choice (in other words, the value next to a single radio button or checkbox).
@@ -208,29 +160,8 @@ export class DecisionSupportComponent implements OnInit {
 
   // Updates the form, specifically what steps should be visilbe and therefore accessible at any time.
   updateSteps() {
-    console.log("Running Update Steps()!");
-    let lastVisibleStepIndex = -1;
-  
-    // Iterate over all steps to update their visibility
-    for (let i = 0; i < this.decisionSupportDetails.steps.length; i++) {
-      const step = this.decisionSupportDetails.steps[i];
-      const isVisible = this.checkVisibility(step);
-  
-      if (isVisible) {
-        lastVisibleStepIndex = i; // Track the index of the last visible step
-      }
-      // Set visibility for each step
-      step.isVisible = isVisible;
-    }
-    // Check if the currently selected step is the last visible one
-    const currentStepIndex = this.decisionSupportDetails.steps.findIndex((step: any) => step === this.oneStep);
-    if (currentStepIndex === lastVisibleStepIndex) {
-      this.lastStep = true; // Mark that we are at the last step
-      this.snackBar.open('No more steps found! - You can save your progress ', 'Ok', {
-        duration: 3000
-      });
-    } else {
-      this.lastStep = false;
+    for (const step of this.decisionSupportDetails.steps) {
+      step.isVisible = this.checkVisibility(step);
     }
   }
 
@@ -251,36 +182,10 @@ export class DecisionSupportComponent implements OnInit {
   }
 
   // Returns whether a step is required.
-  checkRequiredStatus(step: any): boolean {
-    if (step.required == 0) {
+  checkRequiredStatus(step: any): boolean{
+    if(step.required == 0){
       return false;
     }
     return true;
-  }
-  //Clear invisbile step fields
-  clearFields(currentindex: any){
-    for (currentindex; currentindex < this.decisionSupportDetails.steps.length; currentindex++) {
-      this.decisionSupportDetails.steps[currentindex].isVisible = false;
-      this.userChoices.delete(this.decisionSupportDetails.steps[currentindex].stepUuid);
-      this.decisionSupportDetails.steps[currentindex].isCompleted = false;
-      this.decisionSupportDetails.steps[currentindex].answer = "";
-      this.decisionSupportDetails.steps[currentindex].answerLabel = "";
-      this.decisionSupportDetails.steps[currentindex].textAnswer = "";
-    }
-  }
-
-  //Local Storage
-  updateLocalStorage(): void {
-    localStorage.setItem("decision_support_data", JSON.stringify(this.decisionSupportDetails))
-  }
-
-  checkUnSavedData(): void {
-    const unsavedData = localStorage.getItem("decision_support_data");
-    if (unsavedData) {
-      const formattedData = JSON.parse(unsavedData);
-      if (formattedData.entityId == this.decisionSupportId) {
-        this.decisionSupportDetails = formattedData;
-      }
-    }
   }
 }

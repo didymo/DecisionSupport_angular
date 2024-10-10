@@ -1,10 +1,10 @@
 
 .material-icons{
-    color: white;
+    color: #white;
     cursor:pointer;
   }
-
-
+  
+  
   /* Styling Container for the top section with title and create button */
   .top-container {
     display: flex;
@@ -16,27 +16,27 @@
     margin-bottom: 20px;
     border-radius: 8px;
   }
-
+  
   a:link {
     color: #65848b;
     background-color: transparent;
     text-decoration: none;
   }
-
+  
   a:hover {
     color: #374357;
     background-color: transparent;
     text-decoration: none;
   }
-
+  
   a:visited {
     color: #586d8a;
     background-color: transparent;
     text-decoration: none;
   }
-
+  
   .iconButton{
-    background-color: #accbe3;
+    background-color: #143354;
     color: #fff;
     border-radius: 6px;
     margin-right: 10px;
@@ -45,7 +45,7 @@
     border: none;
     transition: background-color 0.3s ease;
   }
-
+  
   .iconButton:hover{
     background-color: #7a9bbf;
     color: #fff;
@@ -56,45 +56,48 @@
     border: none;
     transition: background-color 0.3s ease;
   }
-
+  
   .addbutton{
     color:#ffff;
-    background-color: #accbe3;
+    background-color: #143354;
     border-radius: 10px;
     font-size: 18px;
     font-weight: bold;
     border-color: transparent;
     box-shadow: none;
-
-
+  
+  
     padding: 12px 24px;
     transition: background-color 0.3s ease;
     cursor: pointer;
-
+  
   }
-
+  
   .mat-mdc-header-row{
-    background-color: #7a9bbf !important;
+    background-color: #143354 !important;
     color: white;
     border-radius: 10px;
     font-size: 16px;
   }
-
-  .mat-mdc-row:nth-child {
+  
+  .mat-mdc-row:nth-child(even) {
+    background-color: #ebebeb;
+  }
+  .mat-mdc-row:nth-child(odd) {
     background-color: #fff;
   }
   mat-cell {
     border-bottom: 1px solid #E0E0E0;
     padding: 16px;
   }
-
+  
   .mat-mdc-table{
     border-radius: 8px;
     overflow:hidden !important;
     background-color: white !important;
     box-shadow: none;
   }
-
+  
   .addbutton:hover{
     color:#ffff;
     background-color: #7a9bbf;
@@ -104,18 +107,18 @@
     border-color: transparent;
     font-color: white;
   }
-
+  
   a{
     text-decoration: none;
   }
-
+  
   .Tile{
     left: 150px;
     width: 100%;
     font-size: 35px;
     //display: inline-block;
   }
-
+  
   .wrapper{
     //background-color: white;
     border-top: 4px;
@@ -123,7 +126,7 @@
     padding-right: 20px;
     padding-left: 20px;
   }
-
+  
   /* No Data Styling */
   .noData {
     display: flex;
@@ -133,20 +136,14 @@
     text-align: center;
     padding: 10%;
   }
-
+  
   .noData p {
     font-weight: 500;
     color: rgb(183, 183, 183);
     margin-bottom: 20px;
   }
-
+  
   h2{
-    color: #7a9bbf;
+    color: #143354;
   }
-
-.div-spinner{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-}
+  

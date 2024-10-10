@@ -10,12 +10,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogActions, MatDialogContent } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
 import { MatDialogRef } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-rename-decision-support-dialog',
   standalone: true,
-  imports: [MatDialogContent, MatFormField, MatDialogActions, ReactiveFormsModule, MatInputModule],
+  imports: [MatDialogContent, MatFormField, MatDialogActions, ReactiveFormsModule],
   templateUrl: './rename-decision-support-dialog.component.html',
   styleUrl: './rename-decision-support-dialog.component.scss'
 })

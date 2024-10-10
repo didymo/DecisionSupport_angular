@@ -109,7 +109,6 @@ export class EditProcessStepDialogComponent {
         id: this.data.step.id,
         stepUuid: this.data.step.stepUuid,
         answer: '',
-        answerLabel: '',
         textAnswer: '',
         isVisible: false,
         isCompleted: false,

@@ -8,15 +8,15 @@
 <form [formGroup]="form" (ngSubmit)="onSave()">
     <!-- What would you like to rename the decision support to? -->
     <mat-dialog-content>
-        <mat-label> New Name: </mat-label>
-        <mat-form-field appearance="outline">
+        <p>New Name</p>
+        <mat-form-field>
             <input matInput formControlName="name" placeholder="Title" required>
         </mat-form-field>
     </mat-dialog-content>
 
     <!-- Close and Submit buttons -->
     <mat-dialog-actions>
-        <button mat-button class="closeButton" (click)="close()">Close</button>
-        <button mat-button class="createButton" color="primary" type="submit" [disabled]="form.invalid">Update</button>
+        <button mat-button (click)="close()">Close</button>
+        <button mat-button color="primary" type="submit" [disabled]="form.invalid">Update</button>
     </mat-dialog-actions>
 </form>

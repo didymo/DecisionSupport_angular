@@ -29,7 +29,7 @@
     </div>
 </div>
 
-<div class="wrapper" *ngIf="response">
+<div class="wrapper">
 
 <!-- Mat Table to display the process details-->
 <mat-table #table [dataSource]="filteredProcesses" class="mat-elevation-z0 custom-table">
@@ -40,12 +40,16 @@
         <mat-cell class="entityid" *matCellDef="let element">{{element.entityId}}</mat-cell>
     </ng-container>
 
+
     <!-- Process Name Column -->
     <ng-container matColumnDef="label">
         <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
         <mat-cell *matCellDef="let element"> <a [routerLink]="['/process/', element.entityId]">{{element.label}}
             </a></mat-cell>
     </ng-container>
+
+
+
 
     <!-- Process Revision Status Column -->
     <ng-container matColumnDef="revisionStatus">
@@ -85,7 +89,4 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
-</div>
-<div class="div-spinner" *ngIf="!response">
-    <mat-spinner></mat-spinner>
 </div>

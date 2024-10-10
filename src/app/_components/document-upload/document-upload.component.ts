@@ -15,12 +15,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
-import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-document-upload',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatDivider, MatListModule],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatDivider],
   templateUrl: './document-upload.component.html',
   styleUrl: './document-upload.component.scss'
 })
@@ -81,7 +80,6 @@ export class DocumentUploadComponent {
       next: (response) => {
         console.log('Decision Support document creation complete:', response);
         this.uploadResponse = `Upload and entity creation successful: ${JSON.stringify(response)}`;
-        this.getDocumentList();
       },
       error: (err) => {
         console.error('Entity creation error:', err);
@@ -94,8 +92,11 @@ export class DocumentUploadComponent {
     this.documentUploadService.getDocumentlist(this.documentService.getDecisionSupportId()).subscribe({
       next: (data) => {
         this.documentList = data;
+        
         const stepId = this.documentService.getStepId();
         this.filteredDocumentList = this.documentList.filter(d => d.stepId == stepId);
+        console.log("Doc:", this.documentList);
+        console.log(this.filteredDocumentList);
       },
       error: (err) => console.error('Error fetching reports', err)
     });

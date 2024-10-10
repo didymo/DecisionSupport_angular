@@ -19,7 +19,7 @@
 </div>
 <br />
 <!-- Mat Table to display the process steps -->
-<mat-table #table [dataSource]="filteredProcessSteps" class="mat-elevation-z8" *ngIf="response">
+<mat-table #table [dataSource]="filteredProcessSteps" class="mat-elevation-z8">
 
     <!-- Step ID Column -->
     <ng-container matColumnDef="id" class="stepid" sticky>
@@ -76,6 +76,3 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
-<div class="div-spinner" *ngIf="!response">
-  <mat-spinner></mat-spinner>
-</div>

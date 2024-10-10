@@ -21,11 +21,10 @@ import { Process } from '../../_classes/process';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditProcessStepDialogComponent } from '../dialog-components/process-dialog/edit-process-step-dialog/edit-process-step-dialog.component';
 import { DeleteProcessStepDialogComponent } from '../dialog-components/process-dialog/delete-process-step-dialog/delete-process-step-dialog.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-edit-process-steps',
   standalone: true,
-  imports: [MatTableModule, MatButtonModule, MatIconModule, CdkDrag, CdkDropList, CommonModule, MatProgressSpinnerModule],
+  imports: [MatTableModule, MatButtonModule, MatIconModule, CdkDrag, CdkDropList, CommonModule],
   templateUrl: './edit-process-steps.component.html',
   styleUrl: './edit-process-steps.component.scss'
 })
@@ -43,8 +42,7 @@ export class EditProcessStepsComponent {
   displayedColumns: string[] = ['id', 'description', 'type', 'required', 'logic', 'actions'];
   /** Detect Changes in step order */
   changeDetected = false;
-  /** Boolean value for spinner */
-  response:boolean = false;
+
   constructor(private route: ActivatedRoute, private processService: ProcessService, private dialog: MatDialog) {
     /** Get and set the process ID from the route */
     this.processId = this.route.snapshot.params['id'];
@@ -62,12 +60,10 @@ export class EditProcessStepsComponent {
         this.processDetails = data;
         this.processSteps = data.steps;
         // Log Success message
-        console.log("Successfully fetched process details ");
-        this.response = true;
+        console.log("Successfully fetched process details ")
       }, (error) => {
         // Log any errors encountered while fetching processes
         console.error('Error fetching process details:', error);
-        this.response = true;;
         //Display error message in snack bar
         this.snackBar.open('Error Fetching Process Details - Try Again', 'Ok', {
           duration: 2000

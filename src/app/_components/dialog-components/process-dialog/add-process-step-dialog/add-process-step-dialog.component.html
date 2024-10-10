@@ -9,12 +9,12 @@
   <mat-dialog-content>
     <!-- Process Step Description -->
     <p>Description</p>
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <input matInput [(ngModel)]="formData.description" name="description" placeholder="Description" (ngModelChange)="addDataToLocalStorage()" required>
     </mat-form-field>
     <!-- Process Step Required Status-->
     <p>Required</p>
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-select [(ngModel)]="formData.required" name="required" placeholder="Select Required Status" (ngModelChange)="addDataToLocalStorage()"  required>
         <mat-option [value]="'1'">Yes</mat-option>
         <mat-option [value]="'0'">No</mat-option>
@@ -22,7 +22,7 @@
     </mat-form-field>
     <!-- Process Step Type-->
     <p>Element Type</p>
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-select [(ngModel)]="formData.type" name="type" placeholder="Select Element Type" (ngModelChange)="addDataToLocalStorage()"  required>
         <mat-option *ngFor="let type of type" [value]="type.value">{{ type.label }}</mat-option>
       </mat-select>
@@ -32,11 +32,11 @@
     <div *ngIf="formData.type === 'radio' || formData.type === 'radio&text' || formData.type === 'checkbox&text' || formData.type === 'checkbox'">
       <p>Options:</p>
       <div *ngFor="let choice of formData.choices; let i = index">
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <input matInput [(ngModel)]="choice.description" placeholder="Option {{ i + 1 }}"  name="choice{{i}}" (ngModelChange)="addDataToLocalStorage()" required>
           <!-- Remove Choice -->
           <button mat-icon-button type="button" (click)="removeChoice(i)">
-            <mat-icon class="material-icons">delete</mat-icon>
+            <mat-icon>delete</mat-icon>
           </button>
         </mat-form-field>
       </div>
@@ -61,7 +61,7 @@
         </mat-select>
         <!-- Remove Condition -->
         <button mat-icon-button type="button" (click)="removeCondition(i)">
-          <mat-icon class="material-icons">delete</mat-icon>
+          <mat-icon>delete</mat-icon>
         </button>
       </mat-form-field>
     </div>

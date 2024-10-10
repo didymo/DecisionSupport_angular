@@ -2,9 +2,9 @@
   @component Preview Process Steps Component
   @description Display the preview of process step
 -->
-<div class="container" *ngIf= "response">
+<div class="container">
     <!-- The preview container to display the steps -->
-    <div class="preview-container" >
+    <div class="preview-container">
         <!-- Check is steps available -->
         <div *ngIf="processSteps.length != 0">
             <h1>{{processDetails.label}}</h1>
@@ -61,7 +61,4 @@
             <p>No Steps Found - Add Step</p>
         </div>
     </div>
-</div>
-<div class="div-spinner" *ngIf="!response">
-    <mat-spinner></mat-spinner>
 </div>

@@ -1,7 +1,7 @@
 /* Table styling */
 
 .mat-mdc-header-row {
-    background-color: #7a9bbf !important;
+    background-color: #143354 !important;
     color: white;
     border-radius: 10px;
     font-size: 16px;
@@ -15,8 +15,11 @@
     box-shadow: none;
 }
 
+.mat-mdc-row:nth-child(even) {
+    background-color: #ebebeb;
+}
 
-.mat-mdc-row:nth-child {
+.mat-mdc-row:nth-child(odd) {
     background-color: #fff;
 }
 
@@ -26,7 +29,7 @@ mat-cell {
 }
 
 mat-cell button {
-    background-color: #accbe3;
+    background-color: #143354;
     color: #fff;
     border-radius: 10px;
     margin-right: 10px;
@@ -73,11 +76,4 @@ mat-cell button:hover {
     font-weight: 500;
     color: rgb(183, 183, 183);
     margin-bottom: 20px;
-}
-
-.div-spinner{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60vh;
 }

@@ -128,7 +128,6 @@ export class AddProcessStepDialogComponent {
         id: this.data.steps.length + 1,
         stepUuid: this.uuidService.generateUuid(),
         answer: '',
-        answerLabel: '',
         textAnswer: '',
         isVisible: false,
         isCompleted: false,

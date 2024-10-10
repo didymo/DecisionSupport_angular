@@ -3,7 +3,7 @@
   @description This is where 'DecisionSupport' happens. A process is rendered and then carried out as a decision support.
 -->
 
-<mat-sidenav-container autosize *ngIf="response">
+<mat-sidenav-container autosize>
     <mat-sidenav [opened]="true" mode="side" [style.width]="sideNavWidth()">
   
       <!-- Sidebar -->
@@ -35,7 +35,7 @@
       <!-- Sidebar extension/retraction toggle button as an arrow -->
       <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
         <mat-icon [ngStyle]="{'color':'#accbe3'}">{{ !collapsed() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-      </button> 
+      </button> -->
   
           <!-- Toggle button as an arrow -->
           <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
@@ -45,12 +45,6 @@
   
     <!-- Loop for each step of the process. -->
     <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
-        <!-- Buttons wrapper -->
-  <div class="button-container">
-    <!-- Save Button! -->
-    <button mat-button color="primary" (click)="onSaveDraft()" type="submit" class="btn-primary">Save Draft</button>
-    <button *ngIf="lastStep"  mat-button color="primary" (click)="onSave()" type="submit" class="btn-secondary">Submit</button>
-  </div>
       <div *ngIf="oneStep">
         <!-- Heading and description. -->
         <h2>Step {{oneStep.id}} </h2>
@@ -66,10 +60,11 @@
             </div>
           </mat-radio-group>
           <br />
+  
           <!-- Further details and document upload. -->
           <b>Please provide further details.</b><i>Optional</i><br /><br />
           <quill-editor [(ngModel)]="oneStep.textAnswer"></quill-editor>
-          <app-document-upload></app-document-upload><br /><br /><br /><br />
+          <app-document-upload></app-document-upload>
         </div>
   
         <!-- STEP TYPE: Radio -->
@@ -102,7 +97,7 @@
           <!-- Further details and document upload. -->
           <b>Please provide further details.</b><i>Optional</i><br /><br />
           <quill-editor [(ngModel)]="oneStep.textAnswer"></quill-editor>
-          <app-document-upload></app-document-upload><br /><br /><br /><br />
+          <app-document-upload></app-document-upload>
         </div>
     
         <!-- STEP TYPE: Checkbox -->
@@ -122,18 +117,15 @@
         </div>
   
         <!-- STEP TYPE: Text Box -->
-        <div *ngIf="oneStep.type === 'textbox'" >
+        <div *ngIf="oneStep.type === 'textbox'">
           <b>Please provide further details.</b><i>Optional</i><br /><br />
-          <quill-editor [(ngModel)]="oneStep.textAnswer"  (ngModelChange)="onTextAnswerChange(oneStep)"></quill-editor><br /><br />
-          <app-document-upload></app-document-upload><br /><br /><br /><br />
+          <quill-editor [(ngModel)]="oneStep.textAnswer"></quill-editor>
+          <app-document-upload></app-document-upload>
         </div>
   
       </div> <!-- End of single step. -->
-
     </mat-sidenav-content>
-    
   </mat-sidenav-container>
   
-  <div class="div-spinner" *ngIf="!response">
-    <mat-spinner></mat-spinner>
-  </div>
+  <!-- Save Button! -->
+  <button mat-button color="primary" (click)="onSave()" type="submit" class="btn btn-primary">Save</button>

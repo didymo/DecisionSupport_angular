@@ -13,12 +13,11 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { Step } from '../../_classes/step';
 import { Process } from '../../_classes/process';
 import { QuillModule } from 'ngx-quill';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-preview-process-steps',
   standalone: true,
-  imports: [CommonModule, MatRadioModule, MatCheckbox, QuillModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatRadioModule, MatCheckbox, QuillModule],
   templateUrl: './preview-process-steps.component.html',
   styleUrl: './preview-process-steps.component.scss'
 })
@@ -29,8 +28,6 @@ export class PreviewProcessStepsComponent {
   processDetails!: Process;
   /** Array to store all process steps retrieved from the backend */
   processSteps: Step[] = [];
-  /** Boolean for spinner */
-  response: boolean = false;
 
   constructor(private route: ActivatedRoute,private processService: ProcessService) {
     /** Get and set the process id from the route */
@@ -50,15 +47,11 @@ export class PreviewProcessStepsComponent {
         this.processSteps = data.steps;
         // Log the success message
         console.log('Sucessfully Fetched Process Details');
-        this.response = true;
       },(error) => {
         // Log any errors encountered while fetching process details
         console.error('Error fetching process details:', error);
-        this.response = true;
       }
     )
   }
   
 }
-
-

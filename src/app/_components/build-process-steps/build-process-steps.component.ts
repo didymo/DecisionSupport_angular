@@ -22,11 +22,10 @@ import { MatFormField, MatPrefix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-build-process-steps',
   standalone: true,
-    imports: [MatTableModule,MatProgressSpinnerModule, FormsModule, MatFormField, MatInput, MatButtonModule, MatIconModule, CommonModule, MatPrefix],
+    imports: [MatTableModule, FormsModule, MatFormField, MatInput, MatButtonModule, MatIconModule, CommonModule, MatPrefix],
   templateUrl: './build-process-steps.component.html',
   styleUrl: './build-process-steps.component.scss'
 })
@@ -47,8 +46,7 @@ export class BuildProcessStepsComponent {
   searchInput: string = "";
   /** Table columns to be displayed */
   displayedColumns: string[] = ['id', 'description', 'type', 'required', 'logic', 'actions'];
-  /** Boolean value for spinner */
-  response:boolean = false;
+
   constructor(private route: ActivatedRoute, private processService: ProcessService, private dialog: MatDialog) {
     /** Get and set the process ID from the route */
     this.processId = this.route.snapshot.params['id'];
@@ -82,13 +80,11 @@ export class BuildProcessStepsComponent {
         this.processName = this.processDetails.label;
         // Log success message
         console.log("Successfully fetched process details")
-        this.response = true;
         // Check the local storage for unsaved data
         this.checkUnsavedData();
       }, (error) => {
         // Log any errors encountered while fetching processes
         console.error('Error fetching process details:', error);
-        this.response = true;
       }
     )
   }

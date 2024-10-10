@@ -9,6 +9,7 @@ import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, RouterOutlet, Router} from '@angular/router';
 import {MenuComponent} from './_components/menu/menu.component';
+import {AuthService} from './_services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,6 @@ import {MenuComponent} from './_components/menu/menu.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(public router: Router){}
+  constructor(public router: Router, public authService:AuthService){}
   title = 'Decision Support Angular Components';
 }

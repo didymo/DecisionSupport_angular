@@ -2,19 +2,6 @@
 .mat-dialog-title{
   font-size: 35px;
 }
-.bin{
-  color:#accbe3;
-}
-
-.modifyButton{
-  background-color: #accbe3;
-  color: white;
-}
-
-.modifyButton:hover{
-  background-color: #7a9bbf;
-  color: white;
-}
 
 :host ::ng-deep .mdc-text-field--outlined{
   --mdc-outlined-text-field-container-shape: 15px;

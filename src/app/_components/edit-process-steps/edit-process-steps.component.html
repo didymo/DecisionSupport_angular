@@ -13,7 +13,7 @@
 <br />
 <!-- Mat Table to display the process steps and with drag and drop functionality-->
 <mat-table #table [dataSource]="processSteps" class="mat-elevation-z8" cdkDropList cdkDropListData="processSteps"
-    (cdkDropListDropped)="drop($event)" *ngIf="response">
+    (cdkDropListDropped)="drop($event)">
     <!-- Step ID Column -->
     <ng-container matColumnDef="id" sticky>
         <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
@@ -71,7 +71,3 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;" cdkDrag [cdkDragData]="row"></mat-row>
 </mat-table>
-
-<div class="div-spinner" *ngIf="!response">
-    <mat-spinner></mat-spinner>
-</div>

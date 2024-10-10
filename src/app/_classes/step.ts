@@ -9,7 +9,7 @@ import {Condition} from "./condition";
 import {StepChoice} from "./step-choice";
 
 export class Step {
-    constructor(id: number, stepUuid: string, type: string,  required: string, description: string, choices: StepChoice[], conditions: Condition[], isCompleted: boolean, isVisible: boolean, answer: string, answerLabel: string, textAnswer: string) {
+    constructor(id: number, stepUuid: string, type: string,  required: string, description: string, choices: StepChoice[], conditions: Condition[], isCompleted: boolean, isVisible: boolean, answer: string, textAnswer: string) {
         this.id = id;
         this.stepUuid = stepUuid;
         this.description = description;
@@ -20,7 +20,6 @@ export class Step {
         this.isCompleted = isCompleted;
         this.isVisible = isVisible;
         this.answer = answer;
-        this.answerLabel = answerLabel;
         this.textAnswer = textAnswer;
     }
  
@@ -75,10 +74,6 @@ export class Step {
      */
     answer: string;
 
-    /**
-     *  Holds the answers from radio buttons and checkboxes by holding their step choice label.
-     */
-    answerLabel: string;
     /**
      * Holds answers put into the text field (often the used for the "more details" text boxes)
      */

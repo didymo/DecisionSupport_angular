@@ -8,12 +8,12 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     z-index: 1;
   }
-
+  
   .toggle-button mat-icon {
     font-size: 24px;
     color: black;
   }
-
+  
   a {
     display: flex;
     flex-direction: row;
@@ -22,122 +22,95 @@
     gap: 8px;
     box-sizing: border-box;
     padding: 16px;
-
+  
     min-width: calc(var(--min-expanded-sidenav-width) - 32px);
     text-decoration: none;
     color: #000;
     transition: background-color 75ms ease-out;
     border-radius: 4px;
-
+  
     .text-container {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
+  
     &:hover {
       background-color: #DEEBFF;
     }
-
+  
     &.active {
       background-color: #C1DAFF;
       font-weight: bold;
       color: rgb(36, 82, 231);
     }
   }
-
+  
   .content {
     padding: 24px;
     z-index: -1;
-    position: relative;
   }
-
+  
   mat-sidenav-container {
     height: calc(100vh - 64px);
   }
-
+  
   mat-sidenav {
     overflow: visible !important;
   }
-
+  
   .completed-step {
-    background-color: white !important;
-    color: #7a9bbf !important;
+    background-color: green !important;
+    color: white !important;
   }
-
+  
   .uncomplete {
     background-color: #7a9bbf;
     color: white;
   }
-
-
+  
+  
   .mat-mini-fab {
     background-color: black;
   }
-
-
+  
+  
   .active-step {
     background-color: #D3D3D3;
     font-weight: bold;
     border-left: 4px solid #7a9bbf;
     padding-left: 8px;
   }
-
+  
   .disabled-step {
     pointer-events: none;
     opacity: 0.5;
   }
-
+  
   .disabled-step .text-container {
     color: gray;
   }
-
+  
   .btn-primary {
-    background-color: #accbe3;
-    color: white !important;
-    margin-right: 10px;
+    background-color: transparent;
+    color: grey !important;
+    width: 5%;
     border-radius: 5px;
+    border-style: solid;
     border: none;
-    font-size: 16px;
-    width: 150px;
+    font-size: 17px;
   }
-  .btn-secondary{
-    background-color: #7a9bbf;
-    color: white !important;
-    margin-right: 10px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-    width: 150px;
-  }
-
+  
   .toggle-button {
     background-color: white;
   }
-
-.btn-secondary:hover{
-  background-color: #accbe3;
-  color: white !important;
-  transition: 0.7s;
-
-
-}
-
+  
+  
+  
   .btn-primary:hover {
-    background-color: #7a9bbf;
+    background-color: #accbe3;
     color: white !important;
     transition: 0.7s;
-
-
+    font-size: 17px;
+  
   }
-  .button-container {
-    position: absolute;
-    right: 16px;
-  }
-
-.div-spinner{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-}

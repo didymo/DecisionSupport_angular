@@ -1,7 +1,7 @@
 /* Table styling */
 
 .mat-mdc-header-row {
-    background-color: #7a9bbf !important;
+    background-color: #143354 !important;
     color: white;
     border-radius: 10px;
     font-size: 16px;
@@ -29,7 +29,7 @@ mat-cell {
 }
 
 mat-cell button {
-    background-color: #accbe3;
+    background-color: #143354;
     color: #fff;
     border-radius: 6px;
     margin-right: 10px;
@@ -97,7 +97,7 @@ mat-cell button:hover {
 /** Create Button Styling */
 .addbutton {
     color: #fff;
-    background-color: #accbe3;
+    background-color: #143354;
     border-radius: 10px;
     padding: 12px 24px;
     font-size: 16px;
@@ -117,7 +117,7 @@ mat-cell button:hover {
 }
 
 .pr-addbutton {
-    background-color: #accbe3;
+    background-color: #143354;
     color: white;
     border-radius: 10px;
     box-shadow: none;
@@ -134,11 +134,4 @@ mat-cell button:hover {
 :host ::ng-deep .mdc-text-field--outlined {
     --mdc-outlined-text-field-container-shape: 15px;
 
-}
-
-.div-spinner{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60vh;
 }

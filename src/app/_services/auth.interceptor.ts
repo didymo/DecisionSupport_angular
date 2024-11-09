@@ -15,8 +15,11 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
   const authService = inject(AuthService);
   const authToken = authService.getAuthTokenFromStorage();
+  // Check if this is a token refresh request
+  const isRefreshRequest = req.url.includes('/oauth/token'); // adjust URL pattern as needed
 
-  if (authToken) {
+  // Only add auth header for non-refresh requests
+  if (authToken && !req.headers.has('Authorization') && !isRefreshRequest) {
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${authToken}`
@@ -24,22 +27,53 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     });
   }
 
+  // if (authToken) {
+  //   req = req.clone({
+  //     setHeaders: {
+  //       Authorization: `Bearer ${authToken}`
+  //     }
+  //   });
+  // }
+
+  // if (authToken && !req.headers.has('Authorization')) {
+  //   req = req.clone({
+  //     setHeaders: {
+  //       Authorization: `Bearer ${authToken}`
+  //     }
+  //   });
+  // }
+
+
   return next(req).pipe(
     catchError(error => {
       console.log('Caught error:', error); // Log the error
 
       if (error.status === 401) {
         console.log('401 error detected, attempting to refresh token'); // Log the detection of a 401 error
+        req.headers.delete('Authorization');
 
         return authService.refreshTokenMethod().pipe(
+            // tap(() => console.log('Starting token refresh process...')), // Add a starting log
+
           switchMap((token: any) => {
+
+            console.log('Entering switchMap after token refresh'); // Log entry into switchMap
             console.log('Token refreshed:', token); // Log the new token
 
+            // Call setTokens with the new access and refresh tokens
             authService.setTokens(token.access_token, token.refresh_token);
-            if (authToken && !req.headers.has('Authorization')) {
+            req.headers.keys().forEach(key => {
+              console.log(`${key}:`, req.headers.get(key));
+            });
+            // if (token.access_token && !req.headers.has('Authorization')) {
+               if (token.access_token) {
+              // Log before updating the request with the refreshed token
+              console.log('Setting Authorization header with new access token');
+
+              // Ensure the cloned request has the refreshed access token
               req = req.clone({
                 setHeaders: {
-                  Authorization: `Bearer ${authToken}`
+                  Authorization: `Bearer ${token.access_token}`
                 }
               });
             }

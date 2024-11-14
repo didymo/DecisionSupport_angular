@@ -2,7 +2,7 @@
  * @whatItDoes Root Component
  *
  * @description The main container for the site, this component is always there. It includes Menu Component for navigation.
- *  
+ *
  */
 
 import {Component} from '@angular/core';
@@ -19,5 +19,5 @@ import {MenuComponent} from './_components/menu/menu.component';
 })
 export class AppComponent {
   constructor(public router: Router){}
-  title = 'Decision Support Angular Components';
+  title = 'Decision Support';
 }

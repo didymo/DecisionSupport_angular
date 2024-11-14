@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DecisionSupportListComponent } from './decision-support-list.component';
+import {provideHttpClientTesting} from "@angular/common/http/testing";
+import {provideHttpClient} from "@angular/common/http";
 
 describe('DecisionSupportListComponent', () => {
   let component: DecisionSupportListComponent;
@@ -8,7 +10,13 @@ describe('DecisionSupportListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DecisionSupportListComponent]
+      imports: [
+        DecisionSupportListComponent
+      ],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
     .compileComponents();
 

@@ -1,6 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DeleteProcessDialogComponent } from './delete-process-dialog.component';
+import {DeleteProcessDialogComponent} from './delete-process-dialog.component';
+
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {provideHttpClient} from "@angular/common/http";
+import {provideHttpClientTesting} from "@angular/common/http/testing";
+
 
 describe('DeleteProcessDialogComponent', () => {
   let component: DeleteProcessDialogComponent;
@@ -8,9 +13,15 @@ describe('DeleteProcessDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeleteProcessDialogComponent]
+      imports: [DeleteProcessDialogComponent],
+      providers: [
+        provideHttpClient(), // Provide the HttpClient along with HttpClientTesting
+        provideHttpClientTesting(),
+        {provide: MatDialogRef, useValue: {close: jasmine.createSpy('close')}},
+        {provide: MAT_DIALOG_DATA, useValue: {}}
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DeleteProcessDialogComponent);
     component = fixture.componentInstance;

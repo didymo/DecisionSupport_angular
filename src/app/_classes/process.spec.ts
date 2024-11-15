@@ -1,13 +1,16 @@
+import { TestBed } from '@angular/core/testing';
 import { Process } from './process';
 import { Step } from './step';
 import { StepChoice } from './step-choice';
 import { Condition } from './condition';
+import {SanitizeService} from "../_services/sanitize.service";
 
 describe('Process Security and Workflow Management Tests', () => {
   let mockStepChoices: StepChoice[];
   let mockConditions: Condition[];
   let mockSteps: Step[];
-  
+  let sanitizeService: SanitizeService;
+
   const validProcessData = {
     entityId: 12345,
     uuid: 67890,
@@ -15,11 +18,16 @@ describe('Process Security and Workflow Management Tests', () => {
   };
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [SanitizeService],
+    });
+    sanitizeService = TestBed.inject(SanitizeService);
+
     // Initialize empty arrays for step choices and conditions
     mockStepChoices = [] as StepChoice[];
     mockConditions = [] as Condition[];
 
-    // Create mock steps with full required properties
+    // Create mock steps with full required properties and inject SanitizeService
     mockSteps = [
       new Step(
         1,
@@ -33,7 +41,8 @@ describe('Process Security and Workflow Management Tests', () => {
         true,
         '',
         '',
-        ''
+        '',
+        sanitizeService
       ),
       new Step(
         2,
@@ -47,7 +56,8 @@ describe('Process Security and Workflow Management Tests', () => {
         true,
         '',
         '',
-        ''
+        '',
+        sanitizeService
       ),
       new Step(
         3,
@@ -61,7 +71,8 @@ describe('Process Security and Workflow Management Tests', () => {
         true,
         '',
         '',
-        ''
+        '',
+        sanitizeService
       )
     ];
   });
@@ -117,7 +128,7 @@ describe('Process Security and Workflow Management Tests', () => {
 
     it('validates step property integrity for secure workflow management', () => {
       const firstStep = secureProcess.steps[0];
-      
+
       expect(typeof firstStep.id).toBe('number');
       expect(typeof firstStep.stepUuid).toBe('string');
       expect(typeof firstStep.type).toBe('string');
@@ -139,7 +150,7 @@ describe('Process Security and Workflow Management Tests', () => {
       );
 
       const stepIds = process.steps.map(step => step.id);
-      const isSorted = stepIds.every((id, index) => 
+      const isSorted = stepIds.every((id, index) =>
         index === 0 || id > stepIds[index - 1]
       );
 

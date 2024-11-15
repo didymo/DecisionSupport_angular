@@ -1,10 +1,11 @@
 /**
  * @whatItDoes Represents a single Process retrieved from backend to be listed in an array.
- * 
+ *
  * @description
  *  Stores the data of a single Process retrieved from the list of Processes.
  *
 */
+import DOMPurify from "dompurify";
 
 export class ProcessList {
   constructor(
@@ -16,7 +17,7 @@ export class ProcessList {
     updatedTime: string,
     enabled: boolean
   ) {
-    this.label = label;
+    this.label = this.sanitize(label);
     this.entityId = entityId;
     this.revisionCreationTime = revisionCreationTime;
     this.revisionStatus = revisionStatus;
@@ -35,7 +36,7 @@ export class ProcessList {
   entityId: number;
 
   /**
-   * 
+   *
    */
   revisionCreationTime: string;
 
@@ -58,4 +59,22 @@ export class ProcessList {
    * Is process enabled or disabled
    */
   enabled: boolean;
-}    
+
+/**
+ * Sanitizes the input string to prevent XSS (Cross-Site Scripting) attacks.
+ *
+ * This method uses DOMPurify to remove any potentially harmful HTML or
+ * JavaScript content from the input. It is designed to protect against
+ * XSS vulnerabilities by ensuring that only safe, sanitized content is stored.
+ *
+ * @param input - The unsanitized user-provided or external input string.
+ * @returns A sanitized string safe for insertion into the DOM.
+ *
+ * Note: DOMPurify is a trusted library for client-side sanitization
+ * and is configured here with default settings.
+ */
+  private sanitize(input: string): string {
+    return DOMPurify.sanitize(input); // DOMPurify will sanitize the input string
+  }
+
+}

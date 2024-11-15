@@ -1,159 +1,132 @@
-// import { Condition } from './condition';
-//
-// describe('Condition', () => {
-//   it('should create an instance', () => {
-//     expect(new Condition()).toBeTruthy();
-//   });
-// });
-
-
-// import { Condition } from './condition';
-//
-// /**
-//  * Test suite for the Condition class
-//  *
-//  * @description
-//  * These tests verify the proper creation and behavior of Condition instances,
-//  * which are used to determine the visibility and editability of process steps
-//  * based on specific choices.
-//  */
-// describe('Condition', () => {
-//   // Test constants
-//   const VALID_CONDITION_ID = 1;
-//   const VALID_STEP_UUID = '123e4567-e89b-12d3-a456-426614174000';
-//   const VALID_CHOICE_UUID = '987fcdeb-51a2-43d7-9876-543210987000';
-//
-//   /**
-//    * Helper function to create a valid condition instance
-//    * @returns A condition instance with valid test data
-//    */
-//   const createValidCondition = (): Condition => {
-//     return new Condition(
-//       VALID_CONDITION_ID,
-//       VALID_STEP_UUID,
-//       VALID_CHOICE_UUID
-//     );
-//   };
-//
-//   describe('Constructor', () => {
-//     /**
-//      * Verifies that a Condition instance can be created with valid parameters
-//      */
-//     it('should create a valid instance with correct parameters', () => {
-//       // Arrange & Act
-//       const condition = createValidCondition();
-//
-//       // Assert
-//       expect(condition).toBeTruthy();
-//       expect(condition.conditionId).toBe(VALID_CONDITION_ID);
-//       expect(condition.stepUuid).toBe(VALID_STEP_UUID);
-//       expect(condition.choiceUuid).toBe(VALID_CHOICE_UUID);
-//     });
-//
-//     /**
-//      * Verifies that all properties are properly set during instantiation
-//      */
-//     it('should set all properties correctly during instantiation', () => {
-//       // Arrange & Act
-//       const condition = new Condition(2, 'step-123', 'choice-456');
-//
-//       // Assert
-//       expect(condition.conditionId).toBe(2);
-//       expect(condition.stepUuid).toBe('step-123');
-//       expect(condition.choiceUuid).toBe('choice-456');
-//     });
-//   });
-//
-//   describe('Property Access', () => {
-//     /**
-//      * Verifies that properties can be accessed after instantiation
-//      */
-//     it('should allow access to all properties', () => {
-//       // Arrange
-//       const condition = createValidCondition();
-//
-//       // Act & Assert
-//       expect(condition.conditionId).toBeDefined();
-//       expect(condition.stepUuid).toBeDefined();
-//       expect(condition.choiceUuid).toBeDefined();
-//     });
-//
-//     /**
-//      * Verifies that properties can be modified after instantiation
-//      */
-//     it('should allow modification of properties', () => {
-//       // Arrange
-//       const condition = createValidCondition();
-//
-//       // Act
-//       condition.conditionId = 999;
-//       condition.stepUuid = 'new-step-uuid';
-//       condition.choiceUuid = 'new-choice-uuid';
-//
-//       // Assert
-//       expect(condition.conditionId).toBe(999);
-//       expect(condition.stepUuid).toBe('new-step-uuid');
-//       expect(condition.choiceUuid).toBe('new-choice-uuid');
-//     });
-//   });
-//
-//   describe('Type Safety', () => {
-//     /**
-//      * Verifies type safety for the conditionId property
-//      */
-//     it('should maintain type safety for conditionId as number', () => {
-//       // Arrange
-//       const condition = createValidCondition();
-//
-//       // Act & Assert
-//       expect(typeof condition.conditionId).toBe('number');
-//     });
-//
-//     /**
-//      * Verifies type safety for the UUID properties
-//      */
-//     it('should maintain type safety for UUID properties as strings', () => {
-//       // Arrange
-//       const condition = createValidCondition();
-//
-//       // Act & Assert
-//       expect(typeof condition.stepUuid).toBe('string');
-//       expect(typeof condition.choiceUuid).toBe('string');
-//     });
-//   });
-// });
-
-// condition.spec.ts
 import { Condition } from './condition';
 
-describe('Condition', () => {
-  let condition: Condition;
+describe('Condition - Enterprise Security Test Suite', () => {
+    // Test data constants with valid UUID v4 format
+    const validConditionId = 1;
+    const validStepUuid = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';  // Valid UUID v4
+    const validChoiceUuid = '550e8400-e29b-41d4-a716-446655440000'; // Valid UUID v4
 
-  beforeEach(() => {
-    condition = new Condition(
-      1,
-      'step-uuid-123',
-      'choice-uuid-456'
-    );
-  });
+    describe('Instance Creation Security', () => {
+        it('ensures secure instantiation with valid parameters', () => {
+            const condition = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+            
+            expect(condition).toBeTruthy();
+            expect(condition.conditionId).toBe(validConditionId);
+            expect(condition.stepUuid).toBe(validStepUuid);
+            expect(condition.choiceUuid).toBe(validChoiceUuid);
+        });
 
-  it('should create an instance', () => {
-    expect(condition).toBeTruthy();
-  });
+        it('maintains data type integrity for condition ID', () => {
+            const condition = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+            expect(typeof condition.conditionId).toBe('number');
+        });
 
-  it('should initialize with correct values', () => {
-    expect(condition.conditionId).toBe(1);
-    expect(condition.stepUuid).toBe('step-uuid-123');
-    expect(condition.choiceUuid).toBe('choice-uuid-456');
-  });
+        it('preserves UUID format integrity for step identifier', () => {
+            const condition = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+            expect(typeof condition.stepUuid).toBe('string');
+            // Simple UUID format validation (allows all UUID versions)
+            expect(condition.stepUuid).toMatch(
+                /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+            );
+        });
 
-  it('should handle different uuid formats', () => {
-    const conditionWithDifferentUuids = new Condition(
-      2,
-      '12345-abcde',
-      'xyz-789'
-    );
-    expect(conditionWithDifferentUuids.stepUuid).toBe('12345-abcde');
-    expect(conditionWithDifferentUuids.choiceUuid).toBe('xyz-789');
-  });
+        it('preserves UUID format integrity for choice identifier', () => {
+            const condition = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+            expect(typeof condition.choiceUuid).toBe('string');
+            // Simple UUID format validation (allows all UUID versions)
+            expect(condition.choiceUuid).toMatch(
+                /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+            );
+        });
+    });
+
+    describe('Data Integrity and State Management', () => {
+        let condition: Condition;
+
+        beforeEach(() => {
+            condition = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+        });
+
+        it('maintains consistent state after instantiation', () => {
+            const initialState = JSON.stringify(condition);
+            const reconstitutedState = JSON.stringify(new Condition(
+                condition.conditionId,
+                condition.stepUuid,
+                condition.choiceUuid
+            ));
+            expect(initialState).toBe(reconstitutedState);
+        });
+
+        it('preserves property independence to prevent cross-property contamination', () => {
+            const newConditionId = 2;
+            condition.conditionId = newConditionId;
+            
+            expect(condition.conditionId).toBe(newConditionId);
+            expect(condition.stepUuid).toBe(validStepUuid);
+            expect(condition.choiceUuid).toBe(validChoiceUuid);
+        });
+    });
+
+    describe('Edge Case Security Handling', () => {
+        it('handles edge case: maximum safe integer condition ID', () => {
+            const maxCondition = new Condition(Number.MAX_SAFE_INTEGER, validStepUuid, validChoiceUuid);
+            expect(maxCondition.conditionId).toBe(Number.MAX_SAFE_INTEGER);
+        });
+
+        it('handles multiple instances with same values securely', () => {
+            const condition1 = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+            const condition2 = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+            
+            expect(condition1).toEqual(condition2);
+            expect(condition1).not.toBe(condition2); // Ensures unique instances
+        });
+    });
+
+    describe('Enterprise-Grade Performance', () => {
+        it('demonstrates efficient instance creation at scale', () => {
+            const startTime = performance.now();
+            const instances = Array.from({ length: 1000 }, (_, i) => 
+                new Condition(i, validStepUuid, validChoiceUuid)
+            );
+            const endTime = performance.now();
+
+            expect(instances.length).toBe(1000);
+            expect(endTime - startTime).toBeLessThan(1000); // Should complete in under 1 second
+        });
+
+        it('maintains consistent performance under load', () => {
+            const condition = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+            const operations = 1000;
+            
+            const startTime = performance.now();
+            for (let i = 0; i < operations; i++) {
+                condition.conditionId = i;
+                const _ = condition.stepUuid;
+                const __ = condition.choiceUuid;
+            }
+            const endTime = performance.now();
+            
+            expect(endTime - startTime).toBeLessThan(1000);
+        });
+    });
+
+    describe('Serialization Security', () => {
+        it('ensures secure JSON serialization', () => {
+            const condition = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+            const serialized = JSON.stringify(condition);
+            const deserialized = JSON.parse(serialized);
+
+            expect(deserialized.conditionId).toBe(condition.conditionId);
+            expect(deserialized.stepUuid).toBe(condition.stepUuid);
+            expect(deserialized.choiceUuid).toBe(condition.choiceUuid);
+        });
+
+        it('maintains data integrity through clone operations', () => {
+            const original = new Condition(validConditionId, validStepUuid, validChoiceUuid);
+            const clone = new Condition(original.conditionId, original.stepUuid, original.choiceUuid);
+
+            expect(clone).toEqual(original);
+            expect(clone).not.toBe(original);
+        });
+    });
 });

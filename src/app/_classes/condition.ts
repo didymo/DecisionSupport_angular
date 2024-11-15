@@ -17,15 +17,17 @@ export class Condition{
      * represents the id of a condition
      */
     conditionId: number;
-    
+
     /**
      * determines the step using its unique identifier(uuid)
      */
     stepUuid: string;
-    
+
     /**
      * represents a choice using its unique identifier(uuid)
      */
     choiceUuid: string;
-    
+
+
+
 }

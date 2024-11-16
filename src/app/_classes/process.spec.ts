@@ -3,31 +3,28 @@ import { Process } from './process';
 import { Step } from './step';
 import { StepChoice } from './step-choice';
 import { Condition } from './condition';
-import {SanitizeService} from "../_services/sanitize.service";
+import { SanitizeService } from '../_services/sanitize.service';
 
 describe('Process Security and Workflow Management Tests', () => {
   let mockStepChoices: StepChoice[];
   let mockConditions: Condition[];
   let mockSteps: Step[];
-  let sanitizeService: SanitizeService;
 
   const validProcessData = {
     entityId: 12345,
     uuid: 67890,
-    label: 'Enterprise Risk Assessment Protocol'
+    label: 'Enterprise Risk Assessment Protocol',
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [SanitizeService],
-    });
-    sanitizeService = TestBed.inject(SanitizeService);
+    mockStepChoices = [
+      new StepChoice('1', 'uuid-choice-1', 'Choice 1', false),
+      new StepChoice('2', 'uuid-choice-2', 'Choice 2', false),
+    ];
 
-    // Initialize empty arrays for step choices and conditions
-    mockStepChoices = [] as StepChoice[];
-    mockConditions = [] as Condition[];
+    mockConditions = [new Condition(1, 'uuid-step-1', 'uuid-choice-1')];
 
-    // Create mock steps with full required properties and inject SanitizeService
+    // Mock steps with sanitized fields
     mockSteps = [
       new Step(
         1,
@@ -41,23 +38,21 @@ describe('Process Security and Workflow Management Tests', () => {
         true,
         '',
         '',
-        '',
-        sanitizeService
+        ''
       ),
       new Step(
         2,
         'uuid-step-2',
         'checkbox',
         '1',
-        'Compliance Verification Steps',
+        '<script>alert("xss")</script>Compliance Verification Steps',
         mockStepChoices,
         mockConditions,
         false,
         true,
         '',
         '',
-        '',
-        sanitizeService
+        ''
       ),
       new Step(
         3,
@@ -71,14 +66,13 @@ describe('Process Security and Workflow Management Tests', () => {
         true,
         '',
         '',
-        '',
-        sanitizeService
-      )
+        '<img src="javascript:alert(\'xss\')">'
+      ),
     ];
   });
 
   describe('Process Initialization and Identity Management', () => {
-    it('ensures secure instantiation with comprehensive identity validation', () => {
+    it('creates a Process instance with valid data', () => {
       const process = new Process(
         validProcessData.entityId,
         validProcessData.uuid,
@@ -93,7 +87,7 @@ describe('Process Security and Workflow Management Tests', () => {
       expect(process.steps).toEqual(mockSteps);
     });
 
-    it('maintains unique process identification through dual-layer ID system', () => {
+    it('ensures unique identification through entityId and uuid', () => {
       const process = new Process(
         validProcessData.entityId,
         validProcessData.uuid,
@@ -107,41 +101,8 @@ describe('Process Security and Workflow Management Tests', () => {
     });
   });
 
-  describe('Data Integrity and Type Safety', () => {
-    let secureProcess: Process;
-
-    beforeEach(() => {
-      secureProcess = new Process(
-        validProcessData.entityId,
-        validProcessData.uuid,
-        validProcessData.label,
-        mockSteps
-      );
-    });
-
-    it('enforces strict type validation for enterprise-grade reliability', () => {
-      expect(typeof secureProcess.entityId).toBe('number');
-      expect(typeof secureProcess.uuid).toBe('number');
-      expect(typeof secureProcess.label).toBe('string');
-      expect(Array.isArray(secureProcess.steps)).toBeTruthy();
-    });
-
-    it('validates step property integrity for secure workflow management', () => {
-      const firstStep = secureProcess.steps[0];
-
-      expect(typeof firstStep.id).toBe('number');
-      expect(typeof firstStep.stepUuid).toBe('string');
-      expect(typeof firstStep.type).toBe('string');
-      expect(typeof firstStep.required).toBe('string');
-      expect(typeof firstStep.isVisible).toBe('boolean');
-      expect(typeof firstStep.isCompleted).toBe('boolean');
-      expect(Array.isArray(firstStep.choices)).toBeTruthy();
-      expect(Array.isArray(firstStep.conditions)).toBeTruthy();
-    });
-  });
-
-  describe('Process Workflow Security Features', () => {
-    it('maintains step sequence integrity for audit compliance', () => {
+  describe('Sanitization and Security Features', () => {
+    it('sanitizes step descriptions to prevent XSS', () => {
       const process = new Process(
         validProcessData.entityId,
         validProcessData.uuid,
@@ -149,15 +110,39 @@ describe('Process Security and Workflow Management Tests', () => {
         mockSteps
       );
 
-      const stepIds = process.steps.map(step => step.id);
-      const isSorted = stepIds.every((id, index) =>
-        index === 0 || id > stepIds[index - 1]
+      expect(process.steps[1].description).not.toContain('<script>');
+      expect(process.steps[1].description).toBe('Compliance Verification Steps');
+    });
+
+    it('sanitizes text answers to remove potentially harmful content', () => {
+      const process = new Process(
+        validProcessData.entityId,
+        validProcessData.uuid,
+        validProcessData.label,
+        mockSteps
       );
+
+      expect(process.steps[2].textAnswer).not.toContain('javascript:');
+      expect(process.steps[2].textAnswer).toBe('');
+    });
+  });
+
+  describe('Workflow Management and Data Integrity', () => {
+    it('validates step sequence integrity', () => {
+      const process = new Process(
+        validProcessData.entityId,
+        validProcessData.uuid,
+        validProcessData.label,
+        mockSteps
+      );
+
+      const stepIds = process.steps.map((step) => step.id);
+      const isSorted = stepIds.every((id, index) => index === 0 || id > stepIds[index - 1]);
 
       expect(isSorted).toBeTruthy();
     });
 
-    it('ensures step visibility control for secure access management', () => {
+    it('ensures step visibility and completion states are valid', () => {
       const process = new Process(
         validProcessData.entityId,
         validProcessData.uuid,
@@ -165,15 +150,31 @@ describe('Process Security and Workflow Management Tests', () => {
         mockSteps
       );
 
-      process.steps.forEach(step => {
+      process.steps.forEach((step) => {
         expect(typeof step.isVisible).toBe('boolean');
         expect(typeof step.isCompleted).toBe('boolean');
+      });
+    });
+
+    it('enforces required fields for workflow compliance', () => {
+      const process = new Process(
+        validProcessData.entityId,
+        validProcessData.uuid,
+        validProcessData.label,
+        mockSteps
+      );
+
+      process.steps.forEach((step) => {
+        if (step.required === '1') {
+          expect(['0', '1']).toContain(step.required);
+        }
       });
     });
   });
 
   describe('Enterprise Integration Capabilities', () => {
-    it('supports secure step type validation for enterprise workflow compliance', () => {
+    it('validates step types against allowed values', () => {
+      const validStepTypes = ['radiobutton', 'checkbox', 'radio&text', 'checkbox&text', 'text'];
       const process = new Process(
         validProcessData.entityId,
         validProcessData.uuid,
@@ -181,13 +182,12 @@ describe('Process Security and Workflow Management Tests', () => {
         mockSteps
       );
 
-      const validStepTypes = ['radiobutton', 'checkbox', 'radio&text', 'checkbox&text', 'text'];
-      process.steps.forEach(step => {
+      process.steps.forEach((step) => {
         expect(validStepTypes).toContain(step.type);
       });
     });
 
-    it('maintains data sanitization for cross-system security', () => {
+    it('validates that answers and labels are sanitized', () => {
       const process = new Process(
         validProcessData.entityId,
         validProcessData.uuid,
@@ -195,16 +195,15 @@ describe('Process Security and Workflow Management Tests', () => {
         mockSteps
       );
 
-      process.steps.forEach(step => {
-        expect(step.description).not.toContain('<script>');
-        expect(step.textAnswer).not.toContain('javascript:');
+      process.steps.forEach((step) => {
+        expect(step.answerLabel).not.toContain('<');
         expect(step.answer).not.toMatch(/<[^>]*>/);
       });
     });
   });
 
-  describe('Response Management and Data Protection', () => {
-    it('secures answer storage with multi-layer validation', () => {
+  describe('Data Protection and Security Validation', () => {
+    it('ensures radio/checkbox answer fields are valid', () => {
       const process = new Process(
         validProcessData.entityId,
         validProcessData.uuid,
@@ -212,14 +211,13 @@ describe('Process Security and Workflow Management Tests', () => {
         mockSteps
       );
 
-      process.steps.forEach(step => {
+      process.steps.forEach((step) => {
         expect(typeof step.answer).toBe('string');
         expect(typeof step.answerLabel).toBe('string');
-        expect(typeof step.textAnswer).toBe('string');
       });
     });
 
-    it('enforces required field validation for data completeness', () => {
+    it('validates text answer fields for secure content', () => {
       const process = new Process(
         validProcessData.entityId,
         validProcessData.uuid,
@@ -227,10 +225,8 @@ describe('Process Security and Workflow Management Tests', () => {
         mockSteps
       );
 
-      process.steps.forEach(step => {
-        if (step.required === '1') {
-          expect(['0', '1']).toContain(step.required);
-        }
+      process.steps.forEach((step) => {
+        expect(typeof step.textAnswer).toBe('string');
       });
     });
   });

@@ -1,64 +1,13 @@
-// import { TestBed } from '@angular/core/testing';
-// import { Step } from './step';
-// import { StepChoice } from './step-choice';
-// import { Condition } from './condition';
-// import {SanitizeService} from "../_services/sanitize.service";
-//
-// describe('Step Security and Functionality Tests', () => {
-//   let mockStepChoices: StepChoice[];
-//   let mockConditions: Condition[];
-//   let sanitizeService: SanitizeService; // Declare SanitizeService
-//
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       providers: [SanitizeService], // Provide SanitizeService
-//     });
-//     sanitizeService = TestBed.inject(SanitizeService); // Inject SanitizeService
-//
-//     // Initialize mock choices and conditions
-//     mockStepChoices = [] as StepChoice[];
-//     mockConditions = [] as Condition[];
-//   });
-//
-//   it('creates a Step instance securely with SanitizeService', () => {
-//     const step = new Step(
-//       1,
-//       'uuid-step-1',
-//       'radiobutton',
-//       '1',
-//       'Secure Assessment',
-//       mockStepChoices,
-//       mockConditions,
-//       false,
-//       true,
-//       '',
-//       '',
-//       '',
-//       sanitizeService // Pass sanitizeService instance
-//     );
-//
-//     expect(step).toBeTruthy();
-//     expect(step.description).toBe('Secure Assessment');
-//   });
-// });
-
 import { Step } from './step';
 import { StepChoice } from './step-choice';
 import { Condition } from './condition';
-import { TestBed } from '@angular/core/testing';
-import {SanitizeService} from "../_services/sanitize.service";
+import { SanitizeService } from '../_services/sanitize.service';
 
 describe('Step Security and Functionality Tests', () => {
   let mockStepChoices: StepChoice[];
   let mockConditions: Condition[];
-  let sanitizeService: SanitizeService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [SanitizeService],
-    });
-    sanitizeService = TestBed.inject(SanitizeService);
-
     mockStepChoices = [
       new StepChoice('1', 'uuid-choice-1', 'Choice 1', false),
       new StepChoice('2', 'uuid-choice-2', 'Choice 2', false),
@@ -83,8 +32,7 @@ describe('Step Security and Functionality Tests', () => {
         true,
         '',
         '',
-        '',
-        sanitizeService
+        ''
       );
 
       expect(step).toBeTruthy();
@@ -101,6 +49,8 @@ describe('Step Security and Functionality Tests', () => {
   describe('Data Sanitization', () => {
     it('prevents XSS vulnerabilities in step description', () => {
       const maliciousDescription = '<script>alert("xss")</script>Secure Step';
+      spyOn(SanitizeService, 'sanitizeStatic').and.callThrough();
+
       const step = new Step(
         1,
         'uuid-step-1',
@@ -113,15 +63,18 @@ describe('Step Security and Functionality Tests', () => {
         true,
         '',
         '',
-        '',
-        sanitizeService
+        ''
       );
 
+      expect(SanitizeService.sanitizeStatic).toHaveBeenCalledWith(maliciousDescription);
       expect(step.description).not.toContain('<script>');
       expect(step.description).toBe('Secure Step');
     });
 
     it('ensures text answers are sanitized', () => {
+      const maliciousTextAnswer = '<img src="javascript:alert(\'xss\')">';
+      spyOn(SanitizeService, 'sanitizeStatic').and.callThrough();
+
       const step = new Step(
         1,
         'uuid-step-1',
@@ -134,10 +87,10 @@ describe('Step Security and Functionality Tests', () => {
         true,
         '',
         '',
-        '<img src="javascript:alert(\'xss\')">',
-        sanitizeService
+        maliciousTextAnswer
       );
 
+      expect(SanitizeService.sanitizeStatic).toHaveBeenCalledWith(maliciousTextAnswer);
       expect(step.textAnswer).not.toContain('javascript:');
       expect(step.textAnswer).toBe('');
     });
@@ -157,8 +110,7 @@ describe('Step Security and Functionality Tests', () => {
         true,
         '',
         '',
-        '',
-        sanitizeService
+        ''
       );
 
       expect(step.isVisible).toBeTrue();
@@ -178,8 +130,7 @@ describe('Step Security and Functionality Tests', () => {
         true,
         '',
         '',
-        '',
-        sanitizeService
+        ''
       );
 
       expect(step.required).toBe('1');
@@ -200,8 +151,7 @@ describe('Step Security and Functionality Tests', () => {
         true,
         '',
         '',
-        '',
-        sanitizeService
+        ''
       );
 
       expect(step.choices.length).toBe(2);
@@ -224,8 +174,7 @@ describe('Step Security and Functionality Tests', () => {
         true,
         '',
         '',
-        '',
-        sanitizeService
+        ''
       );
 
       expect(step.conditions.length).toBe(1);
@@ -248,8 +197,7 @@ describe('Step Security and Functionality Tests', () => {
         true,
         'uuid-choice-1',
         'Choice 1',
-        '',
-        sanitizeService
+        ''
       );
 
       expect(step.answer).toBe('uuid-choice-1');
@@ -269,8 +217,7 @@ describe('Step Security and Functionality Tests', () => {
         true,
         '',
         '',
-        'This is a secure text answer',
-        sanitizeService
+        'This is a secure text answer'
       );
 
       expect(step.textAnswer).toBe('This is a secure text answer');
@@ -291,8 +238,7 @@ describe('Step Security and Functionality Tests', () => {
         true,
         '',
         '',
-        '',
-        sanitizeService
+        ''
       );
 
       expect(typeof step.id).toBe('number');

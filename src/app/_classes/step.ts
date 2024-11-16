@@ -74,11 +74,10 @@ export class Step {
     answer: string,
     answerLabel: string,
     textAnswer: string,
-    private sanitizeService: SanitizeService)
-  {
+  ) {
     this.id = id;
     this.stepUuid = stepUuid;
-    this.description = this.sanitizeService.sanitize(description); // Use SanitizeService
+    this.description = SanitizeService.sanitizeStatic(description);// Fallback to raw description if sanitizeService is not provided
     this.type = type;
     this.required = required;
     this.choices = choices;
@@ -86,7 +85,8 @@ export class Step {
     this.isCompleted = isCompleted;
     this.isVisible = isVisible;
     this.answer = answer;
-    this.answerLabel = this.sanitizeService.sanitize(answerLabel);
-    this.textAnswer = this.sanitizeService.sanitize(textAnswer);
+    this.answerLabel = SanitizeService.sanitizeStatic(answerLabel);
+    this.textAnswer = SanitizeService.sanitizeStatic(textAnswer);
   }
+
 }

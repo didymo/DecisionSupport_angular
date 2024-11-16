@@ -37,7 +37,17 @@ export class SanitizeService {
    * console.log(sanitized); // Outputs: 'Hello'
    */
   sanitize(input: string): string {
-    // Configure DOMPurify to strip tags completely
-    return DOMPurify.sanitize(input, {ALLOWED_TAGS: []});
+    return DOMPurify.sanitize(input || '', { ALLOWED_TAGS: [] });
   }
+
+    /**
+   * A static method for sanitizing input without DI.
+   *
+   * @param input - The string to sanitize.
+   * @returns The sanitized string.
+   */
+  static sanitizeStatic(input: string): string {
+      return DOMPurify.sanitize(input || '', { ALLOWED_TAGS: [] });
+    }
+
 }

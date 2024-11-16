@@ -1,9 +1,7 @@
-import { TestBed } from '@angular/core/testing';
-import { Process } from './process';
-import { Step } from './step';
-import { StepChoice } from './step-choice';
-import { Condition } from './condition';
-import { SanitizeService } from '../_services/sanitize.service';
+import {Process} from './process';
+import {Step} from './step';
+import {StepChoice} from './step-choice';
+import {Condition} from './condition';
 
 describe('Process Security and Workflow Management Tests', () => {
   let mockStepChoices: StepChoice[];

@@ -7,7 +7,7 @@
  * For each decision supports the following actions are available: Open (done by clicking on the name), Delete (Archives It), Change Name
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { Router, RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,11 +29,11 @@ import { AuthService } from '../../_services/auth.service';
   styleUrl: './decision-support-list.component.scss'
 })
 
-export class DecisionSupportListComponent {
+export class DecisionSupportListComponent implements OnInit {
 
   decisionSupports: DecisionSupportList[] = []; // Create an array of DecisionSupportList objects.
-  processLabel: string ="";
-  response: boolean = false; //boolean value for spinner
+  processLabel ="";
+  response = false; //boolean value for spinner
   displayedColumns: string[] = ['decisionSupportId', 'name', 'processType', 'createdTime', 'updatedTime', 'actions']; // machine names for the table's columns.
 
   constructor(private decisionSupportService: DecisionSupportService, private dialog: MatDialog, private router: Router, private authService: AuthService) {}

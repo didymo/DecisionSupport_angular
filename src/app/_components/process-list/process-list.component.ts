@@ -36,7 +36,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './process-list.component.html',
   styleUrl: './process-list.component.scss'
 })
-export class ProcessListComponent {
+export class ProcessListComponent implements OnInit {
   /** Inject Mat Snack Bar */
   private snackBar = inject(MatSnackBar);
   /** Array to store all processes retrieved from the backend */
@@ -45,11 +45,11 @@ export class ProcessListComponent {
   filteredProcesses: ProcessList[] = [];
   /** Default revision status filter and serach input */
   revisionStatus = "All";
-  searchInput: string = "";
+  searchInput = "";
   /** Table Columns */
   displayedColumns: string[] = ['entityid', 'label', 'revisionStatus', 'createdTime', 'updatedTime', 'actions'];
   /**Boolean Value for spinner */
-  response: boolean = false;
+  response = false;
   
   constructor(private processService: ProcessService, private dialog: MatDialog, private router: Router) { }
 
@@ -64,7 +64,7 @@ export class ProcessListComponent {
     const unsavedData = localStorage.getItem("unsavedStepData");
     //If data exist alert the user
     if(unsavedData && this.processes ){
-      let formattedData = JSON.parse(unsavedData);
+      const formattedData = JSON.parse(unsavedData);
       //Open Alert Dialog
       const dialogRef = this.dialog.open(UnsavedStepAlertDialogComponent,{width: '800px', data: {unSavedData: formattedData}});
       dialogRef.afterClosed().subscribe(result =>{

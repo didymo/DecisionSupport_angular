@@ -4,30 +4,28 @@
  * @description
  *  It connects itself to a specific step of a process and holds the id of a choice that must be true for the step to be visible and editable.
  *
-*/
+ */
 
-export class Condition{
+export class Condition {
 
-    constructor(conditionId:number, stepUuid: string, choiceUuid: string){
-        this.conditionId = conditionId;
-        this.stepUuid = stepUuid;
-        this.choiceUuid = choiceUuid;
-    }
-    /**
-     * represents the id of a condition
-     */
-    conditionId: number;
+  constructor(conditionId: number, stepUuid: string, choiceUuid: string) {
+    this.conditionId = conditionId;
+    this.stepUuid = stepUuid;
+    this.choiceUuid = choiceUuid;
+  }
 
-    /**
-     * determines the step using its unique identifier(uuid)
-     */
-    stepUuid: string;
+  /**
+   * represents the id of a condition
+   */
+  conditionId: number;
 
-    /**
-     * represents a choice using its unique identifier(uuid)
-     */
-    choiceUuid: string;
+  /**
+   * determines the step using its unique identifier(uuid)
+   */
+  stepUuid: string;
 
-
-
+  /**
+   * represents a choice using its unique identifier(uuid)
+   */
+  choiceUuid: string;
 }

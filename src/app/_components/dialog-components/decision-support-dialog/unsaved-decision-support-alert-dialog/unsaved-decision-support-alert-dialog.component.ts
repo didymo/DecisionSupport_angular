@@ -11,9 +11,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class UnsavedDecisionSupportAlertDialogComponent {
   /** ID of the unsaved Decision Support */
-  decisionSupportId: string = " ";
+  decisionSupportId = " ";
   /** Name of the unsaved Decision Support */
-  decisionSupportLabel: string ="Decision Support";
+  decisionSupportLabel ="Decision Support";
 
   constructor(public dialogRef: MatDialogRef<UnsavedDecisionSupportAlertDialogComponent>, @Inject(MAT_DIALOG_DATA) public unSavedData: any) {
     this.decisionSupportId = unSavedData.unSavedData.entityId;

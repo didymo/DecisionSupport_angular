@@ -4,7 +4,7 @@
  *  It's accessible from the "Preview" tab.
  *  Each Step will be displayed based on its type.
  */
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { ProcessService } from '../../_services/process.service';
@@ -22,7 +22,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './preview-process-steps.component.html',
   styleUrl: './preview-process-steps.component.scss'
 })
-export class PreviewProcessStepsComponent {
+export class PreviewProcessStepsComponent implements OnInit {
   /** ID of the process */
   processId: string;
   /** Process Object to store the process details retrieved from the backend */
@@ -30,7 +30,7 @@ export class PreviewProcessStepsComponent {
   /** Array to store all process steps retrieved from the backend */
   processSteps: Step[] = [];
   /** Boolean for spinner */
-  response: boolean = false;
+  response = false;
 
   constructor(private route: ActivatedRoute,private processService: ProcessService) {
     /** Get and set the process id from the route */

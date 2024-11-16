@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterLink} from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
@@ -17,11 +17,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './report-list.component.html',
   styleUrl: './report-list.component.scss'
 })
-export class ReportListComponent {
+export class ReportListComponent implements OnInit {
 
   decisionSupportReports: any; 
   displayedColumns: string[] = ['reportId', 'name', 'processId', 'submittedTime', 'actions']; // machine names for the table's columns.
-  response: boolean = false;
+  response = false;
 
   constructor(private http: HttpClient, private authService: AuthService, private reportService: ReportService, private dialog: MatDialog) { }
 

@@ -24,8 +24,8 @@ import { MatButtonModule } from '@angular/material/button';
 })
 
 export class AuthenticateComponent {
-  username: string = '';
-  password: string = '';
+  username = '';
+  password = '';
 
   constructor(protected authService: AuthService, private router: Router) {}
 

@@ -6,7 +6,7 @@
  */
 
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
@@ -22,11 +22,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './report.component.scss'
 })
 
-export class ReportComponent {
+export class ReportComponent implements OnInit {
   documentList: any[] = [];
   decisionSupportDetails: any = null;
   supportId: any;
-  response: boolean = false;
+  response = false;
 
   constructor(private reportService: ReportService, private route: ActivatedRoute) {
     this.supportId = this.route.snapshot.params['id'];

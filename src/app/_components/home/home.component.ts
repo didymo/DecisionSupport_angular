@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuComponent } from "../menu/menu.component";
 import { NgIf, NgOptimizedImage } from "@angular/common";
 import { AuthService } from '../../_services/auth.service';
@@ -17,11 +17,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.component.scss'
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  textToType: string = 'Welcome to Decision Support Software'; 
-  displayText: string = ''; 
-  typingSpeed: number = 100; 
+  textToType = 'Welcome to Decision Support Software'; 
+  displayText = ''; 
+  typingSpeed = 100; 
 
   ngOnInit(): void {
     this.startTypingEffect();

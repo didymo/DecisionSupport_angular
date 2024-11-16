@@ -30,7 +30,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './build-process-steps.component.html',
   styleUrl: './build-process-steps.component.scss'
 })
-export class BuildProcessStepsComponent {
+export class BuildProcessStepsComponent implements OnInit {
   /** Inject mat snack bar */
   private snackBar = inject(MatSnackBar);
   /** Id of the process */
@@ -44,11 +44,11 @@ export class BuildProcessStepsComponent {
   /** Array to store filtered process steps */
   filteredProcessSteps: Step[] = [];
   /** Default search input string */
-  searchInput: string = "";
+  searchInput = "";
   /** Table columns to be displayed */
   displayedColumns: string[] = ['id', 'description', 'type', 'required', 'logic', 'actions'];
   /** Boolean value for spinner */
-  response:boolean = false;
+  response = false;
   constructor(private route: ActivatedRoute, private processService: ProcessService, private dialog: MatDialog) {
     /** Get and set the process ID from the route */
     this.processId = this.route.snapshot.params['id'];
@@ -144,7 +144,7 @@ export class BuildProcessStepsComponent {
       const unsavedData = localStorage.getItem("unsavedStepData");
       //If data exist alert the user
       if (unsavedData) {
-        let formattedData = JSON.parse(unsavedData);
+        const formattedData = JSON.parse(unsavedData);
         // Check if all fields are empty or contain no data
         const isDataEmpty =
           (!formattedData.description || formattedData.description.trim() === "") &&

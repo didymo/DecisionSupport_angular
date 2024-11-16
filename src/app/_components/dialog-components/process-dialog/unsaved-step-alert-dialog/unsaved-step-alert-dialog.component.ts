@@ -18,9 +18,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class UnsavedStepAlertDialogComponent {
   /** ID of the unsaved Process */
-  processId: string = " ";
+  processId = " ";
   /** Name of the unsaved process */
-  processName: string ="Process";
+  processName ="Process";
 
   constructor(public dialogRef: MatDialogRef<UnsavedStepAlertDialogComponent>, @Inject(MAT_DIALOG_DATA) public unSavedData: any) {
     this.processId = unSavedData.unSavedData.processId;

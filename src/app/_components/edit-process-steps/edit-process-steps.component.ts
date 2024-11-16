@@ -7,7 +7,7 @@
  * For each process steps the following action is available: Edit a process step (done by clicking on the edit button), Delete a process step and Rearrange the process steps
  * and save the step order changes
  */
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MatTable, MatTableModule } from '@angular/material/table';
@@ -29,7 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './edit-process-steps.component.html',
   styleUrl: './edit-process-steps.component.scss'
 })
-export class EditProcessStepsComponent {
+export class EditProcessStepsComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table!: MatTable<Step>;
   /** Inject Mat snack bar  */
   private snackBar = inject(MatSnackBar);
@@ -44,7 +44,7 @@ export class EditProcessStepsComponent {
   /** Detect Changes in step order */
   changeDetected = false;
   /** Boolean value for spinner */
-  response:boolean = false;
+  response = false;
   constructor(private route: ActivatedRoute, private processService: ProcessService, private dialog: MatDialog) {
     /** Get and set the process ID from the route */
     this.processId = this.route.snapshot.params['id'];
@@ -190,8 +190,8 @@ export class EditProcessStepsComponent {
 
   /** When deleting a step remove the condition dependency with other steps  */
   deleteCondition(dependantSteps: any, stepUuid: any):void{
-    for (let dependantStep of dependantSteps) {
-      for (let step of this.processDetails.steps) {
+    for (const dependantStep of dependantSteps) {
+      for (const step of this.processDetails.steps) {
         // Check if dependantStep's stepUuid matches with step's stepUuid
         if (dependantStep.stepUuid === step.stepUuid) {
           // Filter out the condition where the stepUuid matches dependantStep

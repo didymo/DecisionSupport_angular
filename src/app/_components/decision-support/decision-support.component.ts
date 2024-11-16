@@ -50,10 +50,10 @@ export class DecisionSupportComponent implements OnInit {
   collapsed = signal(false); // Is the side bar collapsed? (boolean)
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '350px'); // Width of the Side Navigation Bar
   oneStep: any; // Holds the step that is currently selected.
-  userChoices: Map<string, string> = new Map(); // Map holding the user's choices for a radiobutton or checkbox.
+  userChoices = new Map<string, string>(); // Map holding the user's choices for a radiobutton or checkbox.
   editorContent: any; // content of the quill enditor
-  response: boolean = false; //Boolean value for spinner
-  lastStep: boolean = false;
+  response = false; //Boolean value for spinner
+  lastStep = false;
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
@@ -168,7 +168,7 @@ export class DecisionSupportComponent implements OnInit {
     step.answerLabel = this.getChoiceLabel(event.value);
     step.isCompleted = true;
     this.updateLocalStorage();
-    var currentindex = step.id;
+    const currentindex = step.id;
     this.clearFields(currentindex);
     //determine the next step based on conditions
     this.updateSteps();
@@ -182,7 +182,7 @@ export class DecisionSupportComponent implements OnInit {
     const selectedChoices = step.choices.filter(c => c.selected);
 
     step.answer = selectedChoices.map(c => c.description).join(', ');
-    var currentindex = step.id;
+    const currentindex = step.id;
     this.clearFields(currentindex);
     //determine the next step based on conditions
     if (choice.selected) {

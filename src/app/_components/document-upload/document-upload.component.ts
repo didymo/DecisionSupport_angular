@@ -6,7 +6,7 @@
  *  Uploaded documents cannnot be accessed after uploading, only their names displayed.
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { DocumentUploadService } from '../../_services/document-upload.service';
 import { DocumentService } from '../../_services/document.service';
@@ -24,7 +24,7 @@ import { MatListModule } from '@angular/material/list';
   templateUrl: './document-upload.component.html',
   styleUrl: './document-upload.component.scss'
 })
-export class DocumentUploadComponent {
+export class DocumentUploadComponent implements OnInit {
   selectedFile: File | null = null;
   uploadResponse: string | null = null;
   documentList: any[] = [];

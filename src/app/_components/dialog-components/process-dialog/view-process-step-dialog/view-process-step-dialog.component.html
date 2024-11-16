@@ -36,7 +36,7 @@
     <mat-divider></mat-divider>
     <!-- Step CHoices -->
     <div>
-        <div *ngIf="processStep.type != 'textbox'">
+        <div *ngIf="processStep.type !== 'textbox'">
             <h4>Choices</h4>
             <div *ngFor="let choice of processStep.choices">
                 <p><span>{{choice.id}}. </span>{{choice.description}}</p>

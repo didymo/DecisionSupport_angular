@@ -1,30 +1,21 @@
-// import { TestBed } from '@angular/core/testing';
-// import { CanActivateFn } from '@angular/router';
-//
-// import { AuthGuard } from './auth.guard';
-//
-// describe('authGuard', () => {
-//   const executeGuard: CanActivateFn = (...guardParameters) =>
-//       TestBed.runInInjectionContext(() => {
-//         return new AuthGuard(...guardParameters);
-//       });
-//
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({});
-//   });
-//
-//   it('should be created', () => {
-//     expect(executeGuard).toBeTruthy();
-//   });
-// });
+import {TestBed} from '@angular/core/testing';
+import {Router, ActivatedRouteSnapshot} from '@angular/router';
+import {AuthService} from './auth.service';
+import {AuthGuard} from './auth.guard';
 
-import { TestBed } from '@angular/core/testing';
-import { AuthGuard } from './auth.guard';
-import { AuthService } from './auth.service';
-import { Router, ActivatedRouteSnapshot } from '@angular/router';
+// Mock ActivatedRouteSnapshot
+class MockActivatedRouteSnapshot extends ActivatedRouteSnapshot {
+  constructor(public path: string) {
+    super();
+    Object.defineProperty(this, 'routeConfig', {
+      value: {path},
+      writable: true,
+    });
+  }
+}
 
-describe('AuthGuard', () => {
-  let guard: AuthGuard;
+describe('AuthGuard Security and Functionality Tests', () => {
+  let authGuard: AuthGuard;
   let authService: jasmine.SpyObj<AuthService>;
   let router: jasmine.SpyObj<Router>;
 
@@ -35,56 +26,72 @@ describe('AuthGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         AuthGuard,
-        { provide: AuthService, useValue: authServiceSpy },
-        { provide: Router, useValue: routerSpy }
-      ]
+        {provide: AuthService, useValue: authServiceSpy},
+        {provide: Router, useValue: routerSpy},
+      ],
     });
 
-    guard = TestBed.inject(AuthGuard);
+    authGuard = TestBed.inject(AuthGuard);
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
   });
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
+  describe('Authenticated User Access', () => {
+    it('should allow access for administrators', () => {
+      authService.isLoggedIn.and.returnValue(true);
+      authService.getUserRole.and.returnValue('administrator');
+      const mockRoute = new MockActivatedRouteSnapshot('');
+
+      const result = authGuard.canActivate(mockRoute);
+
+      expect(result).toBeTrue();
+      expect(router.navigate).not.toHaveBeenCalled();
+    });
+
+    it('should restrict access for regular users to "process" routes', () => {
+      authService.isLoggedIn.and.returnValue(true);
+      authService.getUserRole.and.returnValue('user');
+      const mockRoute = new MockActivatedRouteSnapshot('process');
+
+      const result = authGuard.canActivate(mockRoute);
+
+      expect(result).toBeFalse();
+      expect(router.navigate).toHaveBeenCalledWith(['/home']);
+    });
+
+    it('should allow access for regular users to non-restricted routes', () => {
+      authService.isLoggedIn.and.returnValue(true);
+      authService.getUserRole.and.returnValue('user');
+      const mockRoute = new MockActivatedRouteSnapshot('dashboard');
+
+      const result = authGuard.canActivate(mockRoute);
+
+      expect(result).toBeTrue();
+      expect(router.navigate).not.toHaveBeenCalled();
+    });
   });
 
-  it('should allow access for authenticated administrator', () => {
-    authService.isLoggedIn.and.returnValue(true);
-    authService.getUserRole.and.returnValue('administrator');
+  describe('Unauthenticated User Access', () => {
+    it('should redirect unauthenticated users to login', () => {
+      authService.isLoggedIn.and.returnValue(false);
+      const mockRoute = new MockActivatedRouteSnapshot('dashboard');
 
-    const route = { routeConfig: { path: 'process' } } as ActivatedRouteSnapshot;
+      const result = authGuard.canActivate(mockRoute);
 
-    expect(guard.canActivate(route)).toBeTruthy();
-    expect(router.navigate).not.toHaveBeenCalled();
+      expect(result).toBeFalse();
+      expect(router.navigate).toHaveBeenCalledWith(['/user/login']);
+    });
   });
 
-  it('should redirect regular users from process page', () => {
-    authService.isLoggedIn.and.returnValue(true);
-    authService.getUserRole.and.returnValue('user');
+  describe('Error Handling', () => {
+    it('should redirect to error page on unexpected error', () => {
+      authService.isLoggedIn.and.throwError('Unexpected error');
+      const mockRoute = new MockActivatedRouteSnapshot('dashboard');
 
-    const route = { routeConfig: { path: 'process' } } as ActivatedRouteSnapshot;
+      const result = authGuard.canActivate(mockRoute);
 
-    expect(guard.canActivate(route)).toBeFalsy();
-    expect(router.navigate).toHaveBeenCalledWith(['/home']);
-  });
-
-  it('should redirect unauthenticated users to login', () => {
-    authService.isLoggedIn.and.returnValue(false);
-
-    const route = { routeConfig: { path: 'any-path' } } as ActivatedRouteSnapshot;
-
-    expect(guard.canActivate(route)).toBeFalsy();
-    expect(router.navigate).toHaveBeenCalledWith(['/user/login']);
-  });
-
-  it('should allow regular users to access non-process pages', () => {
-    authService.isLoggedIn.and.returnValue(true);
-    authService.getUserRole.and.returnValue('user');
-
-    const route = { routeConfig: { path: 'home' } } as ActivatedRouteSnapshot;
-
-    expect(guard.canActivate(route)).toBeTruthy();
-    expect(router.navigate).not.toHaveBeenCalled();
+      expect(result).toBeFalse();
+      expect(router.navigate).toHaveBeenCalledWith(['/error']);
+    });
   });
 });

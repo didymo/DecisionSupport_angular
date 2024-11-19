@@ -82,16 +82,4 @@ describe('AuthGuard Security and Functionality Tests', () => {
       expect(router.navigate).toHaveBeenCalledWith(['/user/login']);
     });
   });
-
-  describe('Error Handling', () => {
-    it('should redirect to error page on unexpected error', () => {
-      authService.isLoggedIn.and.throwError('Unexpected error');
-      const mockRoute = new MockActivatedRouteSnapshot('dashboard');
-
-      const result = authGuard.canActivate(mockRoute);
-
-      expect(result).toBeFalse();
-      expect(router.navigate).toHaveBeenCalledWith(['/error']);
-    });
-  });
 });

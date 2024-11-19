@@ -1,27 +1,9 @@
-// import { TestBed } from '@angular/core/testing';
-// import {DecisionSupportService} from "./decision-support.service";
-//
-// // import { DecisionSupportService } from '../decision-support.service';
-//
-// describe('DecisionSupportService', () => {
-//   let service: DecisionSupportService;
-//
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({});
-//     service = TestBed.inject(DecisionSupportService);
-//   });
-//
-//   it('should be created', () => {
-//     expect(service).toBeTruthy();
-//   });
-// });
-
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { DecisionSupportService } from './decision-support.service';
-import { AuthService } from './auth.service';
-import { environment } from '../../environments/environment';
-import { HttpHeaders } from '@angular/common/http';
+import {TestBed} from '@angular/core/testing';
+import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
+import {DecisionSupportService} from './decision-support.service';
+import {AuthService} from './auth.service';
+import {environment} from '../../environments/environment';
+import {HttpHeaders, provideHttpClient} from '@angular/common/http';
 
 describe('DecisionSupportService', () => {
   let service: DecisionSupportService;
@@ -33,10 +15,11 @@ describe('DecisionSupportService', () => {
     authServiceSpy.getHeaders.and.returnValue(new HttpHeaders());
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         DecisionSupportService,
-        { provide: AuthService, useValue: authServiceSpy }
+        {provide: AuthService, useValue: authServiceSpy}
       ]
     });
 
@@ -80,8 +63,8 @@ describe('DecisionSupportService', () => {
   // });
 
   it('should post new decision support', () => {
-    const mockData = { title: 'New Decision' };
-    const mockResponse = { id: '123', ...mockData };
+    const mockData = {title: 'New Decision'};
+    const mockResponse = {id: '123', ...mockData};
 
     service.postDecisionSupport(mockData).subscribe(response => {
       expect(response).toEqual(mockResponse);

@@ -1,5 +1,5 @@
 /**
- * @whatItDoes Provides services for the Decision Support Class 
+ * @whatItDoes Provides services for the Decision Support Class
  *
  * @description
  *  GET (singular and list), POST, PATCH and ARCHIVE are available.
@@ -12,38 +12,58 @@ import {environment} from "../../environments/environment";
 import {DecisionSupportList} from "../_classes/decision-support-list";
 import {DecisionSupport} from '../_classes/decision-support';
 import {AuthService} from "./auth.service";
+import {LoggingService} from "./logging.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DecisionSupportService {
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService, private loggingService: LoggingService) {
+  }
 
   getDecisionSupport(decisionSupportId: string, headers: HttpHeaders): Observable<DecisionSupport> {
-    return this.http.get<DecisionSupport>(`${environment.getDecisionSupportURL}${decisionSupportId}?_format=json`, { headers });
+
+    if (!decisionSupportId) {
+      throw new Error('DecisionSupport ID cannot be null or undefined. Please provide a valid ID.');
+    }
+    if (!headers) {
+      throw new Error('Authorization headers are missing.');
+    }
+
+    return this.http.get<DecisionSupport>(`${environment.getDecisionSupportURL}${decisionSupportId}?_format=json`, {headers});
   }
 
   getDecisionSupportList(): Observable<DecisionSupportList[]> {
     const headers = this.authService.getHeaders();
-    return this.http.get<DecisionSupportList[]>(environment.getDecisionSupportListURL, { headers });
+    return this.http.get<DecisionSupportList[]>(environment.getDecisionSupportListURL, {headers});
   }
 
   postDecisionSupport(data: any): Observable<any> {
     const headers = this.authService.getHeaders();
-    return this.http.post<DecisionSupport>(environment.postDecisionSupportURL, data, { headers });
+    return this.http.post<DecisionSupport>(environment.postDecisionSupportURL, data, {headers});
   }
 
   patchDecisionSupport(decisionSupportId: string, newSteps: any): Observable<DecisionSupport> {
-    console.log(decisionSupportId);
-    console.log(`${environment.patchDecisionSupportURL}${decisionSupportId}`);
-    console.log("Content of the patch: ", newSteps);
+    if (!decisionSupportId) {
+      throw new Error('DecisionSupport ID cannot be null or undefined. Please provide a valid ID.');
+    }
+    if (!newSteps) {
+      throw new Error('The newSteps are required.');
+    }
+
+    this.loggingService.info('Decision Support ID:', decisionSupportId);
+    this.loggingService.info('Patch URL:', `${environment.patchDecisionSupportURL}${decisionSupportId}`);
+    this.loggingService.info('Content of the patch:', newSteps);
     const headers = this.authService.getHeaders();
-    return this.http.patch<DecisionSupport>(`${environment.patchDecisionSupportURL}${decisionSupportId}`, newSteps, { headers });
+    return this.http.patch<DecisionSupport>(`${environment.patchDecisionSupportURL}${decisionSupportId}`, newSteps, {headers});
   }
 
-  archiveDecisionSupport(decisionSupportId:string): Observable<any>{
+  archiveDecisionSupport(decisionSupportId: string): Observable<any> {
+    if (!decisionSupportId) {
+      throw new Error('DecisionSupport ID cannot be null or undefined. Please provide a valid ID.');
+    }
     const headers = this.authService.getHeaders();
-    console.log(`${environment.archiveDecisionSupportURL}${decisionSupportId}`);
-    return this.http.delete<DecisionSupport>(`${environment.archiveDecisionSupportURL}${decisionSupportId}`, { headers });
+    this.loggingService.info('Patch URL:', `${environment.patchDecisionSupportURL}${decisionSupportId}`);
+    return this.http.delete<DecisionSupport>(`${environment.archiveDecisionSupportURL}${decisionSupportId}`, {headers});
   }
 }

@@ -4,136 +4,136 @@
 -->
 
 <mat-sidenav-container autosize *ngIf="response">
-    <mat-sidenav [opened]="true" mode="side" [style.width]="sideNavWidth()">
-  
-      <!-- Sidebar -->
-      <mat-nav-list>
-        <!-- For each step ... -->
-        <div *ngFor="let step of decisionSupportDetails?.steps; let i = index">
-          <div [ngClass]="{'disabled-step': !step.isVisible}">
-            <!-- Clickable area going to step. -->
-            <a (click)="getStep(step.stepUuid)" [ngClass]="{'active-step': oneStep?.stepUuid === step.stepUuid}">
-              <!-- Round number display icon (goes green when step is completed) -->
-              <span>
+  <mat-sidenav [opened]="true" mode="side" [style.width]="sideNavWidth()">
+
+    <!-- Sidebar -->
+    <mat-nav-list>
+      <!-- For each step ... -->
+      <div *ngFor="let step of decisionSupportDetails?.steps; let i = index">
+        <div [ngClass]="{'disabled-step': !step.isVisible}">
+          <!-- Clickable area going to step. -->
+          <a (click)="getStep(step.stepUuid)" [ngClass]="{'active-step': oneStep?.stepUuid === step.stepUuid}">
+            <!-- Round number display icon (goes green when step is completed) -->
+            <span>
                 <ng-content select="[icon]">
                   <button mat-mini-fab [ngClass]="{'completed-step': step.isCompleted, 'uncomplete': step}"  [matTooltip]="step.description" matTooltipClass="title-hover"
                           aria-label="Button that display a tooltip in various positions">{{step.id}}</button>
                 </ng-content>
               </span>
-              <!-- Text describing step (number + text) -->
-              <span class="text-container">
+            <!-- Text describing step (number + text) -->
+            <span class="text-container">
                 <ng-content>
                   <span>Step {{step.id}} - {{step.description}}</span>
                 </ng-content>
               </span>
-                </a>
-                <mat-divider></mat-divider>
-              </div>
-            </div>
-          </mat-nav-list>
-  
-      <!-- Sidebar extension/retraction toggle button as an arrow -->
-      <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
-        <mat-icon [ngStyle]="{'color':'#accbe3'}">{{ !collapsed() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-      </button> 
-  
-          <!-- Toggle button as an arrow -->
-          <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
-            <mat-icon  [ngStyle]="{'color':'#accbe3'}">{{ !collapsed() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-          </button>
-    </mat-sidenav>
-  
-    <!-- Loop for each step of the process. -->
-    <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
-        <!-- Buttons wrapper -->
-  <div class="button-container">
-    <!-- Save Button! -->
-    <button mat-button color="primary" (click)="onSaveDraft()" type="submit" class="btn-primary">Save Draft</button>
-    <button *ngIf="lastStep"  mat-button color="primary" (click)="onSave()" type="submit" class="btn-secondary">Submit</button>
-  </div>
-      <div *ngIf="oneStep">
-        <!-- Heading and description. -->
-        <h2>Step {{oneStep.id}} </h2>
-        <p>{{oneStep.description}}</p>
-  
-        <!-- STEP TYPE: Radio and Text Box -->
-        <div *ngIf="oneStep.type === 'radio&text'">
-          <mat-radio-group  [(ngModel)]="oneStep.answer"  (change)="onRadioChange($event, oneStep)">
-            <div *ngFor="let choices of oneStep?.choices; let j = index" class="steps">
+          </a>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+    </mat-nav-list>
+
+    <!-- Sidebar extension/retraction toggle button as an arrow -->
+    <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
+      <mat-icon [ngStyle]="{'color':'#accbe3'}">{{ !collapsed() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+    </button>
+
+    <!-- Toggle button as an arrow -->
+    <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
+      <mat-icon  [ngStyle]="{'color':'#accbe3'}">{{ !collapsed() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+    </button>
+  </mat-sidenav>
+
+  <!-- Loop for each step of the process. -->
+  <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
+    <!-- Buttons wrapper -->
+    <div class="button-container">
+      <!-- Save Button! -->
+      <button mat-button color="primary" (click)="onSaveDraft()" type="submit" class="btn-primary">Save Draft</button>
+      <button *ngIf="lastStep"  mat-button color="primary" (click)="onSave()" type="submit" class="btn-secondary">Submit</button>
+    </div>
+    <div *ngIf="oneStep">
+      <!-- Heading and description. -->
+      <h2>Step {{oneStep.id}} </h2>
+      <p>{{oneStep.description}}</p>
+
+      <!-- STEP TYPE: Radio and Text Box -->
+      <div *ngIf="oneStep.type === 'radio&text'">
+        <mat-radio-group  [(ngModel)]="oneStep.answer"  (change)="onRadioChange($event, oneStep)">
+          <div *ngFor="let choices of oneStep?.choices; let j = index" class="steps">
               <span class="form-control">
                 <mat-radio-button  [value]="choices.choiceUuid">{{choices.description}}</mat-radio-button>
               </span>
-            </div>
-          </mat-radio-group>
-          <br />
-          <!-- Further details and document upload. -->
-          <b>Please provide further details.</b><i>Optional</i><br /><br />
-          <quill-editor [(ngModel)]="oneStep.textAnswer"  (ngModelChange)="updateLocalStorage()"></quill-editor>
-          <app-document-upload></app-document-upload><br /><br /><br /><br />
-        </div>
-  
-        <!-- STEP TYPE: Radio -->
-        <div *ngIf="oneStep.type === 'radio'">
-          <mat-radio-group [(ngModel)]="oneStep.answer"  (change)="onRadioChange($event, oneStep)">
-            <div *ngFor="let choices of oneStep?.choices; let j = index" class="steps">
+          </div>
+        </mat-radio-group>
+        <br />
+        <!-- Further details and document upload. -->
+        <b>Please provide further details.</b><i>Optional</i><br /><br />
+        <quill-editor [(ngModel)]="oneStep.textAnswer"  (ngModelChange)="updateLocalStorage()"></quill-editor>
+        <app-document-upload></app-document-upload><br /><br /><br /><br />
+      </div>
+
+      <!-- STEP TYPE: Radio -->
+      <div *ngIf="oneStep.type === 'radio'">
+        <mat-radio-group [(ngModel)]="oneStep.answer"  (change)="onRadioChange($event, oneStep)">
+          <div *ngFor="let choices of oneStep?.choices; let j = index" class="steps">
               <span class="form-control">
                 <mat-radio-button  [value]="choices.choiceUuid">{{choices.description}}</mat-radio-button>
               </span>
-            </div>
-          </mat-radio-group>
-        </div>
-  
-        <!-- STEP TYPE: Checkbox and Text Box -->
-        <div *ngIf="oneStep.type === 'checkbox&text'">
-          <div *ngFor="let choice of oneStep?.choices; let j = index">
+          </div>
+        </mat-radio-group>
+      </div>
+
+      <!-- STEP TYPE: Checkbox and Text Box -->
+      <div *ngIf="oneStep.type === 'checkbox&text'">
+        <div *ngFor="let choice of oneStep?.choices; let j = index">
             <span class="form-control">
               <!-- Display the checkboxes-->
               <mat-checkbox
-              [name]="'assessment_' + choice.choiceUuid"
-              [id]="'choice_' + choice.id"
-              [(ngModel)] = "choice.selected"
-              (ngModelChange)="onCheckboxChange( choice, oneStep)">
+                [name]="'assessment_' + choice.choiceUuid"
+                [id]="'choice_' + choice.id"
+                [(ngModel)] = "choice.selected"
+                (ngModelChange)="onCheckboxChange( choice, oneStep)">
                 {{choice.description}}
               </mat-checkbox>
             </span>
-          </div>
-          <br />
-  
-          <!-- Further details and document upload. -->
-          <b>Please provide further details.</b><i>Optional</i><br /><br />
-          <quill-editor [(ngModel)]="oneStep.textAnswer" (ngModelChange)="updateLocalStorage()"></quill-editor>
-          <app-document-upload></app-document-upload><br /><br /><br /><br />
         </div>
-    
-        <!-- STEP TYPE: Checkbox -->
-        <div *ngIf="oneStep.type === 'checkbox'">
-          <div *ngFor="let choice of oneStep?.choices; let j = index">
+        <br />
+
+        <!-- Further details and document upload. -->
+        <b>Please provide further details.</b><i>Optional</i><br /><br />
+        <quill-editor [(ngModel)]="oneStep.textAnswer" (ngModelChange)="updateLocalStorage()"></quill-editor>
+        <app-document-upload></app-document-upload><br /><br /><br /><br />
+      </div>
+
+      <!-- STEP TYPE: Checkbox -->
+      <div *ngIf="oneStep.type === 'checkbox'">
+        <div *ngFor="let choice of oneStep?.choices; let j = index">
             <span class="form-control">
               <!-- Display the checkboxes-->
               <mat-checkbox
-            [name]="'assessment_' + choice.choiceUuid"
-            [id]="'choice_' + choice.id"
-            [(ngModel)] = "choice.selected"
-            (ngModelChange)="onCheckboxChange( choice, oneStep)"
-          >{{choice.description}}
+                [name]="'assessment_' + choice.choiceUuid"
+                [id]="'choice_' + choice.id"
+                [(ngModel)] = "choice.selected"
+                (ngModelChange)="onCheckboxChange( choice, oneStep)"
+              >{{choice.description}}
               </mat-checkbox>
             </span>
-          </div>
         </div>
-  
-        <!-- STEP TYPE: Text Box -->
-        <div *ngIf="oneStep.type === 'textbox'" >
-          <b>Please provide further details.</b><i>Optional</i><br /><br />
-          <quill-editor [(ngModel)]="oneStep.textAnswer"  (ngModelChange)="onTextAnswerChange(oneStep); updateSteps()"></quill-editor><br /><br />
-          <app-document-upload></app-document-upload><br /><br /><br /><br />
-        </div>
-  
-      </div> <!-- End of single step. -->
+      </div>
 
-    </mat-sidenav-content>
-    
-  </mat-sidenav-container>
-  
-  <div class="div-spinner" *ngIf="!response">
-    <mat-spinner></mat-spinner>
-  </div>
+      <!-- STEP TYPE: Text Box -->
+      <div *ngIf="oneStep.type === 'textbox'" >
+        <b>Please provide further details.</b><i>Optional</i><br /><br />
+        <quill-editor [(ngModel)]="oneStep.textAnswer"  (ngModelChange)="onTextAnswerChange(oneStep); updateSteps()"></quill-editor><br /><br />
+        <app-document-upload></app-document-upload><br /><br /><br /><br />
+      </div>
+
+    </div> <!-- End of single step. -->
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+<div class="div-spinner" *ngIf="!response">
+  <mat-spinner></mat-spinner>
+</div>

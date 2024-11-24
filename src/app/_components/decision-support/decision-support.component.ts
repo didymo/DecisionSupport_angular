@@ -5,41 +5,76 @@
  *  This component takes the JSON string from the backend and renders a form to be filled out.
  */
 
-import { Component, OnInit, signal, computed, ViewChild, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { MatRadioModule } from '@angular/material/radio';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatListModule } from '@angular/material/list';
-import { MatDivider } from '@angular/material/divider';
-import { QuillModule } from 'ngx-quill';
-import { Step } from '../../_classes/step';
-import { DecisionSupport } from '../../_classes/decision-support';
-import { DecisionSupportService } from '../../_services/decision-support.service';
-import { AuthService } from '../../_services/auth.service';
-import { DocumentUploadComponent } from '../document-upload/document-upload.component';
-import { DocumentService } from '../../_services/document.service';
-import { MatTooltip } from "@angular/material/tooltip";
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SaveDecisionSupportDialogComponent } from '../dialog-components/decision-support-dialog/save-decision-support-dialog/save-decision-support-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {Component, OnInit, signal, computed, ViewChild, inject} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {MatRadioModule} from '@angular/material/radio';
+import {MatCheckbox} from '@angular/material/checkbox';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatListModule} from '@angular/material/list';
+import {MatDivider} from '@angular/material/divider';
+import {QuillModule, QUILL_CONFIG_TOKEN, QuillEditorComponent} from 'ngx-quill';
+import {Step} from '../../_classes/step';
+import {DecisionSupport} from '../../_classes/decision-support';
+import {DecisionSupportService} from '../../_services/decision-support.service';
+import {AuthService} from '../../_services/auth.service';
+import {DocumentUploadComponent} from '../document-upload/document-upload.component';
+import {DocumentService} from '../../_services/document.service';
+import {MatTooltip} from "@angular/material/tooltip";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {
+  SaveDecisionSupportDialogComponent
+} from '../dialog-components/decision-support-dialog/save-decision-support-dialog/save-decision-support-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
+const QUILL_DEFAULT_CONFIG = {
+  bounds: 'self',
+  modules: {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{'list': 'ordered'}, {'list': 'bullet'}],
+      ['link'],
+      ['clean']
+    ],
+    clipboard: {
+      matchVisual: false
+    },
+    keyboard: {
+      bindings: {
+        'list autofill': undefined,
+        'html paste': undefined
+      }
+    }
+  },
+  formats: [
+    'bold', 'italic', 'underline',
+    'list', 'bullet',
+    'link'
+  ],
+  sanitize: true,
+  theme: 'snow'
+};
+
 
 @Component({
   selector: 'app-decision-support',
   standalone: true,
-  imports: [QuillModule, MatProgressSpinnerModule, MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent],
+  imports: [QuillModule, QuillEditorComponent, MatProgressSpinnerModule, MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent],
+  providers: [{
+    provide: QUILL_CONFIG_TOKEN,
+    useValue: QUILL_DEFAULT_CONFIG,
+  }],
   templateUrl: './decision-support.component.html',
   styleUrl: './decision-support.component.scss'
 })
 
 export class DecisionSupportComponent implements OnInit {
-  // Variables: Rendering of the form. 
+  // Variables: Rendering of the form.
   @ViewChild(DocumentUploadComponent) documentUploadComponent!: DocumentUploadComponent;
   /** Inject Mat Snack Bar */
   private snackBar = inject(MatSnackBar);
@@ -51,9 +86,13 @@ export class DecisionSupportComponent implements OnInit {
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '350px'); // Width of the Side Navigation Bar
   oneStep: any; // Holds the step that is currently selected.
   userChoices = new Map<string, string>(); // Map holding the user's choices for a radiobutton or checkbox.
-  editorContent: any; // content of the quill enditor
+  editorContent = ''; // content of the quill enditor
   response = false; //Boolean value for spinner
   lastStep = false;
+  private readonly MAX_CONTENT_LENGTH = 10000; // Adjust Quill based on application requirements
+  private readonly ALLOWED_TAGS = /^(<p>|<\/p>|<strong>|<\/strong>|<em>|<\/em>|<u>|<\/u>|<ul>|<\/ul>|<li>|<\/li>|<ol>|<\/ol>|<a>|<\/a>)$/;
+  quillConfig = QUILL_DEFAULT_CONFIG;
+
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
@@ -61,7 +100,6 @@ export class DecisionSupportComponent implements OnInit {
     private documentService: DocumentService,
     private router: Router,
     private dialog: MatDialog
-
   ) {
     this.decisionSupportId = this.route.snapshot.params['id'];
     this.decisionSupportDetails = this.route.snapshot.params['json_string'];
@@ -69,7 +107,7 @@ export class DecisionSupportComponent implements OnInit {
 
   ngOnInit() {
     this.getDecisionSupportDetail();
-    
+
     // I really don't like this...
     //setTimeout(() => {
     //  this.updateSteps();
@@ -96,10 +134,10 @@ export class DecisionSupportComponent implements OnInit {
 
   onSave() {
     // Handle the form submission logic here
-    const dialogRef = this.dialog.open(SaveDecisionSupportDialogComponent, { width: '800px' });
+    const dialogRef = this.dialog.open(SaveDecisionSupportDialogComponent, {width: '800px'});
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        //If the user click save 
+        //If the user click save
         this.decisionSupportDetails.isCompleted = true;
         this.decisionSupportService.patchDecisionSupport(this.decisionSupportDetails.entityId, this.decisionSupportDetails).subscribe(
           (data) => {
@@ -189,8 +227,8 @@ export class DecisionSupportComponent implements OnInit {
       this.updateSteps();
     }
   }
-  
-  onTextAnswerChange(step: Step){
+
+  onTextAnswerChange(step: Step) {
     step.isCompleted = true;
     this.updateLocalStorage();
   }
@@ -210,12 +248,12 @@ export class DecisionSupportComponent implements OnInit {
   // Updates the form, specifically what steps should be visilbe and therefore accessible at any time.
   updateSteps() {
     let lastVisibleStepIndex = -1;
-  
+
     // Iterate over all steps to update their visibility
     for (let i = 0; i < this.decisionSupportDetails.steps.length; i++) {
       const step = this.decisionSupportDetails.steps[i];
       const isVisible = this.checkVisibility(step);
-  
+
       if (isVisible) {
         lastVisibleStepIndex = i; // Track the index of the last visible step
       }
@@ -257,8 +295,9 @@ export class DecisionSupportComponent implements OnInit {
     }
     return true;
   }
+
   //Clear invisbile step fields
-  clearFields(currentindex: any){
+  clearFields(currentindex: any) {
     for (currentindex; currentindex < this.decisionSupportDetails.steps.length; currentindex++) {
       this.decisionSupportDetails.steps[currentindex].isVisible = false;
       this.userChoices.delete(this.decisionSupportDetails.steps[currentindex].stepUuid);
@@ -281,6 +320,38 @@ export class DecisionSupportComponent implements OnInit {
       if (formattedData.entityId == this.decisionSupportId) {
         this.decisionSupportDetails = formattedData;
       }
+    }
+  }
+
+  // Add this method to validate content
+  validateQuillContent(content: string): boolean {
+    if (!content) return true; // Empty content is valid
+
+    // Check length
+    if (content.length > this.MAX_CONTENT_LENGTH) {
+      this.snackBar.open(`Content exceeds maximum length of ${this.MAX_CONTENT_LENGTH} characters`, 'Ok', {
+        duration: 3000
+      });
+      return false;
+    }
+
+    // Check for potentially dangerous content
+    const containsScripts = /<script|<style|<iframe|javascript:|data:/i.test(content);
+    if (containsScripts) {
+      this.snackBar.open('Invalid content detected', 'Ok', {
+        duration: 3000
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  // Add handler for Quill content changes
+  onQuillContentChanged(event: { html: string, text: string }): void {
+    if (this.validateQuillContent(event.html)) {
+      this.editorContent = event.html;
+      this.updateLocalStorage();
     }
   }
 }

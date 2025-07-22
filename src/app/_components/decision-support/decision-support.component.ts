@@ -5,7 +5,7 @@
  *  This component takes the JSON string from the backend and renders a form to be filled out.
  */
 
-import {Component, OnInit, signal, computed, ViewChild, inject} from '@angular/core';
+import {Component, OnInit, signal, computed, ViewChild, inject, AfterViewInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
@@ -73,11 +73,10 @@ const QUILL_DEFAULT_CONFIG = {
   styleUrl: './decision-support.component.scss'
 })
 
-export class DecisionSupportComponent implements OnInit {
+export class DecisionSupportComponent implements OnInit, AfterViewInit {
   // Variables: Rendering of the form.
   @ViewChild(DocumentUploadComponent) documentUploadComponent!: DocumentUploadComponent;
-  /** Inject Mat Snack Bar */
-  private snackBar = inject(MatSnackBar);
+  @ViewChild('quillInstance', {static: false}) quillEditor!: any;
   decisionSupport: DecisionSupport | undefined; // Object of the decision support.
   decisionSupportId: string;
   decisionSupportDetails: any;
@@ -86,12 +85,15 @@ export class DecisionSupportComponent implements OnInit {
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '350px'); // Width of the Side Navigation Bar
   oneStep: any; // Holds the step that is currently selected.
   userChoices = new Map<string, string>(); // Map holding the user's choices for a radiobutton or checkbox.
-  editorContent = ''; // content of the quill enditor
+  editorContent = ''; // content of the quill editor
+  editorError = '';   // Holds error messages for invalid content
   response = false; //Boolean value for spinner
   lastStep = false;
+  quillConfig = QUILL_DEFAULT_CONFIG;
+  /** Inject Mat Snack Bar */
+  private snackBar = inject(MatSnackBar);
   private readonly MAX_CONTENT_LENGTH = 10000; // Adjust Quill based on application requirements
   private readonly ALLOWED_TAGS = /^(<p>|<\/p>|<strong>|<\/strong>|<em>|<\/em>|<u>|<\/u>|<ul>|<\/ul>|<li>|<\/li>|<ol>|<\/ol>|<a>|<\/a>)$/;
-  quillConfig = QUILL_DEFAULT_CONFIG;
 
   constructor(
     private route: ActivatedRoute,
@@ -106,12 +108,24 @@ export class DecisionSupportComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.getDecisionSupportDetail();
+
+    const savedContent = localStorage.getItem('editorContent');
+    if (savedContent) {
+      this.editorContent = savedContent;
+    }
 
     // I really don't like this...
     //setTimeout(() => {
     //  this.updateSteps();
     //}, 500);
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.quillEditor) {
+      console.error('Quill editor instance not initialized');
+    }
   }
 
   onSaveDraft() {
@@ -313,6 +327,10 @@ export class DecisionSupportComponent implements OnInit {
     localStorage.setItem("decision_support_data", JSON.stringify(this.decisionSupportDetails))
   }
 
+  // updateLocalStorage(): void {
+  //   localStorage.setItem('editorContent', this.editorContent);
+  // }
+
   checkUnSavedData(): void {
     const unsavedData = localStorage.getItem("decision_support_data");
     if (unsavedData) {
@@ -324,34 +342,77 @@ export class DecisionSupportComponent implements OnInit {
   }
 
   // Add this method to validate content
+  // validateQuillContent(content: string): boolean {
+  //   if (!content) return true; // Empty content is valid
+  //
+  //   // Check length
+  //   if (content.length > this.MAX_CONTENT_LENGTH) {
+  //     this.snackBar.open(`Content exceeds maximum length of ${this.MAX_CONTENT_LENGTH} characters`, 'Ok', {
+  //       duration: 3000
+  //     });
+  //     return false;
+  //   }
+  //
+  //   // Check for potentially dangerous content
+  //   const containsScripts = /<script|<style|<iframe|javascript:|data:/i.test(content);
+  //   if (containsScripts) {
+  //     this.snackBar.open('Invalid content detected', 'Ok', {
+  //       duration: 3000
+  //     });
+  //     return false;
+  //   }
+  //
+  //   return true;
+  // }
   validateQuillContent(content: string): boolean {
+    // Reset error
+    this.editorError = '';
+
     if (!content) return true; // Empty content is valid
 
     // Check length
     if (content.length > this.MAX_CONTENT_LENGTH) {
-      this.snackBar.open(`Content exceeds maximum length of ${this.MAX_CONTENT_LENGTH} characters`, 'Ok', {
-        duration: 3000
-      });
+      this.editorError = `Content exceeds maximum length of ${this.MAX_CONTENT_LENGTH} characters.`;
+      this.snackBar.open(this.editorError, 'Ok', {duration: 3000});
       return false;
     }
 
-    // Check for potentially dangerous content
-    const containsScripts = /<script|<style|<iframe|javascript:|data:/i.test(content);
-    if (containsScripts) {
-      this.snackBar.open('Invalid content detected', 'Ok', {
-        duration: 3000
-      });
-      return false;
+    // Check for disallowed tags or scripts
+    const doc = new DOMParser().parseFromString(content, 'text/html');
+    const elements = Array.from(doc.body.getElementsByTagName('*'));
+
+    for (const el of elements) {
+      const tagName = el.tagName.toLowerCase(); // Declare tagName properly
+      const openingTag = `<${tagName}>`;       // Generate the opening tag
+      const closingTag = `</${tagName}>`;      // Generate the closing tag
+
+      if (!this.ALLOWED_TAGS.test(openingTag) && !this.ALLOWED_TAGS.test(closingTag)) {
+        this.editorError = `Invalid content detected: <${tagName}> is not allowed.`;
+        this.snackBar.open(this.editorError, 'Ok', {duration: 3000});
+        return false;
+      }
     }
 
     return true;
   }
 
+
   // Add handler for Quill content changes
-  onQuillContentChanged(event: { html: string, text: string }): void {
-    if (this.validateQuillContent(event.html)) {
-      this.editorContent = event.html;
+  // onQuillContentChanged(event: { html: string, text: string }): void {
+  //   if (this.validateQuillContent(event.html)) {
+  //     this.editorContent = event.html;
+  //     this.updateLocalStorage();
+  //   }
+  // }
+  onQuillContentChanged(event: { html: string | null; text: string }): void {
+    const htmlContent = event.html ?? ''; // Use empty string if html is null
+    if (this.validateQuillContent(htmlContent)) {
+      this.editorContent = htmlContent;
       this.updateLocalStorage();
+    } else {
+      this.quillEditor.quillEditor.setContents([]); // Reset on failure
     }
   }
+
+
 }

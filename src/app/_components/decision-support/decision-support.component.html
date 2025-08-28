@@ -12,7 +12,7 @@
       <div *ngFor="let step of decisionSupportDetails?.steps; let i = index">
         <div [ngClass]="{'disabled-step': !step.isVisible}">
           <!-- Clickable area going to step. -->
-          <a (click)="getStep(step.stepUuid)" [ngClass]="{'active-step': oneStep?.stepUuid === step.stepUuid}">
+          <a class="sidebar-a" (click)="getStep(step.stepUuid)" [ngClass]="{'active-step': oneStep?.stepUuid === step.stepUuid}">
             <!-- Round number display icon (goes green when step is completed) -->
             <span>
                 <ng-content select="[icon]">
@@ -54,9 +54,27 @@
         Submit
       </button>
     </div>
+    <!-------------------------------------------------------------------->
     <div *ngIf="oneStep">
-      <!-- Heading and description. -->
+
       <h2>Step {{ oneStep.id }} </h2>
+      <div class="link-container" *ngIf="oneStep.referenceLink">
+                    <div class="link-sub-container-1">
+                         <p><b>Supporting Links</b></p> 
+                    </div>
+
+                    <div class="link-sub-container-2">
+                        <div *ngFor="let referenceLink of oneStep?.referenceLink">
+                       
+                                <p>{{referenceLink.id}}<a class="reference-link-a" href="{{oneStep.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
+                                    {{referenceLink.label}}
+                                </a></p>
+                           
+                            </div>
+                    </div>
+                </div>
+  <!-------------------------------------------------------------------->
+      <!-- Heading and description. -->
       <p>{{ oneStep.description }}</p>
 
       <!-- STEP TYPE: Radio and Text Box -->

@@ -8,6 +8,7 @@
 import {Condition} from "./condition";
 import {StepChoice} from "./step-choice";
 import {SanitizeService} from "../_services/sanitize.service";
+import { ReferenceLink } from "./reference-link";
 
 
 export class Step {
@@ -31,6 +32,11 @@ export class Step {
    * Determines a step is required to complete the decision support or not (0 - no, 1 -yes)
    */
   required: string;
+  /**
+   * An array of reference Link.
+   * Which has a label, url and description.
+   */
+  referenceLink: ReferenceLink[];
   /**
    * An array of step choices.
    * If an step has no choices, it will still be populated by one step choice. It's not used.
@@ -67,6 +73,7 @@ export class Step {
     type: string,
     required: string,
     description: string,
+    referenceLink: ReferenceLink[],
     choices: StepChoice[],
     conditions: Condition[],
     isCompleted: boolean,
@@ -80,6 +87,7 @@ export class Step {
     this.description = SanitizeService.sanitizeStatic(description);// Fallback to raw description if sanitizeService is not provided
     this.type = type;
     this.required = required;
+    this.referenceLink = referenceLink;
     this.choices = choices;
     this.conditions = conditions;
     this.isCompleted = isCompleted;

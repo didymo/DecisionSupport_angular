@@ -10,12 +10,14 @@
     <!-- Process Step Description -->
     <p>Description</p>
     <mat-form-field appearance="outline">
-      <input matInput [(ngModel)]="formData.description" name="description" placeholder="Description" (ngModelChange)="addDataToLocalStorage()" required>
+      <input matInput [(ngModel)]="formData.description" name="description" placeholder="Description"
+        (ngModelChange)="addDataToLocalStorage()" required>
     </mat-form-field>
     <!-- Process Step Required Status-->
     <p>Required</p>
     <mat-form-field appearance="outline">
-      <mat-select [(ngModel)]="formData.required" name="required" placeholder="Select Required Status" (ngModelChange)="addDataToLocalStorage()"  required>
+      <mat-select [(ngModel)]="formData.required" name="required" placeholder="Select Required Status"
+        (ngModelChange)="addDataToLocalStorage()" required>
         <mat-option [value]="'1'">Yes</mat-option>
         <mat-option [value]="'0'">No</mat-option>
       </mat-select>
@@ -23,17 +25,46 @@
     <!-- Process Step Type-->
     <p>Element Type</p>
     <mat-form-field appearance="outline">
-      <mat-select [(ngModel)]="formData.type" name="type" placeholder="Select Element Type" (ngModelChange)="addDataToLocalStorage()"  required>
+      <mat-select [(ngModel)]="formData.type" name="type" placeholder="Select Element Type"
+        (ngModelChange)="addDataToLocalStorage()" required>
         <mat-option *ngFor="let type of type" [value]="type.value">{{ type.label }}</mat-option>
       </mat-select>
     </mat-form-field>
 
+    <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!--Reference Link-->
+    <p>Reference Link</p>
+    <div *ngFor="let referenceLink of formData.referenceLink; let i = index">
+      <div class="link-header">
+      <p>Link {{i + 1}}</p>
+      <button mat-icon-button type="button"><mat-icon class="material-icons" (click)="removeReferenceLink(i)">delete</mat-icon></button>
+      </div>
+      <mat-form-field appearance="outline">
+         <mat-label>Label</mat-label>
+        <input matInput [(ngModel)]="referenceLink.label" name="referenceLabel{{i}}" (ngModelChange)="addDataToLocalStorage()" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+         <mat-label>Link</mat-label>
+        <input matInput [(ngModel)]="referenceLink.url" name="referenceLink{{i}}" (ngModelChange)="addDataToLocalStorage()" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+         <mat-label>Description</mat-label>
+       <input matInput [(ngModel)]="referenceLink.description" name="referenceDescription{{i}}"  (ngModelChange)="addDataToLocalStorage()" required>
+      </mat-form-field>
+      
+    </div>
+    <button class="add" mat-button type="button" (click)="addReferenceLink()">Add Refernce Link</button>
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
     <!-- Add/Remove Process Step Choices if the step type radio/checkbox -->
-    <div *ngIf="formData.type === 'radio' || formData.type === 'radio&text' || formData.type === 'checkbox&text' || formData.type === 'checkbox'">
+    <div
+      *ngIf="formData.type === 'radio' || formData.type === 'radio&text' || formData.type === 'checkbox&text' || formData.type === 'checkbox'">
       <p>Options:</p>
       <div *ngFor="let choice of formData.choices; let i = index">
         <mat-form-field appearance="outline">
-          <input matInput [(ngModel)]="choice.description" placeholder="Option {{ i + 1 }}"  name="choice{{i}}" (ngModelChange)="addDataToLocalStorage()" required>
+          <input matInput [(ngModel)]="choice.description" placeholder="Option {{ i + 1 }}" name="choice{{i}}"
+            (ngModelChange)="addDataToLocalStorage()" required>
           <!-- Remove Choice -->
           <button mat-icon-button type="button" (click)="removeChoice(i)">
             <mat-icon class="material-icons">delete</mat-icon>
@@ -49,15 +80,20 @@
       <!-- Condition Step description -->
       <mat-form-field appearance="outline">
         <p>Condition {{ i + 1 }}</p>
-        <mat-select [(ngModel)]="condition.stepUuid" name="conditionStep{{i}}" (selectionChange)="updateStepConditionChoices(condition.stepUuid, i)" placeholder="Select Step" (ngModelChange)="addDataToLocalStorage()"  required>
-          <mat-option *ngFor="let step of filteredStepsData" [value]="step.stepUuid">{{ step.id }}. {{ step.description }}</mat-option>
+        <mat-select [(ngModel)]="condition.stepUuid" name="conditionStep{{i}}"
+          (selectionChange)="updateStepConditionChoices(condition.stepUuid, i)" placeholder="Select Step"
+          (ngModelChange)="addDataToLocalStorage()" required>
+          <mat-option *ngFor="let step of filteredStepsData" [value]="step.stepUuid">{{ step.id }}. {{ step.description
+            }}</mat-option>
         </mat-select>
       </mat-form-field>
       <!-- Condition Step Value-->
       <mat-form-field appearance="outline">
         <p>Value is</p>
-        <mat-select [(ngModel)]="condition.choiceUuid" name="conditionChoice{{i}}" placeholder="Select Value" (ngModelChange)="addDataToLocalStorage()"  required>
-          <mat-option *ngFor="let choice of condition.stepChoices" [value]="choice.choiceUuid">{{ choice.description }}</mat-option>
+        <mat-select [(ngModel)]="condition.choiceUuid" name="conditionChoice{{i}}" placeholder="Select Value"
+          (ngModelChange)="addDataToLocalStorage()" required>
+          <mat-option *ngFor="let choice of condition.stepChoices" [value]="choice.choiceUuid">{{ choice.description
+            }}</mat-option>
         </mat-select>
         <!-- Remove Condition -->
         <button mat-icon-button type="button" (click)="removeCondition(i)">

@@ -40,3 +40,34 @@ h1{
     align-items: center;
     height: 70vh;
   }
+
+.link-container {
+  display: flex;
+  width: 100%;
+  border: 1px  #ccc; 
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  margin: 16px auto; 
+  overflow: hidden; 
+}
+
+.link-sub-container-1 {
+  width: 10%;
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+ background-color: #dfdfdd; 
+  overflow: hidden;
+  padding: 10px;
+}
+
+.link-sub-container-2 {
+  width:90%;
+  align-items: center; 
+  padding-left: 8px;
+}
+
+
+a{
+  text-decoration: none;
+}

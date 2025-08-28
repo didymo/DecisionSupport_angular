@@ -1,12 +1,18 @@
-import * as url from "node:url";
 
 export class ReferenceLink {
-  constructor(url: string, label: string, description: string, sectionId: string, icon: string) {
+  constructor(id: string, url: string, label: string, description: string, sectionId: string, icon: string) {
+    this._id = id;
     this._url = url;
     this._label = label;
     this._description = description;
     this._sectionId = sectionId;
     this._icon = icon;
+  }
+
+  private _id: string;
+
+  get id(): string{
+    return this.id;
   }
 
   /** Target URL (absolute or in‑app relative path). */

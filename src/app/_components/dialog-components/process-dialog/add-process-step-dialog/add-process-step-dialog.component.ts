@@ -32,6 +32,7 @@ export class AddProcessStepDialogComponent {
     description: '',
     required: '',
     type: '',
+    referenceLink: [],
     choices: [],
     conditions: []
   };
@@ -110,6 +111,20 @@ export class AddProcessStepDialogComponent {
     if (selectedStep && selectedStep.choices) {
       this.formData.conditions[conditionIndex].stepChoices = selectedStep.choices;
     }
+  }
+
+  /** Reference Link */
+    addReferenceLink(){
+    this.formData.referenceLink.push({
+      id: this.formData.referenceLink.length + 1,
+      label: '',
+      url:'',
+      description: ''
+    });
+  }
+
+  removeReferenceLink(index:number){
+    this.formData.referenceLink.splice(index, 1);
   }
 
   /** Close the dialog and reset form data when user clicks close button */

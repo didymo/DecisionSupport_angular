@@ -30,6 +30,7 @@ export class EditProcessStepDialogComponent {
     description: '',
     required: '',
     type: '',
+    referenceLink: [],
     choices: [],
     conditions: []
   };
@@ -49,6 +50,7 @@ export class EditProcessStepDialogComponent {
     this.formData.description = data.step.description;
     this.formData.required = data.step.required;
     this.formData.type = data.step.type;
+    this.formData.referenceLink = data.step.referenceLink || [];
     this.formData.choices = data.step.choices || [];
     this.formData.conditions = data.step.conditions || [];
     this.filteredStepsData = data.stepsData.filter(s => s.stepUuid !== data.step.stepUuid);
@@ -89,6 +91,19 @@ export class EditProcessStepDialogComponent {
     if (selectedStep && selectedStep.choices) {
       this.formData.conditions[conditionIndex].stepChoices = selectedStep.choices;
     }
+  }
+    /** Reference Link */
+    addReferenceLink(){
+    this.formData.referenceLink.push({
+      id: this.formData.referenceLink.length + 1,
+      label: '',
+      url:'',
+      description: ''
+    });
+  }
+
+  removeReferenceLink(index:number){
+    this.formData.referenceLink.splice(index, 1);
   }
 
   /** Close the dialog and reset form data when user clicks close button */

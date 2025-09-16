@@ -13,6 +13,6 @@
       <a [routerLink]="['/support']" [ngClass]="{'active': isActive('/support')}">Decision Support</a>
       <a [routerLink]="['/Report-Generator']" [ngClass]="{'active': isActive('/Report-Generator')}">Generate Report</a>
     </div>
-    <button (click)="logout()" *ngIf="authService.isLoggedIn()">Logout</button>
+    <button (click)="logout()" *ngIf="authService.isLoggedIn()"><mat-icon class="logout-icon">logout</mat-icon></button>
   </mat-toolbar>
 </div>

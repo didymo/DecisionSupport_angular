@@ -18,9 +18,9 @@
                     <mat-option value="Draft">Draft</mat-option>
                     <mat-option value="Published">Published</mat-option>
                 </mat-select>
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                     <mat-icon matPrefix>search</mat-icon>
-                    <input matInput placeholder="Search Process" type="search" [(ngModel)]="searchInput"
+                    <input class="search-input" matInput placeholder="Search Process" type="search" [(ngModel)]="searchInput"
                         (input)="filterBySearch()">
                 </mat-form-field>
             </div>
@@ -71,11 +71,11 @@
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
             <mat-cell class="hovering" *matCellDef="let element">
-                <button class="iconButton"><i class="material-icons"
+                <button class="iconButton" id="copy-bt"><i class="material-icons"
                         (click)="duplicateProcess(element)">content_copy</i></button>
-                <button class="iconButton"><i class="material-icons"
+                <button class="iconButton" id="delete-bt"><i class="material-icons"
                         (click)="deleteProcess(element.entityId)">delete</i></button>
-                <button class="iconButton"><i class="material-icons" (click)="updateProcess(element)">edit</i></button>
+                <button class="iconButton" id="edit-bt"><i class="material-icons" (click)="updateProcess(element)">edit</i></button>
             </mat-cell>
         </ng-container>
 

@@ -42,6 +42,16 @@
             <span *ngIf="step.required === '0'">No</span>
         </mat-cell>
     </ng-container>
+
+    <!-- Step Reference Link Column -->
+    <ng-container matColumnDef="referenceLink">
+      <mat-header-cell *matHeaderCellDef> Reference Link </mat-header-cell>
+      <mat-cell *matCellDef="let step">
+        <span *ngIf = "step.referenceLink.length === 0">None</span>
+        <span *ngIf = "step.referenceLink.length !== 0">Included</span>
+      </mat-cell>
+    </ng-container>
+    
     <!-- Step Logic Column -->
     <ng-container matColumnDef="logic">
         <mat-header-cell *matHeaderCellDef> Logic </mat-header-cell>

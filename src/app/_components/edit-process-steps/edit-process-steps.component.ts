@@ -40,7 +40,7 @@ export class EditProcessStepsComponent implements OnInit {
   /** Array to store all process steps retrieved from the backend */
   processSteps: Step[] = [];
   /** Table Columns to be displayed */
-  displayedColumns: string[] = ['id', 'description', 'type', 'required', 'logic', 'actions'];
+  displayedColumns: string[] = ['id', 'description', 'type', 'required', 'referenceLink', 'logic', 'actions'];
   /** Detect Changes in step order */
   changeDetected = false;
   /** Boolean value for spinner */

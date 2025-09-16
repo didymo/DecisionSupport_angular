@@ -10,10 +10,9 @@
       Add Step
     </button>
     <div class="search-div">
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-icon matPrefix class="searchIcon">search</mat-icon>
       <input  matInput placeholder="Search Process Step" type="search" [(ngModel)]="searchInput" (input)="filterBySearch()">
-
   </mat-form-field>
 </div>
 </div>
@@ -45,6 +44,15 @@
       <mat-cell *matCellDef="let step">
         <span *ngIf = "step.required === '1'">Yes</span>
         <span *ngIf = "step.required === '0'">No</span>
+      </mat-cell>
+    </ng-container>
+    
+    <!-- Step Reference Link Column -->
+    <ng-container matColumnDef="referenceLink">
+      <mat-header-cell *matHeaderCellDef> Reference Link </mat-header-cell>
+      <mat-cell *matCellDef="let step">
+        <span *ngIf = "step.referenceLink.length === 0">None</span>
+        <span *ngIf = "step.referenceLink.length !== 0">Included</span>
       </mat-cell>
     </ng-container>
 

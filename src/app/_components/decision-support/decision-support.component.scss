@@ -61,15 +61,14 @@ mat-sidenav {
 }
 
 .completed-step {
-  background-color: white !important;
+  background-color: green !important;
   color: white !important;
 }
 
 .uncomplete {
-  background-color: #7a9bbf;
-  color: white;
+  background-color: white;
+  color: black;
 }
-
 
 .mat-mini-fab {
   background-color: black;
@@ -79,7 +78,7 @@ mat-sidenav {
 .active-step {
   background-color: #D3D3D3;
   font-weight: bold;
-  border-left: 4px solid #7a9bbf;
+  border-left: 4px solid #143354;
   padding-left: 8px;
 }
 
@@ -116,9 +115,8 @@ mat-sidenav {
 }
 
 
-
 .btn-primary:hover {
-  background-color: #accbe3;
+  background-color: #143354;
   color: white !important;
   transition: 0.7s;
   font-size: 17px;
@@ -151,7 +149,8 @@ height: 70vh;
   display: flex;
   justify-content: center; 
   align-items: center;     
-  background-color: #dfdfdd; 
+  background-color: #143354; 
+  color: white;
   overflow: hidden;
   padding: 10px;
 }

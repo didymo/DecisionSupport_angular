@@ -1,10 +1,4 @@
 
-.material-icons{
-  color: white;
-  cursor:pointer;
-}
-
-
 /* Styling Container for the top section with title and create button */
 .top-container {
   display: flex;
@@ -36,7 +30,7 @@ a:visited {
 }
 
 .iconButton{
-  background-color: #7a9bbf;
+  background-color: #143354;
   color: #fff;
   border-radius: 6px;
   margin-right: 10px;
@@ -49,24 +43,22 @@ a:visited {
 .iconButton:hover{
   background-color: #7a9bbf;
   color: #fff;
-  border-radius: 6px;
+  border-radius: 10px;
   margin-right: 10px;
-  padding: 8px 8px;
+  padding: 8px 10px;
   cursor: pointer;
   border: none;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.6s ease;
 }
 
 .addbutton{
   color:#ffff;
-  background-color: #7a9bbf;
+  background-color: #143354;
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
   border-color: transparent;
   box-shadow: none;
-
-
   padding: 12px 24px;
   transition: background-color 0.3s ease;
   cursor: pointer;
@@ -74,7 +66,7 @@ a:visited {
 }
 
 .mat-mdc-header-row{
-  background-color: #7a9bbf !important;
+  background-color: #143354 !important;
   color: white;
   border-radius: 10px;
   font-size: 16px;
@@ -105,7 +97,17 @@ mat-cell {
   font-size: 18px;
   font-weight: bold;
   border-color: transparent;
-  font-color: white;
+  color: white;
+}
+
+#delete-bt:hover{
+  color: red;
+  transition: color 0.8s ease;
+}
+
+#edit-bt:hover{
+  color: black;
+  transition: color 0.8s ease;
 }
 
 a{
@@ -144,7 +146,7 @@ a{
 }
 
 h2{
-  color: #7a9bbf;
+  color: #143354;
 }
 
 .div-spinner{

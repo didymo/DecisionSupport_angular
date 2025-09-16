@@ -23,51 +23,13 @@ body {
 .top-container h2 {
     font-size: 24px;
     font-weight: 600;
-    color: #7a9bbf;
+    color: #143354;
 
-}
-
-.createbutton {
-  color:#ffff;
-  background-color: #7a9bbf;
-  border-radius: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  padding: 12px 24px;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-  box-shadow: none;
-  border: none;
-}
-
-.createbutton:hover {
-  color:#ffff;
-  background-color: #7a9bbf;
-  border-radius: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-}
-
-.filter-div{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
-}
-
-.filter-div mat-select,
-.filter-div mat-form-field {
-    width: 200px;
-}
-
-.filter-div mat-form-field {
-    flex: 1;
 }
 
 /* Table styling */
 .mat-mdc-header-row{
-  background-color: #7a9bbf !important;
+  background-color: #143354 !important;
   color: white;
   border-radius: 10px;
   font-size: 16px;
@@ -139,30 +101,8 @@ a:visited {
     margin-bottom: 20px;
 }
 
-.iconButton{
-  background-color: #7a9bbf;
-  color: #fff;
-  border-radius: 6px;
-  margin-right: 10px;
-  padding: 8px 8px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-
-.iconButton:hover{
-  background-color: #7a9bbf;
-  color: #fff;
-  border-radius: 6px;
-  margin-right: 10px;
-  padding: 8px 8px;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-
-.addbutton{
-  background-color: #7a9bbf;
+.create-button{
+  background-color: #143354;
   color: #fff;
   border-radius: 6px;
   margin-right: 10px;
@@ -172,23 +112,6 @@ a:visited {
   transition: background-color 0.3s ease;
   width: 130px;
 }
-
-
-.button-container{
-  width: 100%;
-  /* padding-top: 1%; */
-  padding-bottom: 1%;
-  padding-left: 10px;
-  /*background-color: white;*/
-  margin-bottom: 1%;
-  display: inline-flex;
-
-  height: 40px;
-  line-height: 40px;
-
-  float: right;
-}
-
 
 .wrapper{
   //background-color: white;

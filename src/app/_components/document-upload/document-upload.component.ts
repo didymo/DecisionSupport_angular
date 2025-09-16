@@ -6,7 +6,7 @@
  *  Uploaded documents cannnot be accessed after uploading, only their names displayed.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { DocumentUploadService } from '../../_services/document-upload.service';
 import { DocumentService } from '../../_services/document.service';
@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-document-upload',
@@ -29,6 +30,7 @@ export class DocumentUploadComponent implements OnInit {
   uploadResponse: string | null = null;
   documentList: any[] = [];
   filteredDocumentList: any[] = [];
+  private snackBar = inject(MatSnackBar);
 
   constructor(private documentUploadService: DocumentUploadService, private documentService: DocumentService) { }
 
@@ -47,13 +49,19 @@ export class DocumentUploadComponent implements OnInit {
   onUpload(): void {
     if (!this.selectedFile) {
       console.error('No file selected');
+      this.snackBar.open(`No File Selected`, 'Ok', {
+              duration: 1000
+            }); 
       return;
     }
 
     this.documentUploadService.uploadFile(this.selectedFile).subscribe({
       next: (response) => {
         console.log('Upload complete:', response);
-
+         this.snackBar.open(`Document Uploaded Successfully`, 'Ok', {
+              duration: 1000
+            }); 
+        this.selectedFile = null;
         // Extract the fid from the response
         const fileFid = response?.fid?.[0]?.value;
         if (fileFid) {
@@ -62,11 +70,17 @@ export class DocumentUploadComponent implements OnInit {
         } else {
           console.error('File fid not found in the response');
           this.uploadResponse = 'File upload successful, but file fid is missing.';
+           this.snackBar.open('File upload successful, but file fid is missing.', 'Ok', {
+              duration: 1000
+            });
+            this.selectedFile = null;
         }
       },
       error: (err) => {
         console.error('Upload error:', err);
         this.uploadResponse = `Upload failed: ${err.message}`;
+        this.snackBar.open(`Upload failed: ${err.message}`, 'Ok');
+        this.selectedFile = null;
       }
     });
   }
@@ -106,9 +120,15 @@ export class DocumentUploadComponent implements OnInit {
       next: (response) =>{
         console.log('Successfully archived decision support document ', fileId);
         this.getDocumentList();
+        this.snackBar.open('File Deleted', 'Ok', {
+              duration: 1000
+            });
       },
       error: (err) =>{
         console.error('Error archiving decision support document', err);
+        this.snackBar.open("Couldn't delete file. Try Again!", 'Ok', {
+              duration: 1000
+            });
       }
     })
   }

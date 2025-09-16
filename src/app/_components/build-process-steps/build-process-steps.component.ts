@@ -46,7 +46,7 @@ export class BuildProcessStepsComponent implements OnInit {
   /** Default search input string */
   searchInput = "";
   /** Table columns to be displayed */
-  displayedColumns: string[] = ['id', 'description', 'type', 'required', 'logic', 'actions'];
+  displayedColumns: string[] = ['id', 'description', 'type', 'required', 'referenceLink', 'logic', 'actions'];
   /** Boolean value for spinner */
   response = false;
   constructor(private route: ActivatedRoute, private processService: ProcessService, private dialog: MatDialog) {

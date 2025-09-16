@@ -20,7 +20,7 @@
     <!-- ID# Column -->
     <ng-container matColumnDef="reportId" sticky>
       <mat-header-cell *matHeaderCellDef> ID# </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.entityId}} </mat-cell>
+      <mat-cell class="entityid"  *matCellDef="let element"> {{element.entityId}} </mat-cell>
     </ng-container>
 
     <!-- Title of Investigation Column -->
@@ -48,7 +48,7 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
       <mat-cell class="hovering" *matCellDef="let element">
-        <a [routerLink]="['/Report', element.entityId]"><button class="addbutton">Create Report</button></a>
+        <a [routerLink]="['/Report', element.entityId]"><button class="create-button">Create Report</button></a>
       </mat-cell>
     </ng-container>
 

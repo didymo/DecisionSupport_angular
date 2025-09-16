@@ -3,21 +3,23 @@
   @description Allows the user to upload documents attatched to decision supports.
 -->
 
-<div class="upload-container">
-    <!-- Select File -->
-    <button class="button" type="button" (click)="fileInput.click()"> Select File </button>
+   <div class="upload-container">
+     <mat-icon class="upload-file-icon">upload_file</mat-icon>
+      <p class="upload-container-p">Upload File</p>
+     <!-- Select File -->
+    <button class="button" type="button" mat-button (click)="fileInput.click()"> Select File </button>
     <input type="file" #fileInput (change)="onFileSelect($event)" style="display: none;">
 
     <!-- Display it. -->
-    <ul *ngIf="selectedFile">
-        <li> {{ selectedFile.name }} ({{ selectedFile.size }} bytes) </li>
-    </ul>
-    <!-- Upload it. -->
-    <button class="button" (click)="onUpload()" [disabled]="!selectedFile"> Upload </button>
-    <div *ngIf="uploadResponse">
-        <p> Upload Response: {{ uploadResponse }} </p>
+    <div *ngIf="selectedFile">
+      <p>{{ selectedFile.name }} ({{ selectedFile.size }} bytes)</p>
     </div>
-</div>
+    <!-- Upload it. -->
+     <div class="upload-bt-container" *ngIf="selectedFile">
+      <button class="button" (click)="onUpload()" mat-button> Upload </button>
+     </div>
+    </div>
+
 
 <!-- List Documents -->
 <div>
@@ -30,7 +32,7 @@
             Document: {{document.label}}
             <span class="actions">
               <button mat-mini-fab class="delete-btn" (click)="deleteDocument(document.entityId)">
-                <mat-icon class="material-icons">delete</mat-icon>
+                <mat-icon >delete</mat-icon>
               </button>
             </span>
           </div>

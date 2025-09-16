@@ -82,7 +82,7 @@ export class DecisionSupportComponent implements OnInit, AfterViewInit {
   decisionSupportDetails: any;
   processJson: any;
   collapsed = signal(false); // Is the side bar collapsed? (boolean)
-  sideNavWidth = computed(() => this.collapsed() ? '65px' : '350px'); // Width of the Side Navigation Bar
+  sideNavWidth = computed(() => this.collapsed() ? '85px' : '350px'); // Width of the Side Navigation Bar
   oneStep: any; // Holds the step that is currently selected.
   userChoices = new Map<string, string>(); // Map holding the user's choices for a radiobutton or checkbox.
   editorContent = ''; // content of the quill editor

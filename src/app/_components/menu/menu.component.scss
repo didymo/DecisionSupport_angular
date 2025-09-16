@@ -30,7 +30,7 @@ a {
 
 /* Active Link */
 a.active {
-  background-color: #7a9bbf;
+  background-color: #143354;
   color: #ffff;
   border-radius: 10px;
 }
@@ -78,11 +78,14 @@ button {
 }
 
 button:hover {
-  background-color: #accbe3;
-  color: white !important;
+  color: red !important;
   transition: 0.7s;
   font-size: 17px;
   cursor: pointer;
+}
+
+.logout-icon{
+  margin-top: 20px;
 }
 
 /* Image Style */

@@ -34,7 +34,15 @@
         <p>{{processStep.type}}</p>
     </div>
     <mat-divider></mat-divider>
-    <!-- Step CHoices -->
+    <!-- Step Reference Link -->
+     <div>
+        <h4>Refernce Link</h4>
+        <div *ngIf="processStep.referenceLink.length == 0">None</div>
+        <div *ngFor="let referenceLink of processStep.referenceLink">
+            <p><span>{{referenceLink.id}}. </span><a href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank">{{referenceLink.label}}</a></p>
+        </div>
+     </div>
+    <!-- Step Choices -->
     <div>
         <div *ngIf="processStep.type !== 'textbox'">
             <h4>Choices</h4>
@@ -48,6 +56,7 @@
     <div>
         <!-- Step Logic -->
         <h4>Logic Condition</h4>
+        <div *ngIf="processStep.conditions.length == 0">None</div>
         <div *ngFor="let condition of processStep.conditions">
             <p><span>{{condition.conditionId}}. </span>{{getStepDescription(condition.stepUuid)}}</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;Value: <span>{{getChoiceDescription(condition.stepUuid,

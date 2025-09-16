@@ -58,7 +58,7 @@
     <div *ngIf="oneStep">
 
       <h2>Step {{ oneStep.id }} </h2>
-      <div class="link-container" *ngIf="oneStep.referenceLink">
+      <div class="link-container" *ngIf="oneStep.referenceLink.length !== 0">
                     <div class="link-sub-container-1">
                          <p><b>Supporting Links</b></p> 
                     </div>
@@ -101,9 +101,6 @@
         >
         </quill-editor>
         <div *ngIf="editorError" class="error-message">{{ editorError }}</div>
-
-        <app-document-upload></app-document-upload>
-        <br/><br/><br/><br/>
       </div>
 
       <!-- STEP TYPE: Radio -->
@@ -115,6 +112,7 @@
               </span>
           </div>
         </mat-radio-group>
+
       </div>
 
       <!-- STEP TYPE: Checkbox and Text Box -->
@@ -136,8 +134,6 @@
         <!-- Further details and document upload. -->
         <b>Please provide further details.</b><i>Optional</i><br/><br/>
         <quill-editor [(ngModel)]="oneStep.textAnswer" (ngModelChange)="updateLocalStorage()"></quill-editor>
-        <app-document-upload></app-document-upload>
-        <br/><br/><br/><br/>
       </div>
 
       <!-- STEP TYPE: Checkbox -->
@@ -161,15 +157,17 @@
         <b>Please provide further details.</b><i>Optional</i><br/><br/>
         <quill-editor [(ngModel)]="oneStep.textAnswer"
                       (ngModelChange)="onTextAnswerChange(oneStep); updateSteps()"></quill-editor>
-        <br/><br/>
-        <app-document-upload></app-document-upload>
-        <br/><br/><br/><br/>
-      </div>
 
+      </div>
+        <br/><br/>
+        <div>
+        <b>Add Supporting Documents.</b><i>Optional</i><br/><br/>
+        <app-document-upload></app-document-upload>
+      </div>
+      
     </div> <!-- End of single step. -->
 
   </mat-sidenav-content>
-
 </mat-sidenav-container>
 
 <div class="div-spinner" *ngIf="!response">

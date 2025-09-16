@@ -6,6 +6,51 @@
 }
 
 .delete-btn {
-  background-color: #7a9bbf;
+  background-color: red;
   margin-left: auto;
+}
+/* File Upload Styling */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-color: rgb(194, 194, 194);
+  border-style:dotted;
+  border-width: 1px;
+  margin-right: 100px;
+ 
+}
+
+.upload-container-p {
+  font-weight: 500;
+  color: rgb(183, 183, 183);
+  margin-bottom: 20px;
+  margin-top: 20px;
+   margin-right: 5%;
+}
+.upload-file-icon{
+  font-size: 50px;
+  padding: 30px 30px;
+  margin-right: 7%;
+  color: rgb(70, 83, 83);
+}
+
+.button{
+  background-color: #143354;
+  color: white;
+  margin-right: 5%;
+  margin-bottom: 1%;
+}
+
+.upload-bt-container{
+  margin-right: 5%;
+}
+
+.file-icon{
+  font-size: 10px;
+}
+
+h2{
+  color: #143354;
 }

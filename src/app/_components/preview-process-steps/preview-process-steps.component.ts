@@ -5,6 +5,7 @@
  *  Each Step will be displayed based on its type.
  */
 import {Component, OnInit} from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import {ActivatedRoute} from '@angular/router';
 import {CommonModule} from "@angular/common";
 import {ProcessService} from '../../_services/process.service';
@@ -14,6 +15,7 @@ import {Step} from '../../_classes/step';
 import {Process} from '../../_classes/process';
 import {QUILL_CONFIG_TOKEN, QuillModule} from 'ngx-quill';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 
 const QUILL_DEFAULT_CONFIG = {
   bounds: 'self',
@@ -46,7 +48,7 @@ const QUILL_DEFAULT_CONFIG = {
 @Component({
   selector: 'app-preview-process-steps',
   standalone: true,
-  imports: [CommonModule, MatRadioModule, MatCheckbox, QuillModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatRadioModule, MatCheckbox, QuillModule, MatProgressSpinnerModule, MatIconModule, MatDividerModule],
   providers: [{
     provide: QUILL_CONFIG_TOKEN,
     useValue: QUILL_CONFIG_TOKEN,

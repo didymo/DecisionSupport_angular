@@ -8,12 +8,13 @@
         <!-- Check is steps available -->
         <div *ngIf="processSteps.length != 0">
             <h1>{{processDetails.label}}</h1>
+            <mat-divider></mat-divider>
             <!-- Display steps based on type -->
             <div *ngFor="let processStep of processSteps">
                 <h2>Step {{processStep.id}} </h2>
 
 <!---------------------------------------------------------Reference Link--------------------------------------------------------------------------------------------------------------------------------->
-                <div class="link-container" *ngIf="processStep.referenceLink">
+                <div class="link-container" *ngIf="processStep.referenceLink.length !== 0">
                     <div class="link-sub-container-1">
                        <p><b>Supporting Links</b></p> 
                     </div>
@@ -21,7 +22,7 @@
                     <div class="link-sub-container-2">
                         <div *ngFor="let referenceLink of processStep?.referenceLink">
                        
-                                <p>{{referenceLink.id}}<a href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
+                                <p>{{referenceLink.id}}. <a href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
                                     {{referenceLink.label}}
                                 </a></p>
                            
@@ -72,6 +73,7 @@
                 <div *ngIf="processStep.type === 'textbox'">
                     <quill-editor></quill-editor>
                 </div>
+                <mat-divider></mat-divider>
             </div>
         </div>
         <!-- Display no data available message if no process steps available -->

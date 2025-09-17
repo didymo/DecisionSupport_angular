@@ -92,8 +92,9 @@ export class EditProcessStepDialogComponent {
       this.formData.conditions[conditionIndex].stepChoices = selectedStep.choices;
     }
   }
-    /** Reference Link */
-    addReferenceLink(){
+
+  /** Add Reference Link to a Step */
+  addReferenceLink(){
     this.formData.referenceLink.push({
       id: this.formData.referenceLink.length + 1,
       label: '',
@@ -102,6 +103,7 @@ export class EditProcessStepDialogComponent {
     });
   }
 
+  /** Remove Remove Reference Link attached to a Step */
   removeReferenceLink(index:number){
     this.formData.referenceLink.splice(index, 1);
   }

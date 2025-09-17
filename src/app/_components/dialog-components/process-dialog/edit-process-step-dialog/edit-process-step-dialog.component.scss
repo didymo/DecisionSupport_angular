@@ -3,12 +3,11 @@
   font-size: 35px;
 }
 .bin{
-  color:#accbe3;
+  color:red;
 }
 
 .modifyButton{
-  background-color: #accbe3;
-  color: white;
+  background-color: #e4e4e4;
 }
 
 .modifyButton:hover{
@@ -28,20 +27,16 @@ button[enabled]{
 
 .createButton:enabled:hover,
 button[enabled]{
-  background-color: #7a9bbf;
-  color: white;
   border-radius: 10px;
 }
 
 .closeButton:enabled,
 buton[enabled]{
-  color: black;
+  color: red;
   border-radius: 10px;
 }
 
 .closeButton:hover{
-  color: white;
-  background-color: #7a9bbf;
   border-radius: 10px;
 }
 

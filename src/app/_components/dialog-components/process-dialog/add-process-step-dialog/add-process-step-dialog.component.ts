@@ -113,8 +113,8 @@ export class AddProcessStepDialogComponent {
     }
   }
 
-  /** Reference Link */
-    addReferenceLink(){
+  /** Add Reference Link to a Step */
+  addReferenceLink(){
     this.formData.referenceLink.push({
       id: this.formData.referenceLink.length + 1,
       label: '',
@@ -123,6 +123,7 @@ export class AddProcessStepDialogComponent {
     });
   }
 
+  /** Delete a Reference Link attached to a step */
   removeReferenceLink(index:number){
     this.formData.referenceLink.splice(index, 1);
   }

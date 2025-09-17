@@ -47,8 +47,8 @@
     <ng-container matColumnDef="referenceLink">
       <mat-header-cell *matHeaderCellDef> Reference Link </mat-header-cell>
       <mat-cell *matCellDef="let step">
-        <span *ngIf = "step.referenceLink.length === 0">None</span>
-        <span *ngIf = "step.referenceLink.length !== 0">Included</span>
+        <span *ngIf="!step.referenceLink || step.referenceLink.length === 0">None</span>
+        <span *ngIf="step.referenceLink && step.referenceLink.length > 0">Included</span>
       </mat-cell>
     </ng-container>
     
@@ -56,8 +56,8 @@
     <ng-container matColumnDef="logic">
         <mat-header-cell *matHeaderCellDef> Logic </mat-header-cell>
         <mat-cell *matCellDef="let step">
-            <span *ngIf="step.conditions.length === 0">No</span>
-            <span *ngIf="step.conditions.length !== 0">Yes</span>
+            <span *ngIf="!step.conditions || step.conditions.length === 0">No</span>
+            <span *ngIf="step.conditions && step.conditions.length > 0">Yes</span>
         </mat-cell>
     </ng-container>
     <!-- Actions Column - Edit, Delete-->

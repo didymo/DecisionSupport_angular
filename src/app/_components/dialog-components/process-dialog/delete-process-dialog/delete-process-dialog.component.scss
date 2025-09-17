@@ -9,14 +9,13 @@ p{
 
 .binButton:enabled,
 button[enabled]{
-  color: black;
+  color: red;
   border-radius: 10px;
 }
 
 .binButton:enabled:hover,
 button[enabled]{
-  background-color: #7a9bbf;
-  color: white;
+  color: red;
   border-radius: 10px;
 }
 

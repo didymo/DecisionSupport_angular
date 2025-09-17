@@ -4,7 +4,7 @@
 }
 
 .material-icons{
-  color: #accbe3;
+  color: red;
   cursor:pointer;
 }
 
@@ -37,17 +37,11 @@ mat-form-field {
 }
 
 .add{
-  background-color: #accbe3;
-  color: white !important;
+  background-color: #e4e4e4;
 }
 
 .add:hover{
   background-color: #7a9bbf;
-}
-
-.addCondition{
-  background-color: #accbe3;
-  color: white !important;
 }
 
 .addCondition:hover{
@@ -70,20 +64,17 @@ button[enabled]{
 
 .createButton:enabled:hover,
 button[enabled]{
-  background-color: #7a9bbf;
-  color: white;
   border-radius: 10px;
 }
 
 .closeButton:enabled,
 buton[enabled]{
-  color: black;
+  color: red;
   border-radius: 10px;
 }
 
 .closeButton:hover{
-  color: white;
-  background-color: #7a9bbf;
+  color: red;
   border-radius: 10px;
 }
 

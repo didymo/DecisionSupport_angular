@@ -37,9 +37,11 @@
     <!-- Step Reference Link -->
      <div>
         <h4>Refernce Link</h4>
-        <div *ngIf="processStep.referenceLink.length == 0">None</div>
+        <div *ngIf="!processStep.referenceLink || processStep.referenceLink.length === 0">None</div>
+        <div *ngIf="processStep.referenceLink && processStep.referenceLink.length > 0">
         <div *ngFor="let referenceLink of processStep.referenceLink">
             <p><span>{{referenceLink.id}}. </span><a href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank">{{referenceLink.label}}</a></p>
+        </div>
         </div>
      </div>
     <!-- Step Choices -->

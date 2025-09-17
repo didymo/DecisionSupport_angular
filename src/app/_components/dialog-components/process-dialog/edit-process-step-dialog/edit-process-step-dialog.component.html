@@ -27,8 +27,6 @@
         <mat-option *ngFor="let type of type" [value]="type.value">{{ type.label }}</mat-option>
       </mat-select>
     </mat-form-field>
-
-        <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
     <!--Reference Link-->
     <p>Reference Link</p>
     <div *ngFor="let referenceLink of formData.referenceLink; let i = index">
@@ -36,24 +34,23 @@
       <p>Link {{i + 1}}</p>
       <button mat-icon-button type="button"><mat-icon class="material-icons" (click)="removeReferenceLink(i)">delete</mat-icon></button>
       </div>
+      <!-- Reference Link Label -->
       <mat-form-field appearance="outline">
          <mat-label>Label</mat-label>
         <input matInput [(ngModel)]="referenceLink.label" name="referenceLabel{{i}}" required>
       </mat-form-field>
+      <!-- Reference Link URL -->
       <mat-form-field appearance="outline">
          <mat-label>Link</mat-label>
         <input matInput [(ngModel)]="referenceLink.url" name="referenceLink{{i}}" required>
       </mat-form-field>
+      <!-- Reference Link Description -->
       <mat-form-field appearance="outline">
          <mat-label>Description</mat-label>
        <input matInput [(ngModel)]="referenceLink.description" name="referenceDescription{{i}}" required>
       </mat-form-field>
-      
     </div>
-    <button class="add" mat-button type="button" (click)="addReferenceLink()">Add Refernce Link</button>
-
-<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-
+    <button class="modifyButton" mat-button type="button" (click)="addReferenceLink()">+ Add Refernce Link</button>
     <!-- Add/Remove Process Step Choices if the step type radio/checkbox -->
     <div
       *ngIf="formData.type === 'radio' || formData.type === 'radio&text' || formData.type === 'checkbox&text' || formData.type === 'checkbox'">
@@ -68,14 +65,14 @@
         </mat-form-field>
       </div>
       <!-- Add Choice -->
-      <button class="modifyButton" mat-button type="button" (click)="addChoice()">Add Option</button>
+      <button class="modifyButton" mat-button type="button" (click)="addChoice()">+ Add Option</button>
     </div>
 
     <!-- Process Step Condition -->
     <p>Logic:</p>
     <div *ngFor="let condition of formData.conditions; let i = index">
       <!-- Condition Step description -->
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <p>Condition {{ i + 1 }}</p>
         <mat-select [(ngModel)]="condition.stepUuid" name="conditionStep{{i}}"
           (selectionChange)="updateStepConditionChoices(condition.stepUuid, i)" placeholder="Select Step" required>
@@ -83,7 +80,7 @@
         </mat-select>
       </mat-form-field>
       <!-- Condition Step Value-->
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <p>Value is</p>
         <mat-select [(ngModel)]="condition.choiceUuid" name="conditionChoice{{i}}" placeholder="Select Value" required>
           <mat-option *ngFor="let choice of condition.stepChoices" [value]="choice.choiceUuid">{{ choice.description}}</mat-option>
@@ -95,7 +92,7 @@
       </mat-form-field>
     </div>
     <!-- Add Condition -->
-    <button class="modifyButton" mat-button type="button" (click)="addCondition()">Add Condition</button>
+    <button class="modifyButton" mat-button type="button" (click)="addCondition()">+ Add Condition</button>
   </mat-dialog-content>
   <!-- Dialog Actions - Close & Update-->
   <mat-dialog-actions>

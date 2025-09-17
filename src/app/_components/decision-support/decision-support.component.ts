@@ -116,10 +116,6 @@ export class DecisionSupportComponent implements OnInit, AfterViewInit {
       this.editorContent = savedContent;
     }
 
-    // I really don't like this...
-    //setTimeout(() => {
-    //  this.updateSteps();
-    //}, 500);
   }
 
   ngAfterViewInit(): void {

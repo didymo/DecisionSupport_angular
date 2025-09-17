@@ -54,26 +54,22 @@
         Submit
       </button>
     </div>
-    <!-------------------------------------------------------------------->
+    <!-- Display the refrence link attached to the step if exist -->
     <div *ngIf="oneStep">
-
       <h2>Step {{ oneStep.id }} </h2>
-      <div class="link-container" *ngIf="oneStep.referenceLink.length !== 0">
-                    <div class="link-sub-container-1">
-                         <p><b>Supporting Links</b></p> 
-                    </div>
-
-                    <div class="link-sub-container-2">
-                        <div *ngFor="let referenceLink of oneStep?.referenceLink">
-                       
-                                <p>{{referenceLink.id}}<a class="reference-link-a" href="{{oneStep.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
-                                    {{referenceLink.label}}
-                                </a></p>
+      <div class="link-container" *ngIf="oneStep.referenceLink && oneStep.referenceLink.length > 0">
+          <div class="link-sub-container-1">
+              <p><b>Supporting Links</b></p> 
+          </div>
+          <div class="link-sub-container-2">
+              <div *ngFor="let referenceLink of oneStep?.referenceLink">
+                  <p>{{referenceLink.id}}<a class="reference-link-a" href="{{oneStep.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
+                      {{referenceLink.label}}</a>
+                  </p>
                            
-                            </div>
-                    </div>
                 </div>
-  <!-------------------------------------------------------------------->
+            </div>
+        </div>
       <!-- Heading and description. -->
       <p>{{ oneStep.description }}</p>
 

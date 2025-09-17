@@ -12,25 +12,20 @@
             <!-- Display steps based on type -->
             <div *ngFor="let processStep of processSteps">
                 <h2>Step {{processStep.id}} </h2>
-
-<!---------------------------------------------------------Reference Link--------------------------------------------------------------------------------------------------------------------------------->
-                <div class="link-container" *ngIf="processStep.referenceLink.length !== 0">
+                <!-- The Link Container to display the reference links-->
+                <div class="link-container" *ngIf="processStep.referenceLink && processStep.referenceLink.length > 0">
                     <div class="link-sub-container-1">
                        <p><b>Supporting Links</b></p> 
                     </div>
-
                     <div class="link-sub-container-2">
                         <div *ngFor="let referenceLink of processStep?.referenceLink">
-                       
                                 <p>{{referenceLink.id}}. <a href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
                                     {{referenceLink.label}}
                                 </a></p>
-                           
                             </div>
                     </div>
                 </div>
-<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-
+                <!-- Step Description -->
                 <p>{{processStep.description}}</p>
                 <!-- Radio & Text Boxes -->
                 <div *ngIf="processStep.type === 'radio&text'">

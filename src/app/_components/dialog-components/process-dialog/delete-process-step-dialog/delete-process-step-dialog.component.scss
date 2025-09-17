@@ -1,16 +1,17 @@
-
 .cancelButton:hover{
   background-color: #accbe3;
   color: white;
 }
 
+
 .deleteButton:hover {
-  background-color: #accbe3;
-  color: white;
+  color: red;
+  
 }
 
 
-.deleteButton {
-  color: black;
+.deleteButton:enabled,
+button[enabled] {
+  color: red;
 }
 

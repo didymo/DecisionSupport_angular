@@ -26,13 +26,12 @@ button[enabled]{
 
 .closeButton:enabled,
 buton[enabled]{
-  color: black;
+  color: red;
   border-radius: 10px;
 }
 
 .closeButton:hover{
-  color: white;
-  background-color: #7a9bbf;
+  color: red;
   border-radius: 10px;
 }
 

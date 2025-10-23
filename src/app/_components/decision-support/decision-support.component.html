@@ -63,7 +63,7 @@
           </div>
           <div class="link-sub-container-2">
               <div *ngFor="let referenceLink of oneStep?.referenceLink">
-                  <p>{{referenceLink.id}}<a class="reference-link-a" href="{{oneStep.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
+                  <p>{{referenceLink.id}}. <a class="reference-link-a" href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
                       {{referenceLink.label}}</a>
                   </p>
                            

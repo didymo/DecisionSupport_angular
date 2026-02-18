@@ -50,7 +50,7 @@ mat-form-field {
 
 /*working here right now*/
 :host ::ng-deep .mdc-text-field--outlined {
-  --mdc-outlined-text-field-container-shape: 10px;
+  --mat-form-field-outlined-container-shape: 10px;
   border-color: black !important;
 
 }

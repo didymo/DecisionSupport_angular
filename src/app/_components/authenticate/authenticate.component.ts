@@ -16,11 +16,10 @@ import { MatButtonModule } from '@angular/material/button';
 
 //
 @Component({
-  selector: 'app-authenticate',
-  standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, MatFormField, MatInputModule, MatButtonModule, NgOptimizedImage],
-  templateUrl: './authenticate.component.html',
-  styleUrl: './authenticate.component.scss'
+    selector: 'app-authenticate',
+    imports: [CommonModule, RouterModule, FormsModule, MatFormField, MatInputModule, MatButtonModule, NgOptimizedImage],
+    templateUrl: './authenticate.component.html',
+    styleUrl: './authenticate.component.scss'
 })
 
 export class AuthenticateComponent {

@@ -15,11 +15,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
-  selector: 'app-create-process-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatFormField, CommonModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
-  templateUrl: './create-process-dialog.component.html',
-  styleUrl: './create-process-dialog.component.scss'
+    selector: 'app-create-process-dialog',
+    imports: [MatDialogModule, MatFormField, CommonModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
+    templateUrl: './create-process-dialog.component.html',
+    styleUrl: './create-process-dialog.component.scss'
 })
 export class CreateProcessDialogComponent {
   /** Declare Form Group */

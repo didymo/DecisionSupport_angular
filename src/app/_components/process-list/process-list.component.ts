@@ -30,11 +30,10 @@ import { UnsavedStepAlertDialogComponent } from '../dialog-components/process-di
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-process-list',
-  standalone: true,
-  imports: [FormsModule,MatProgressSpinnerModule, MatIconModule, MatTableModule, MatFormFieldModule, MatInputModule, CommonModule, MatSelectModule, RouterLink],
-  templateUrl: './process-list.component.html',
-  styleUrl: './process-list.component.scss'
+    selector: 'app-process-list',
+    imports: [FormsModule, MatProgressSpinnerModule, MatIconModule, MatTableModule, MatFormFieldModule, MatInputModule, CommonModule, MatSelectModule, RouterLink],
+    templateUrl: './process-list.component.html',
+    styleUrl: './process-list.component.scss'
 })
 export class ProcessListComponent implements OnInit {
   /** Inject Mat Snack Bar */

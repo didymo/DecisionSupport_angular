@@ -18,11 +18,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-add-process-step-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, CommonModule, ReactiveFormsModule],
-  templateUrl: './add-process-step-dialog.component.html',
-  styleUrl: './add-process-step-dialog.component.scss'
+    selector: 'app-add-process-step-dialog',
+    imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, CommonModule, ReactiveFormsModule],
+    templateUrl: './add-process-step-dialog.component.html',
+    styleUrl: './add-process-step-dialog.component.scss'
 })
 export class AddProcessStepDialogComponent {
   /** Array Object to store filtered step data */

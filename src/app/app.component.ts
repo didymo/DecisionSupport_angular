@@ -11,11 +11,10 @@ import {RouterModule, RouterOutlet, Router} from '@angular/router';
 import {MenuComponent} from './_components/menu/menu.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule, MenuComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [CommonModule, RouterOutlet, RouterModule, MenuComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   constructor(public router: Router){}

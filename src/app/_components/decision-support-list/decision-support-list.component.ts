@@ -22,11 +22,10 @@ import { UnsavedDecisionSupportAlertDialogComponent } from '../dialog-components
 import { AuthService } from '../../_services/auth.service';
 
 @Component({
-  selector: 'app-decision-support-list',
-  standalone: true,
-  imports: [CommonModule, RouterLink, MatIconModule, MatTable, MatTableModule, MatProgressSpinnerModule],
-  templateUrl: './decision-support-list.component.html',
-  styleUrl: './decision-support-list.component.scss'
+    selector: 'app-decision-support-list',
+    imports: [CommonModule, RouterLink, MatIconModule, MatTable, MatTableModule, MatProgressSpinnerModule],
+    templateUrl: './decision-support-list.component.html',
+    styleUrl: './decision-support-list.component.scss'
 })
 
 export class DecisionSupportListComponent implements OnInit {

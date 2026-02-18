@@ -15,11 +15,10 @@ import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
-  selector: 'app-menu',
-  standalone: true,
-  imports: [RouterModule, MatToolbar, CommonModule, NgIf, NgOptimizedImage, MatIconModule],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss'
+    selector: 'app-menu',
+    imports: [RouterModule, MatToolbar, CommonModule, NgIf, NgOptimizedImage, MatIconModule],
+    templateUrl: './menu.component.html',
+    styleUrl: './menu.component.scss'
 })
 export class MenuComponent {
 

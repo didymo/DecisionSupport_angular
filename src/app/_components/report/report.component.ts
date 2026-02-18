@@ -15,11 +15,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-report',
-  standalone: true,
-  imports: [MatButtonModule, MatDivider, CommonModule, MatProgressSpinnerModule],
-  templateUrl: './report.component.html',
-  styleUrl: './report.component.scss'
+    selector: 'app-report',
+    imports: [MatButtonModule, MatDivider, CommonModule, MatProgressSpinnerModule],
+    templateUrl: './report.component.html',
+    styleUrl: './report.component.scss'
 })
 
 export class ReportComponent implements OnInit {

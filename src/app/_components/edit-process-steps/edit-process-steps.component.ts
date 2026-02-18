@@ -23,11 +23,10 @@ import { EditProcessStepDialogComponent } from '../dialog-components/process-dia
 import { DeleteProcessStepDialogComponent } from '../dialog-components/process-dialog/delete-process-step-dialog/delete-process-step-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
-  selector: 'app-edit-process-steps',
-  standalone: true,
-  imports: [MatTableModule, MatButtonModule, MatIconModule, CdkDrag, CdkDropList, CommonModule, MatProgressSpinnerModule],
-  templateUrl: './edit-process-steps.component.html',
-  styleUrl: './edit-process-steps.component.scss'
+    selector: 'app-edit-process-steps',
+    imports: [MatTableModule, MatButtonModule, MatIconModule, CdkDrag, CdkDropList, CommonModule, MatProgressSpinnerModule],
+    templateUrl: './edit-process-steps.component.html',
+    styleUrl: './edit-process-steps.component.scss'
 })
 export class EditProcessStepsComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table!: MatTable<Step>;

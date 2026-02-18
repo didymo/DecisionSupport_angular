@@ -62,15 +62,14 @@ const QUILL_DEFAULT_CONFIG = {
 
 
 @Component({
-  selector: 'app-decision-support',
-  standalone: true,
-  imports: [QuillModule, QuillEditorComponent, MatProgressSpinnerModule, MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent],
-  providers: [{
-    provide: QUILL_CONFIG_TOKEN,
-    useValue: QUILL_DEFAULT_CONFIG,
-  }],
-  templateUrl: './decision-support.component.html',
-  styleUrl: './decision-support.component.scss'
+    selector: 'app-decision-support',
+    imports: [QuillModule, QuillEditorComponent, MatProgressSpinnerModule, MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent],
+    providers: [{
+            provide: QUILL_CONFIG_TOKEN,
+            useValue: QUILL_DEFAULT_CONFIG,
+        }],
+    templateUrl: './decision-support.component.html',
+    styleUrl: './decision-support.component.scss'
 })
 
 export class DecisionSupportComponent implements OnInit, AfterViewInit {

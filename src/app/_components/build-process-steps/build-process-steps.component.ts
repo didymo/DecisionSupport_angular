@@ -24,11 +24,10 @@ import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
-  selector: 'app-build-process-steps',
-  standalone: true,
-    imports: [MatTableModule,MatProgressSpinnerModule, FormsModule, MatFormField, MatInput, MatButtonModule, MatIconModule, CommonModule, MatPrefix],
-  templateUrl: './build-process-steps.component.html',
-  styleUrl: './build-process-steps.component.scss'
+    selector: 'app-build-process-steps',
+    imports: [MatTableModule, MatProgressSpinnerModule, FormsModule, MatFormField, MatInput, MatButtonModule, MatIconModule, CommonModule, MatPrefix],
+    templateUrl: './build-process-steps.component.html',
+    styleUrl: './build-process-steps.component.scss'
 })
 export class BuildProcessStepsComponent implements OnInit {
   /** Inject mat snack bar */

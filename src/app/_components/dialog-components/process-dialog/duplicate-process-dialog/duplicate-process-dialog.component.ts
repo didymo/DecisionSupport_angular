@@ -16,11 +16,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-duplicate-process-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatFormField, CommonModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
-  templateUrl: './duplicate-process-dialog.component.html',
-  styleUrl: './duplicate-process-dialog.component.scss'
+    selector: 'app-duplicate-process-dialog',
+    imports: [MatDialogModule, MatFormField, CommonModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
+    templateUrl: './duplicate-process-dialog.component.html',
+    styleUrl: './duplicate-process-dialog.component.scss'
 })
 export class DuplicateProcessDialogComponent {
   /** Declare Form Group */

@@ -11,11 +11,10 @@ import {AuthService} from "../../_services/auth.service";
 import { ReportService } from '../../_services/report.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
-  selector: 'app-report-list',
-  standalone: true,
-  imports: [FormsModule, MatIconModule, MatTableModule, CommonModule, RouterLink, MatProgressSpinnerModule],
-  templateUrl: './report-list.component.html',
-  styleUrl: './report-list.component.scss'
+    selector: 'app-report-list',
+    imports: [FormsModule, MatIconModule, MatTableModule, CommonModule, RouterLink, MatProgressSpinnerModule],
+    templateUrl: './report-list.component.html',
+    styleUrl: './report-list.component.scss'
 })
 export class ReportListComponent implements OnInit {
 
@@ -35,7 +34,7 @@ export class ReportListComponent implements OnInit {
         this.decisionSupportReports = data; 
         this.response = true;
       },
-      (error) =>{
+      (_error) =>{
         // Log any errors encountered while fetching processes
         this.response = true;
          console.error('Error fetching processes');

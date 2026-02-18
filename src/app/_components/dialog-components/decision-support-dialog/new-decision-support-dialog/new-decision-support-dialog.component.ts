@@ -18,11 +18,10 @@ import { ProcessService } from '../../../../_services/process.service';
 import { ProcessList } from '../../../../_classes/process-list';
 
 @Component({
-  selector: 'app-new-decision-support-dialog',
-  standalone: true,
-  imports: [CommonModule, MatFormField, ReactiveFormsModule, MatDialogModule, MatInputModule, MatButtonModule, MatSelectModule],
-  templateUrl: './new-decision-support-dialog.component.html',
-  styleUrl: './new-decision-support-dialog.component.scss'
+    selector: 'app-new-decision-support-dialog',
+    imports: [CommonModule, MatFormField, ReactiveFormsModule, MatDialogModule, MatInputModule, MatButtonModule, MatSelectModule],
+    templateUrl: './new-decision-support-dialog.component.html',
+    styleUrl: './new-decision-support-dialog.component.scss'
 })
 
 export class NewDecisionSupportDialogComponent implements OnInit {

@@ -4,7 +4,7 @@
  * @description
  * The user can create a new process step with a discription, required status, type, multiple choices, multiple conditions.
  */
-import { Component, inject, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { UuidService } from '../../../../_services/uuid.service';
 import { Step } from '../../../../_classes/step';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,11 +18,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-add-process-step-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, CommonModule, ReactiveFormsModule],
-  templateUrl: './add-process-step-dialog.component.html',
-  styleUrl: './add-process-step-dialog.component.scss'
+    selector: 'app-add-process-step-dialog',
+    imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, CommonModule, ReactiveFormsModule],
+    templateUrl: './add-process-step-dialog.component.html',
+    styleUrl: './add-process-step-dialog.component.scss'
 })
 export class AddProcessStepDialogComponent {
   /** Array Object to store filtered step data */

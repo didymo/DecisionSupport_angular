@@ -46,15 +46,14 @@ const QUILL_DEFAULT_CONFIG = {
 };
 
 @Component({
-  selector: 'app-preview-process-steps',
-  standalone: true,
-  imports: [CommonModule, MatRadioModule, MatCheckbox, QuillModule, MatProgressSpinnerModule, MatIconModule, MatDividerModule],
-  providers: [{
-    provide: QUILL_CONFIG_TOKEN,
-    useValue: QUILL_CONFIG_TOKEN,
-  }],
-  templateUrl: './preview-process-steps.component.html',
-  styleUrl: './preview-process-steps.component.scss'
+    selector: 'app-preview-process-steps',
+    imports: [CommonModule, MatRadioModule, MatCheckbox, QuillModule, MatProgressSpinnerModule, MatIconModule, MatDividerModule],
+    providers: [{
+            provide: QUILL_CONFIG_TOKEN,
+            useValue: QUILL_CONFIG_TOKEN,
+        }],
+    templateUrl: './preview-process-steps.component.html',
+    styleUrl: './preview-process-steps.component.scss'
 })
 export class PreviewProcessStepsComponent implements OnInit {
   /** ID of the process */

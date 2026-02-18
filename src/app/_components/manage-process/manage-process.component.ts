@@ -11,11 +11,10 @@ import { BuildProcessStepsComponent } from '../build-process-steps/build-process
 import { EditProcessStepsComponent } from '../edit-process-steps/edit-process-steps.component';
 import { PreviewProcessStepsComponent } from '../preview-process-steps/preview-process-steps.component';
 @Component({
-  selector: 'app-manage-process',
-  standalone: true,
-  imports: [MatTabsModule, CommonModule, BuildProcessStepsComponent, EditProcessStepsComponent, PreviewProcessStepsComponent ],
-  templateUrl: './manage-process.component.html',
-  styleUrl: './manage-process.component.scss'
+    selector: 'app-manage-process',
+    imports: [MatTabsModule, CommonModule, BuildProcessStepsComponent, EditProcessStepsComponent, PreviewProcessStepsComponent],
+    templateUrl: './manage-process.component.html',
+    styleUrl: './manage-process.component.scss'
 })
 export class ManageProcessComponent {
   /** Initializing the selected tab index to 0 --> Build Tab */

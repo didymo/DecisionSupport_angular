@@ -18,11 +18,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-process-step-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, CommonModule, ReactiveFormsModule],
-  templateUrl: './edit-process-step-dialog.component.html',
-  styleUrl: './edit-process-step-dialog.component.scss'
+    selector: 'app-edit-process-step-dialog',
+    imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, CommonModule, ReactiveFormsModule],
+    templateUrl: './edit-process-step-dialog.component.html',
+    styleUrl: './edit-process-step-dialog.component.scss'
 })
 export class EditProcessStepDialogComponent {
   /** Declare Form Data */

@@ -14,11 +14,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-rename-decision-support-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatFormField, MatDialogActions, ReactiveFormsModule, MatInputModule, MatButtonModule],
-  templateUrl: './rename-decision-support-dialog.component.html',
-  styleUrl: './rename-decision-support-dialog.component.scss'
+    selector: 'app-rename-decision-support-dialog',
+    imports: [MatDialogModule, MatFormField, MatDialogActions, ReactiveFormsModule, MatInputModule, MatButtonModule],
+    templateUrl: './rename-decision-support-dialog.component.html',
+    styleUrl: './rename-decision-support-dialog.component.scss'
 })
 
 export class RenameDecisionSupportDialogComponent {

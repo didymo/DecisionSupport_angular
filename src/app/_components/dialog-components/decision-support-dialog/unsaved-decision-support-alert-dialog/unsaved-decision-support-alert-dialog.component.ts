@@ -3,11 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 @Component({
-  selector: 'app-unsaved-decision-support-alert-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
-  templateUrl: './unsaved-decision-support-alert-dialog.component.html',
-  styleUrl: './unsaved-decision-support-alert-dialog.component.scss'
+    selector: 'app-unsaved-decision-support-alert-dialog',
+    imports: [MatDialogModule, MatButtonModule],
+    templateUrl: './unsaved-decision-support-alert-dialog.component.html',
+    styleUrl: './unsaved-decision-support-alert-dialog.component.scss'
 })
 export class UnsavedDecisionSupportAlertDialogComponent {
   /** ID of the unsaved Decision Support */

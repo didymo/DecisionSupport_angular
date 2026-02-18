@@ -19,11 +19,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-document-upload',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatDivider, MatListModule],
-  templateUrl: './document-upload.component.html',
-  styleUrl: './document-upload.component.scss'
+    selector: 'app-document-upload',
+    imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatDivider, MatListModule],
+    templateUrl: './document-upload.component.html',
+    styleUrl: './document-upload.component.scss'
 })
 export class DocumentUploadComponent implements OnInit {
   selectedFile: File | null = null;
@@ -117,7 +116,7 @@ export class DocumentUploadComponent implements OnInit {
 
   deleteDocument(fileId: string):void{
     this.documentUploadService.archiveDecisionSupportDocument(fileId).subscribe({
-      next: (response) =>{
+      next: () =>{
         console.log('Successfully archived decision support document ', fileId);
         this.getDocumentList();
         this.snackBar.open('File Deleted', 'Ok', {

@@ -62,15 +62,14 @@ const QUILL_DEFAULT_CONFIG = {
 
 
 @Component({
-  selector: 'app-decision-support',
-  standalone: true,
-  imports: [QuillModule, QuillEditorComponent, MatProgressSpinnerModule, MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent],
-  providers: [{
-    provide: QUILL_CONFIG_TOKEN,
-    useValue: QUILL_DEFAULT_CONFIG,
-  }],
-  templateUrl: './decision-support.component.html',
-  styleUrl: './decision-support.component.scss'
+    selector: 'app-decision-support',
+    imports: [QuillModule, QuillEditorComponent, MatProgressSpinnerModule, MatButtonModule, MatIconModule, MatSidenavModule, MatDivider, CommonModule, MatToolbarModule, MatListModule, MatRadioModule, FormsModule, MatCheckbox, MatTooltip, DocumentUploadComponent],
+    providers: [{
+            provide: QUILL_CONFIG_TOKEN,
+            useValue: QUILL_DEFAULT_CONFIG,
+        }],
+    templateUrl: './decision-support.component.html',
+    styleUrl: './decision-support.component.scss'
 })
 
 export class DecisionSupportComponent implements OnInit, AfterViewInit {
@@ -126,7 +125,7 @@ export class DecisionSupportComponent implements OnInit, AfterViewInit {
 
   onSaveDraft() {
     this.decisionSupportService.patchDecisionSupport(this.decisionSupportDetails.entityId, this.decisionSupportDetails).subscribe(
-      (data) => {
+      () => {
         console.log("Successfully saved a draft of decision support");
         localStorage.removeItem("decision_support_data");
         this.snackBar.open('Successfully saved changes as draft', 'Ok', {
@@ -150,7 +149,7 @@ export class DecisionSupportComponent implements OnInit, AfterViewInit {
         //If the user click save
         this.decisionSupportDetails.isCompleted = true;
         this.decisionSupportService.patchDecisionSupport(this.decisionSupportDetails.entityId, this.decisionSupportDetails).subscribe(
-          (data) => {
+          () => {
             console.log("Successfully saved decision support");
             localStorage.removeItem("decision_support_data");
             this.router.navigate(['/support']);

@@ -4,7 +4,7 @@
     <button class="download" (click)="downloadJson()">Download Report</button>
   </div>
 
-  <div class="container" [ngClass]="{'no-data-container': decisionSupportDetails == null}" *ngIf="response">
+  <div class="container" [ngClass]="{'no-data-container': decisionSupportDetails === null}" *ngIf="response">
     <div *ngIf="decisionSupportDetails">
       <div class="flex-container">
         <div class="header-container"><br />
@@ -35,8 +35,8 @@
       </div>
     </div>
   <!-- Display no data available message if no report available -->
-  <div class="noData" *ngIf="decisionSupportDetails == null">
-    <img src="/assets/noData.jpg" />
+  <div class="noData" *ngIf="decisionSupportDetails === null">
+    <img src="/assets/noData.jpg" alt="No data available" />
     <p>No Report Found</p>
   </div>
   </div>

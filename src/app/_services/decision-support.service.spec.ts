@@ -8,7 +8,6 @@ import {HttpHeaders, provideHttpClient} from '@angular/common/http';
 describe('DecisionSupportService', () => {
   let service: DecisionSupportService;
   let httpMock: HttpTestingController;
-  let authService: jasmine.SpyObj<AuthService>;
 
   beforeEach(() => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['getHeaders']);
@@ -25,7 +24,6 @@ describe('DecisionSupportService', () => {
 
     service = TestBed.inject(DecisionSupportService);
     httpMock = TestBed.inject(HttpTestingController);
-    authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
   });
 
   afterEach(() => {

@@ -2,10 +2,12 @@ import {Process} from './process';
 import {Step} from './step';
 import {StepChoice} from './step-choice';
 import {Condition} from './condition';
+import {ReferenceLink} from './reference-link';
 
 describe('Process Security and Workflow Management Tests', () => {
   let mockStepChoices: StepChoice[];
   let mockConditions: Condition[];
+  let mockReferenceLinks: ReferenceLink[];
   let mockSteps: Step[];
 
   const validProcessData = {
@@ -21,6 +23,9 @@ describe('Process Security and Workflow Management Tests', () => {
     ];
 
     mockConditions = [new Condition(1, 'uuid-step-1', 'uuid-choice-1')];
+    mockReferenceLinks = [
+      new ReferenceLink('ref-1', 'https://example.com', 'Example', 'Reference', 'section-1', 'help'),
+    ];
 
     // Mock steps with sanitized fields
     mockSteps = [
@@ -30,6 +35,7 @@ describe('Process Security and Workflow Management Tests', () => {
         'radiobutton',
         '1',
         'Initial Security Assessment',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -44,6 +50,7 @@ describe('Process Security and Workflow Management Tests', () => {
         'checkbox',
         '1',
         '<script>alert("xss")</script>Compliance Verification Steps',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -58,6 +65,7 @@ describe('Process Security and Workflow Management Tests', () => {
         'text',
         '1',
         'Data Protection Measures',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,

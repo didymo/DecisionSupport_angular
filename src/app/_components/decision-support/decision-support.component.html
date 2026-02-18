@@ -12,7 +12,13 @@
       <div *ngFor="let step of decisionSupportDetails?.steps; let i = index">
         <div [ngClass]="{'disabled-step': !step.isVisible}">
           <!-- Clickable area going to step. -->
-          <a class="sidebar-a" (click)="getStep(step.stepUuid)" [ngClass]="{'active-step': oneStep?.stepUuid === step.stepUuid}">
+          <a class="sidebar-a"
+             role="button"
+             tabindex="0"
+             (click)="getStep(step.stepUuid)"
+             (keydown.enter)="getStep(step.stepUuid)"
+             (keydown.space)="getStep(step.stepUuid); $event.preventDefault()"
+             [ngClass]="{'active-step': oneStep?.stepUuid === step.stepUuid}">
             <!-- Round number display icon (goes green when step is completed) -->
             <span>
                 <ng-content select="[icon]">

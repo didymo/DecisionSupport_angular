@@ -10,11 +10,10 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-unsaved-step-alert-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
-  templateUrl: './unsaved-step-alert-dialog.component.html',
-  styleUrl: './unsaved-step-alert-dialog.component.scss'
+    selector: 'app-unsaved-step-alert-dialog',
+    imports: [MatDialogModule, MatButtonModule],
+    templateUrl: './unsaved-step-alert-dialog.component.html',
+    styleUrl: './unsaved-step-alert-dialog.component.scss'
 })
 export class UnsavedStepAlertDialogComponent {
   /** ID of the unsaved Process */

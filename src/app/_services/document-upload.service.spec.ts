@@ -25,7 +25,6 @@ import { HttpHeaders } from '@angular/common/http';
 describe('DocumentUploadService', () => {
   let service: DocumentUploadService;
   let httpMock: HttpTestingController;
-  let authService: jasmine.SpyObj<AuthService>;
 
   beforeEach(() => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['getPOSTFileUploadHeaders', 'getHeaders']);
@@ -42,7 +41,6 @@ describe('DocumentUploadService', () => {
 
     service = TestBed.inject(DocumentUploadService);
     httpMock = TestBed.inject(HttpTestingController);
-    authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
   });
 
   afterEach(() => {

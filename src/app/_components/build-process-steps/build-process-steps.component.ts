@@ -24,11 +24,10 @@ import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
-  selector: 'app-build-process-steps',
-  standalone: true,
-    imports: [MatTableModule,MatProgressSpinnerModule, FormsModule, MatFormField, MatInput, MatButtonModule, MatIconModule, CommonModule, MatPrefix],
-  templateUrl: './build-process-steps.component.html',
-  styleUrl: './build-process-steps.component.scss'
+    selector: 'app-build-process-steps',
+    imports: [MatTableModule, MatProgressSpinnerModule, FormsModule, MatFormField, MatInput, MatButtonModule, MatIconModule, CommonModule, MatPrefix],
+    templateUrl: './build-process-steps.component.html',
+    styleUrl: './build-process-steps.component.scss'
 })
 export class BuildProcessStepsComponent implements OnInit {
   /** Inject mat snack bar */
@@ -118,7 +117,7 @@ export class BuildProcessStepsComponent implements OnInit {
       if (result) {
         this.processDetails.steps.push(result);
         this.processService.updateProcessStep(this.processDetails.entityId, this.processDetails).subscribe({
-          next: (response) => {
+          next: () => {
             // Log Success Message
             console.log('Successfully added step');
             this.snackBar.open('New Step Added', 'Ok', {
@@ -161,7 +160,7 @@ export class BuildProcessStepsComponent implements OnInit {
   }
   /** Opens ViewProcessDialog to display the process step details*/
   openViewDetailDialog(step: Step): void {
-    const dialogRef = this.dialog.open(ViewProcessStepDialogComponent, {
+    this.dialog.open(ViewProcessStepDialogComponent, {
       width: '60%',
       data: { step: step, stepsData: this.processSteps }
     });

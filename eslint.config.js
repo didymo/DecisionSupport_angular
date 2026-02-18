@@ -30,6 +30,15 @@ module.exports = tseslint.config(
           style: "kebab-case",
         },
       ],
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
     },
   },
   {
@@ -38,6 +47,11 @@ module.exports = tseslint.config(
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
     ],
-    rules: {},
+    rules: {
+      "@angular-eslint/template/alt-text": "warn",
+      "@angular-eslint/template/click-events-have-key-events": "warn",
+      "@angular-eslint/template/interactive-supports-focus": "warn",
+      "@angular-eslint/template/eqeqeq": "warn",
+    },
   }
 );

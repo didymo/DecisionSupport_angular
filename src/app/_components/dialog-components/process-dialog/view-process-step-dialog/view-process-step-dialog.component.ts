@@ -12,11 +12,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { Step } from '../../../../_classes/step';
 import { CommonModule } from '@angular/common';
 @Component({
-  selector: 'app-view-process-step-dialog',
-  standalone: true,
-  imports: [MatButtonModule, MatDialogModule, MatIconModule, MatDividerModule, CommonModule],
-  templateUrl: './view-process-step-dialog.component.html',
-  styleUrl: './view-process-step-dialog.component.scss'
+    selector: 'app-view-process-step-dialog',
+    imports: [MatButtonModule, MatDialogModule, MatIconModule, MatDividerModule, CommonModule],
+    templateUrl: './view-process-step-dialog.component.html',
+    styleUrl: './view-process-step-dialog.component.scss'
 })
 export class ViewProcessStepDialogComponent {
   /** Step Object to store step */

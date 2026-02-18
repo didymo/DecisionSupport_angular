@@ -40,3 +40,12 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Local notes and one-off analysis artifacts
+ASHLEY_NOTES.txt
+audit.json
+
+# Local environment swap scripts and backups
+src/environments/*.bak
+src/environments/script_to_dev.sh
+src/environments/script_to_prod.sh

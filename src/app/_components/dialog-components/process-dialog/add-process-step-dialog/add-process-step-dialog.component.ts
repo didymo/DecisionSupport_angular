@@ -4,7 +4,7 @@
  * @description
  * The user can create a new process step with a discription, required status, type, multiple choices, multiple conditions.
  */
-import { Component, inject, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { UuidService } from '../../../../_services/uuid.service';
 import { Step } from '../../../../_classes/step';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';

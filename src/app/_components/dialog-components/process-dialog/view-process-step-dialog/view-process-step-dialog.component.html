@@ -58,7 +58,7 @@
     <div>
         <!-- Step Logic -->
         <h4>Logic Condition</h4>
-        <div *ngIf="processStep.conditions.length == 0">None</div>
+        <div *ngIf="processStep.conditions.length === 0">None</div>
         <div *ngFor="let condition of processStep.conditions">
             <p><span>{{condition.conditionId}}. </span>{{getStepDescription(condition.stepUuid)}}</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;Value: <span>{{getChoiceDescription(condition.stepUuid,

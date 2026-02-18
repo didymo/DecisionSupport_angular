@@ -21,13 +21,11 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ProcessService } from './process.service';
 import { AuthService } from './auth.service';
 import { ProcessList } from '../_classes/process-list';
-import { Process } from '../_classes/process';
 import { environment } from '../../environments/environment';
 
 describe('ProcessService', () => {
   let service: ProcessService;
   let httpMock: HttpTestingController;
-  let authService: AuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,7 +40,6 @@ describe('ProcessService', () => {
     });
     service = TestBed.inject(ProcessService);
     httpMock = TestBed.inject(HttpTestingController);
-    authService = TestBed.inject(AuthService);
   });
 
   afterEach(() => {

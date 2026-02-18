@@ -19,7 +19,6 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ReportService } from './report.service';
 import { AuthService } from './auth.service';
-import { environment } from '../../environments/environment';
 
 describe('ReportService', () => {
   let service: ReportService;

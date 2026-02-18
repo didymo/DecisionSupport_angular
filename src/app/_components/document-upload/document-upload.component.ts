@@ -116,7 +116,7 @@ export class DocumentUploadComponent implements OnInit {
 
   deleteDocument(fileId: string):void{
     this.documentUploadService.archiveDecisionSupportDocument(fileId).subscribe({
-      next: (response) =>{
+      next: () =>{
         console.log('Successfully archived decision support document ', fileId);
         this.getDocumentList();
         this.snackBar.open('File Deleted', 'Ok', {

@@ -23,7 +23,7 @@ describe('MenuComponent', () => {
             queryParams: of({}),        // Mock query params as needed
             snapshot: {
               paramMap: {
-                get: (key: string) => '123' // Mock snapshot.paramMap if component uses snapshot
+                get: (_key: string) => '123' // Mock snapshot.paramMap if component uses snapshot
               }
             }
           }
@@ -41,4 +41,3 @@ describe('MenuComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-

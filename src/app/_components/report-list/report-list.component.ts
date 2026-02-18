@@ -34,7 +34,7 @@ export class ReportListComponent implements OnInit {
         this.decisionSupportReports = data; 
         this.response = true;
       },
-      (error) =>{
+      (_error) =>{
         // Log any errors encountered while fetching processes
         this.response = true;
          console.error('Error fetching processes');

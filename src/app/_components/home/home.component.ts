@@ -1,15 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuComponent } from "../menu/menu.component";
-import { NgIf, NgOptimizedImage } from "@angular/common";
-import { AuthService } from '../../_services/auth.service';
-import { RouterLink } from '@angular/router';
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
     selector: 'app-home',
     imports: [
-        MenuComponent,
-        NgIf,
-        RouterLink,
         NgOptimizedImage
     ],
     templateUrl: './home.component.html',

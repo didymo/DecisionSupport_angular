@@ -117,7 +117,7 @@ export class BuildProcessStepsComponent implements OnInit {
       if (result) {
         this.processDetails.steps.push(result);
         this.processService.updateProcessStep(this.processDetails.entityId, this.processDetails).subscribe({
-          next: (response) => {
+          next: () => {
             // Log Success Message
             console.log('Successfully added step');
             this.snackBar.open('New Step Added', 'Ok', {
@@ -160,7 +160,7 @@ export class BuildProcessStepsComponent implements OnInit {
   }
   /** Opens ViewProcessDialog to display the process step details*/
   openViewDetailDialog(step: Step): void {
-    const dialogRef = this.dialog.open(ViewProcessStepDialogComponent, {
+    this.dialog.open(ViewProcessStepDialogComponent, {
       width: '60%',
       data: { step: step, stepsData: this.processSteps }
     });

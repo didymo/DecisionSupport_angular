@@ -53,14 +53,18 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
         <mat-cell class="hovering" *matCellDef="let element">
-          <button class="iconButton" id="delete-bt"><i class="material-icons" (click)="archiveDecisionSupport(element.entityId)" >delete</i></button>
-          <button class="iconButton" id="edit-bt"><i class="material-icons" (click)="renameDecisionSupport(element.entityId)"  >edit</i></button>
+          <button class="iconButton" id="delete-bt" type="button" aria-label="Archive decision support" (click)="archiveDecisionSupport(element.entityId)">
+            <i class="material-icons">delete</i>
+          </button>
+          <button class="iconButton" id="edit-bt" type="button" aria-label="Rename decision support" (click)="renameDecisionSupport(element.entityId)">
+            <i class="material-icons">edit</i>
+          </button>
         </mat-cell>
       </ng-container>
   
       <!-- Display no data available message if no processes available -->
       <div *matNoDataRow class="noData">
-        <img src="/assets/noData.jpg" />
+        <img src="/assets/noData.jpg" alt="No data available" />
         <p>No Process Found - Add Process</p>
         <button class="addbutton"> Add Decision Support </button>
       </div>

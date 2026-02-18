@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import {provideHttpClient} from "@angular/common/http";
 import {provideHttpClientTesting} from "@angular/common/http/testing";
@@ -6,9 +6,6 @@ import {ActivatedRoute} from "@angular/router";
 import {of} from "rxjs";
 
 describe('AppComponent', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
@@ -18,9 +15,9 @@ describe('AppComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            paramMap: of({ get: (key: string) => 'mockParamValue' }),
+            paramMap: of({ get: (_key: string) => 'mockParamValue' }),
             queryParams: of({}),  // Mock query params if required
-            snapshot: { paramMap: { get: (key: string) => 'mockParamValue' }}
+            snapshot: { paramMap: { get: (_key: string) => 'mockParamValue' }}
           }
         }
       ]

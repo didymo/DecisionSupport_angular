@@ -86,7 +86,7 @@ export class DecisionSupportListComponent implements OnInit {
         }
         // ... and posts it to the backend!
         this.decisionSupportService.postDecisionSupport(formattedData).subscribe({
-          next: (response) => {
+          next: () => {
             console.log('Successfully added decision support: ', formattedData);
             this.getDecisionSupports();
           },
@@ -101,7 +101,7 @@ export class DecisionSupportListComponent implements OnInit {
   // Sends an archive request to the backend.
   archiveDecisionSupport(id: string): void {
     this.decisionSupportService.archiveDecisionSupport(id).subscribe({
-      next: (response) => {
+      next: () => {
         this.getDecisionSupports();
       },
       error: (err) => {
@@ -126,7 +126,7 @@ export class DecisionSupportListComponent implements OnInit {
             renamedDS.decisionSupportLabel = result;
             // Send the new json string to the backend to update the entity
             this.decisionSupportService.patchDecisionSupport(id, renamedDS).subscribe({
-              next: (response) => {
+              next: () => {
                 console.log('Successfully renamed decision support: ', result);
                 this.getDecisionSupports();
               },

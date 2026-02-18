@@ -1,11 +1,13 @@
 import { Step } from './step';
 import { StepChoice } from './step-choice';
 import { Condition } from './condition';
+import { ReferenceLink } from './reference-link';
 import { SanitizeService } from '../_services/sanitize.service';
 
 describe('Step Security and Functionality Tests', () => {
   let mockStepChoices: StepChoice[];
   let mockConditions: Condition[];
+  let mockReferenceLinks: ReferenceLink[];
 
   beforeEach(() => {
     mockStepChoices = [
@@ -15,6 +17,10 @@ describe('Step Security and Functionality Tests', () => {
 
     mockConditions = [
       new Condition(1, 'uuid-step-1', 'uuid-choice-1'),
+    ];
+
+    mockReferenceLinks = [
+      new ReferenceLink('ref-1', 'https://example.com', 'Example', 'Reference', 'section-1', 'help'),
     ];
   });
 
@@ -26,6 +32,7 @@ describe('Step Security and Functionality Tests', () => {
         'radiobutton',
         '1',
         'Secure Assessment',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -57,6 +64,7 @@ describe('Step Security and Functionality Tests', () => {
         'radiobutton',
         '1',
         maliciousDescription,
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -81,6 +89,7 @@ describe('Step Security and Functionality Tests', () => {
         'text',
         '1',
         'Secure Step',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -104,6 +113,7 @@ describe('Step Security and Functionality Tests', () => {
         'radiobutton',
         '1',
         'Secure Step',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         true,
@@ -124,6 +134,7 @@ describe('Step Security and Functionality Tests', () => {
         'radiobutton',
         '1',
         'Required Step',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -145,6 +156,7 @@ describe('Step Security and Functionality Tests', () => {
         'radiobutton',
         '1',
         'Secure Step',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -168,6 +180,7 @@ describe('Step Security and Functionality Tests', () => {
         'radiobutton',
         '1',
         'Secure Step',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -191,6 +204,7 @@ describe('Step Security and Functionality Tests', () => {
         'radiobutton',
         '1',
         'Secure Step',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -211,6 +225,7 @@ describe('Step Security and Functionality Tests', () => {
         'text',
         '1',
         'Secure Step',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,
@@ -232,6 +247,7 @@ describe('Step Security and Functionality Tests', () => {
         'radiobutton',
         '1',
         'Secure Step',
+        mockReferenceLinks,
         mockStepChoices,
         mockConditions,
         false,

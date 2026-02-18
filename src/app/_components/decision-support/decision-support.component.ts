@@ -125,7 +125,7 @@ export class DecisionSupportComponent implements OnInit, AfterViewInit {
 
   onSaveDraft() {
     this.decisionSupportService.patchDecisionSupport(this.decisionSupportDetails.entityId, this.decisionSupportDetails).subscribe(
-      (data) => {
+      () => {
         console.log("Successfully saved a draft of decision support");
         localStorage.removeItem("decision_support_data");
         this.snackBar.open('Successfully saved changes as draft', 'Ok', {
@@ -149,7 +149,7 @@ export class DecisionSupportComponent implements OnInit, AfterViewInit {
         //If the user click save
         this.decisionSupportDetails.isCompleted = true;
         this.decisionSupportService.patchDecisionSupport(this.decisionSupportDetails.entityId, this.decisionSupportDetails).subscribe(
-          (data) => {
+          () => {
             console.log("Successfully saved decision support");
             localStorage.removeItem("decision_support_data");
             this.router.navigate(['/support']);

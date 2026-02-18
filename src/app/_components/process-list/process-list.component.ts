@@ -85,7 +85,7 @@ export class ProcessListComponent implements OnInit {
         this.response = true;
         this.checkUnsavedData();
       },
-      (error) =>{
+      (_error) =>{
         // Log any errors encountered while fetching processes
         this.response = true;
          console.error('Error fetching processes');
@@ -130,7 +130,7 @@ export class ProcessListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.processService.postProcess(result).subscribe({
-          next: (response) => {
+          next: () => {
             // Log the success message
             console.log('Successfully created process');
             this.snackBar.open('Successfully Created Process', 'Ok', {
@@ -161,7 +161,7 @@ export class ProcessListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.processService.patchProcess(process.entityId, result).subscribe({
-          next: (response) => {
+          next: () => {
             // Log the success message
             console.log('Successfully updated process');
             this.snackBar.open('Successfully Updated Process', 'Ok', {
@@ -192,7 +192,7 @@ export class ProcessListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.processService.duplicateProcess(result).subscribe({
-          next: (response) => {
+          next: () => {
             // Log the success message
             console.log('Successfully duplicated process');
             this.snackBar.open('Successfully Duplicated Process', 'Ok', {
@@ -221,7 +221,7 @@ export class ProcessListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.processService.archiveProcess(processId).subscribe({
-          next: (response) => {
+          next: () => {
             // Log Success Message
             console.log('Successfully deleted process');
             this.snackBar.open('Successfully Deleted Process', 'Ok', {

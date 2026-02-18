@@ -79,7 +79,6 @@ export class EditProcessStepsComponent implements OnInit {
   drop(event: CdkDragDrop<string>) {
     //Record the prevoius index of the step
     const previousIndex = this.processSteps.findIndex(d => d === event.item.data);
-    const movedStep = this.processSteps[previousIndex];
     // Make the change in processStep array
     moveItemInArray(this.processSteps, previousIndex, event.currentIndex);
     this.processSteps.forEach((step, index) => {
@@ -101,7 +100,7 @@ export class EditProcessStepsComponent implements OnInit {
         const index = this.processDetails.steps.findIndex(step => step.stepUuid == result.stepUuid);
         this.processDetails.steps[index] = result;
         this.processService.updateProcessStep(this.processDetails.entityId, this.processDetails).subscribe({
-          next: (response) => {
+          next: () => {
             // Refresh the list after a process step is updated
             this.getProcessSteps();
             // Log success message           
@@ -125,7 +124,7 @@ export class EditProcessStepsComponent implements OnInit {
   /** Requests the backend to save the changes made in the process step order */
   saveChanges() {
     this.processService.updateProcessStep(this.processDetails.entityId, this.processDetails).subscribe({
-      next: (response) => {
+      next: () => {
         // Refresh the list after a new process step is added
         this.getProcessSteps();
         // Log the success message
@@ -164,7 +163,7 @@ export class EditProcessStepsComponent implements OnInit {
           let newId = 1 ;
           this.processDetails.steps.forEach(step => step.id = newId++);
           this.processService.updateProcessStep(this.processDetails.entityId, this.processDetails).subscribe({
-            next: (response) => {
+            next: () => {
               // Log Success Message
               console.log('Successfully deleted step');
               this.snackBar.open('Deleted Step Successfully', 'Ok', {

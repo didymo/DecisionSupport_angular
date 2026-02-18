@@ -2,8 +2,9 @@ import {ReferenceLink} from './reference-link';
 
 describe('ReferenceLink', () => {
 
-  it('should construct with all five arguments', () => {
+  it('should construct with all six arguments', () => {
     const ref = new ReferenceLink(
+      'ref-1',
       'https://docs.example.com/how-to',
       'How‑to guide',
       'Step‑by‑step tutorial',
@@ -19,7 +20,7 @@ describe('ReferenceLink', () => {
   });
 
   it('should allow property mutation through setters', () => {
-    const ref = new ReferenceLink('', '', '', '', '');
+    const ref = new ReferenceLink('', '', '', '', '', '');
 
     ref.url = '/new';
     ref.label = 'New';

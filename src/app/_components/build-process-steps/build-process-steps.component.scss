@@ -108,9 +108,9 @@ mat-cell button:hover {
 
 
 :host ::ng-deep .mdc-text-field--outlined{
-  --mdc-outlined-text-field-container-shape: 15px;
+  --mat-form-field-outlined-container-shape: 15px;
   width: 400px;
-   --mdc-outlined-text-field-outline-color: #14335421;
+   --mat-form-field-outlined-outline-color: #14335421;
 
 }
 

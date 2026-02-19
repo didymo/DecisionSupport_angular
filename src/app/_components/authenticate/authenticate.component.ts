@@ -8,7 +8,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
-import { CommonModule, NgOptimizedImage } from "@angular/common";
+import { NgOptimizedImage } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 //
 @Component({
     selector: 'app-authenticate',
-    imports: [CommonModule, RouterModule, FormsModule, MatFormField, MatInputModule, MatButtonModule, NgOptimizedImage],
+    imports: [RouterModule, FormsModule, MatFormField, MatInputModule, MatButtonModule, NgOptimizedImage],
     templateUrl: './authenticate.component.html',
     styleUrl: './authenticate.component.scss'
 })

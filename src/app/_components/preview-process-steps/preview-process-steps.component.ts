@@ -7,7 +7,7 @@
 import {Component, OnInit} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import {ActivatedRoute} from '@angular/router';
-import {CommonModule} from "@angular/common";
+
 import {ProcessService} from '../../_services/process.service';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckbox} from '@angular/material/checkbox';
@@ -47,7 +47,7 @@ const QUILL_DEFAULT_CONFIG = {
 
 @Component({
     selector: 'app-preview-process-steps',
-    imports: [CommonModule, MatRadioModule, MatCheckbox, QuillModule, MatProgressSpinnerModule, MatIconModule, MatDividerModule],
+    imports: [MatRadioModule, MatCheckbox, QuillModule, MatProgressSpinnerModule, MatIconModule, MatDividerModule],
     providers: [{
             provide: QUILL_CONFIG_TOKEN,
             useValue: QUILL_CONFIG_TOKEN,

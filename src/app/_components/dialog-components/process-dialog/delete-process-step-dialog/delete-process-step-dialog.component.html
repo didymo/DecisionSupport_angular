@@ -1,21 +1,27 @@
 <!--
-  @component Delete Process Step Dialog Component
-  @description Dialog with confirmation message and actions to delete a process step.
+@component Delete Process Step Dialog Component
+@description Dialog with confirmation message and actions to delete a process step.
 -->
 
 <!-- Mat Dialog with Mesaage and action buttons -->
 <h2 mat-dialog-title>Delete Process Step</h2>
 <mat-dialog-content>
-    <h3>Are you sure you want to delete this process step?</h3>
-    <p>Dependant Steps</p>
-    <div *ngIf="dependantSteps.length !== 0">
-        <div *ngFor="let step of dependantSteps"><li>{{step.id}}. {{step.description}}</li></div>
+  <h3>Are you sure you want to delete this process step?</h3>
+  <p>Dependant Steps</p>
+  @if (dependantSteps.length !== 0) {
+    <div>
+      @for (step of dependantSteps; track step) {
+        <div><li>{{step.id}}. {{step.description}}</li></div>
+      }
     </div>
-    <div *ngIf="dependantSteps.length === 0">
-        <li>No Dependencies Found</li>
+  }
+  @if (dependantSteps.length === 0) {
+    <div>
+      <li>No Dependencies Found</li>
     </div>
+  }
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button class="cancelButton" (click)="close()">Cancel</button>
-    <button mat-button class="deleteButton"  (click)="ok()">Delete</button>
+  <button mat-button class="cancelButton" (click)="close()">Cancel</button>
+  <button mat-button class="deleteButton"  (click)="ok()">Delete</button>
 </mat-dialog-actions>

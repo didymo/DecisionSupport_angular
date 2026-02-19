@@ -1,30 +1,36 @@
 <!--
-  @component Manage Process Component
-  @description Lists three tabs Build, Edit, Preview and allows user to navigate to each tab.
+@component Manage Process Component
+@description Lists three tabs Build, Edit, Preview and allows user to navigate to each tab.
 -->
 <div class="wrapper">
-<!-- The top container div containing title, tab group-->
-<div class="top-container">
+  <!-- The top container div containing title, tab group-->
+  <div class="top-container">
     <div class="header">
-        <h2>Manage Process</h2>
-        <p>Build, Edit, or Preview Process Steps</p>
+      <h2>Manage Process</h2>
+      <p>Build, Edit, or Preview Process Steps</p>
     </div>
     <!-- Mat Tab group with three mat tabs-->
     <mat-tab-group class="mattab" (selectedTabChange)="onTabChange($event)">
-        <mat-tab label="Build"></mat-tab>
-        <mat-tab label="Edit"></mat-tab>
-        <mat-tab label="Preview"></mat-tab>
+      <mat-tab label="Build"></mat-tab>
+      <mat-tab label="Edit"></mat-tab>
+      <mat-tab label="Preview"></mat-tab>
     </mat-tab-group>
-</div>
+  </div>
 
-<!-- Display the components based on the selectedtabindex -->
-<div>
+  <!-- Display the components based on the selectedtabindex -->
+  <div>
     <!-- Display the build process component when the selectedTabIndex is 0 -->
-    <ng-container *ngIf="selectedTabIndex === 0"><app-build-process-steps></app-build-process-steps></ng-container>
+    @if (selectedTabIndex === 0) {
+      <app-build-process-steps></app-build-process-steps>
+    }
     <!-- Display the edit process component when the selectedTabIndex is 1 -->
-    <ng-container *ngIf="selectedTabIndex === 1"><app-edit-process-steps></app-edit-process-steps></ng-container>
+    @if (selectedTabIndex === 1) {
+      <app-edit-process-steps></app-edit-process-steps>
+    }
     <!-- Display the preview process component when the selectedTabIndex is 2 -->
-    <ng-container *ngIf="selectedTabIndex === 2"><app-preview-process-steps></app-preview-process-steps></ng-container>
-</div>
+    @if (selectedTabIndex === 2) {
+      <app-preview-process-steps></app-preview-process-steps>
+    }
+  </div>
 
 </div>

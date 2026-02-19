@@ -15,7 +15,7 @@ import { ProcessService } from '../../_services/process.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
-import { CommonModule } from '@angular/common';
+
 import { Step } from '../../_classes/step';
 import { Process } from '../../_classes/process';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,7 +24,7 @@ import { DeleteProcessStepDialogComponent } from '../dialog-components/process-d
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
     selector: 'app-edit-process-steps',
-    imports: [MatTableModule, MatButtonModule, MatIconModule, CdkDrag, CdkDropList, CommonModule, MatProgressSpinnerModule],
+    imports: [MatTableModule, MatButtonModule, MatIconModule, CdkDrag, CdkDropList, MatProgressSpinnerModule],
     templateUrl: './edit-process-steps.component.html',
     styleUrl: './edit-process-steps.component.scss'
 })

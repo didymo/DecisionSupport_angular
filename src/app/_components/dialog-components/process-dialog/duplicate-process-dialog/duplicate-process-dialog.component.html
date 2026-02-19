@@ -1,6 +1,6 @@
 <!--
-  @component Duplicate Process Dialog Component
-  @description Dialog with prefilled form fields of a existing process and action to  create a new duplicated process.
+@component Duplicate Process Dialog Component
+@description Dialog with prefilled form fields of a existing process and action to  create a new duplicated process.
 -->
 
 <!-- Mat Dialog with form -->
@@ -16,7 +16,9 @@
     <p>Revision Status</p>
     <mat-form-field appearance="outline">
       <mat-select formControlName="revision_status" placeholder="Select Revision Status" required>
-        <mat-option *ngFor="let status of revisionStatus" [value]="status.value">{{ status.label }}</mat-option>
+        @for (status of revisionStatus; track status) {
+          <mat-option [value]="status.value">{{ status.label }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
   </mat-dialog-content>

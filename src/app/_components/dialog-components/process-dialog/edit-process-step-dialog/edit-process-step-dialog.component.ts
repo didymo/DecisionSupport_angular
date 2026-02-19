@@ -15,11 +15,11 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-edit-process-step-dialog',
-    imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, CommonModule, ReactiveFormsModule],
+    imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, ReactiveFormsModule],
     templateUrl: './edit-process-step-dialog.component.html',
     styleUrl: './edit-process-step-dialog.component.scss'
 })

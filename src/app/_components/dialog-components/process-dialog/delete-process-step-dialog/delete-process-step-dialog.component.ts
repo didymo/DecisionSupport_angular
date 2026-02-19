@@ -12,7 +12,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-delete-process-step-dialog',
-    imports: [MatDialogModule, MatButtonModule, CommonModule],
+    imports: [MatDialogModule, MatButtonModule],
     templateUrl: './delete-process-step-dialog.component.html',
     styleUrl: './delete-process-step-dialog.component.scss'
 })

@@ -6,7 +6,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
@@ -19,7 +19,7 @@ import { ProcessList } from '../../../../_classes/process-list';
 
 @Component({
     selector: 'app-new-decision-support-dialog',
-    imports: [CommonModule, MatFormField, ReactiveFormsModule, MatDialogModule, MatInputModule, MatButtonModule, MatSelectModule],
+    imports: [MatFormField, ReactiveFormsModule, MatDialogModule, MatInputModule, MatButtonModule, MatSelectModule],
     templateUrl: './new-decision-support-dialog.component.html',
     styleUrl: './new-decision-support-dialog.component.scss'
 })

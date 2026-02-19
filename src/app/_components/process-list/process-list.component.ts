@@ -9,7 +9,7 @@
  */
 
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterLink, Router} from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { ProcessList } from '../../_classes/process-list';
@@ -31,7 +31,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-process-list',
-    imports: [FormsModule, MatProgressSpinnerModule, MatIconModule, MatTableModule, MatFormFieldModule, MatInputModule, CommonModule, MatSelectModule, RouterLink],
+    imports: [FormsModule, MatProgressSpinnerModule, MatIconModule, MatTableModule, MatFormFieldModule, MatInputModule, MatSelectModule, RouterLink],
     templateUrl: './process-list.component.html',
     styleUrl: './process-list.component.scss'
 })

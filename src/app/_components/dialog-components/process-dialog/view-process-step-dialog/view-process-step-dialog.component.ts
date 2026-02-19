@@ -10,10 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { Step } from '../../../../_classes/step';
-import { CommonModule } from '@angular/common';
+
 @Component({
     selector: 'app-view-process-step-dialog',
-    imports: [MatButtonModule, MatDialogModule, MatIconModule, MatDividerModule, CommonModule],
+    imports: [MatButtonModule, MatDialogModule, MatIconModule, MatDividerModule],
     templateUrl: './view-process-step-dialog.component.html',
     styleUrl: './view-process-step-dialog.component.scss'
 })

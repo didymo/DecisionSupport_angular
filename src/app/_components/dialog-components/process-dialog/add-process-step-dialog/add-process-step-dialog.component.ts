@@ -15,11 +15,11 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-add-process-step-dialog',
-    imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, CommonModule, ReactiveFormsModule],
+    imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, ReactiveFormsModule],
     templateUrl: './add-process-step-dialog.component.html',
     styleUrl: './add-process-step-dialog.component.scss'
 })

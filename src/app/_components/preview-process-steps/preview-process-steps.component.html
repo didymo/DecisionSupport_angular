@@ -1,83 +1,115 @@
 <!--
-  @component Preview Process Steps Component
-  @description Display the preview of process step
+@component Preview Process Steps Component
+@description Display the preview of process step
 -->
-<div class="container" *ngIf="response">
+@if (response) {
+  <div class="container">
     <!-- The preview container to display the steps -->
     <div class="preview-container">
-        <!-- Check is steps available -->
-        <div *ngIf="processSteps.length !== 0">
-            <h1>{{processDetails.label}}</h1>
-            <mat-divider></mat-divider>
-            <!-- Display steps based on type -->
-            <div *ngFor="let processStep of processSteps">
-                <h2>Step {{processStep.id}} </h2>
-                <!-- The Link Container to display the reference links-->
-                <div class="link-container" *ngIf="processStep.referenceLink && processStep.referenceLink.length > 0">
-                    <div class="link-sub-container-1">
-                       <p><b>Supporting Links</b></p> 
+      <!-- Check is steps available -->
+      @if (processSteps.length !== 0) {
+        <div>
+          <h1>{{processDetails.label}}</h1>
+          <mat-divider></mat-divider>
+          <!-- Display steps based on type -->
+          @for (processStep of processSteps; track processStep) {
+            <div>
+              <h2>Step {{processStep.id}} </h2>
+              <!-- The Link Container to display the reference links-->
+              @if (processStep.referenceLink && processStep.referenceLink.length > 0) {
+                <div class="link-container">
+                  <div class="link-sub-container-1">
+                    <p><b>Supporting Links</b></p>
+                  </div>
+                  <div class="link-sub-container-2">
+                    @for (referenceLink of processStep?.referenceLink; track referenceLink) {
+                      <div>
+                        <p>{{referenceLink.id}}. <a href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
+                          {{referenceLink.label}}
+                        </a></p>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+              <!-- Step Description -->
+              <p>{{processStep.description}}</p>
+              <!-- Radio & Text Boxes -->
+              @if (processStep.type === 'radio&text') {
+                <div>
+                  <mat-radio-group>
+                    @for (choices of processStep?.choices; track choices) {
+                      <div class="steps">
+                        <mat-radio-button [value]="choices.choiceUuid">{{choices.description}}</mat-radio-button>
+                      </div>
+                    }
+                  </mat-radio-group>
+                  <br />
+                  <b>Please provide further details.</b><i>Optional</i><br /><br />
+                  <quill-editor></quill-editor>
+                </div>
+              }
+              <!-- Radio -->
+              @if (processStep.type === 'radio') {
+                <div>
+                  <mat-radio-group>
+                    @for (choices of processStep?.choices; track choices) {
+                      <div class="steps">
+                        <mat-radio-button [value]="choices.choiceUuid">{{choices.description}}</mat-radio-button>
+                      </div>
+                    }
+                  </mat-radio-group>
+                </div>
+              }
+              <!-- Checkbox and Text -->
+              @if (processStep.type === 'checkbox&text') {
+                <div>
+                  @for (choice of processStep?.choices; track choice) {
+                    <div>
+                      <mat-checkbox>
+                      {{choice.description}}</mat-checkbox>
                     </div>
-                    <div class="link-sub-container-2">
-                        <div *ngFor="let referenceLink of processStep?.referenceLink">
-                                <p>{{referenceLink.id}}. <a href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
-                                    {{referenceLink.label}}
-                                </a></p>
-                            </div>
+                  }
+                  <br />
+                  <b>Please provide further details. </b><i>Optional</i><br /><br />
+                  <quill-editor></quill-editor>
+                </div>
+              }
+              <!-- Checkbox -->
+              @if (processStep.type === 'checkbox') {
+                <div>
+                  @for (choice of processStep?.choices; track choice) {
+                    <div>
+                      <mat-checkbox>
+                      {{choice.description}}</mat-checkbox>
                     </div>
+                  }
                 </div>
-                <!-- Step Description -->
-                <p>{{processStep.description}}</p>
-                <!-- Radio & Text Boxes -->
-                <div *ngIf="processStep.type === 'radio&text'">
-                    <mat-radio-group>
-                        <div *ngFor="let choices of processStep?.choices" class="steps">
-                            <mat-radio-button [value]="choices.choiceUuid">{{choices.description}}</mat-radio-button>
-                        </div>
-                    </mat-radio-group>
-                    <br />
-                    <b>Please provide further details.</b><i>Optional</i><br /><br />
-                    <quill-editor></quill-editor>
+              }
+              <br />
+              <!--Textbox-->
+              @if (processStep.type === 'textbox') {
+                <div>
+                  <quill-editor></quill-editor>
                 </div>
-                <!-- Radio -->
-                <div *ngIf="processStep.type === 'radio'">
-                    <mat-radio-group>
-                        <div *ngFor="let choices of processStep?.choices" class="steps">
-                            <mat-radio-button [value]="choices.choiceUuid">{{choices.description}}</mat-radio-button>
-                        </div>
-                    </mat-radio-group>
-                </div>
-                <!-- Checkbox and Text -->
-                <div *ngIf="processStep.type === 'checkbox&text'">
-                    <div *ngFor="let choice of processStep?.choices">
-                        <mat-checkbox>
-                            {{choice.description}}</mat-checkbox>
-                    </div>
-                    <br />
-                    <b>Please provide further details. </b><i>Optional</i><br /><br />
-                    <quill-editor></quill-editor>
-                </div>
-                <!-- Checkbox -->
-                <div *ngIf="processStep.type === 'checkbox'">
-                    <div *ngFor="let choice of processStep?.choices">
-                        <mat-checkbox>
-                            {{choice.description}}</mat-checkbox>
-                    </div>
-                </div>
-                <br />
-                <!--Textbox-->
-                <div *ngIf="processStep.type === 'textbox'">
-                    <quill-editor></quill-editor>
-                </div>
-                <mat-divider></mat-divider>
+              }
+              <mat-divider></mat-divider>
             </div>
+          }
         </div>
-        <!-- Display no data available message if no process steps available -->
-        <div class="noData" *ngIf="processSteps.length === 0">
-            <img src="/assets/noData.jpg" alt="No data available" />
-            <p>No Steps Found - Add Step</p>
+      }
+      <!-- Display no data available message if no process steps available -->
+      @if (processSteps.length === 0) {
+        <div class="noData">
+          <img src="/assets/noData.jpg" alt="No data available" />
+          <p>No Steps Found - Add Step</p>
         </div>
+      }
     </div>
-</div>
-<div class="div-spinner" *ngIf="!response">
+  </div>
+}
+@if (!response) {
+  <div class="div-spinner">
     <mat-spinner></mat-spinner>
-</div>
+  </div>
+}

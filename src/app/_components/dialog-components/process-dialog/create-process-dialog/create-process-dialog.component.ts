@@ -5,7 +5,7 @@
  * The user can fill form fields(name, revision Status) and create a new process.
  */
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
@@ -16,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
     selector: 'app-create-process-dialog',
-    imports: [MatDialogModule, MatFormField, CommonModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
+    imports: [MatDialogModule, MatFormField, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
     templateUrl: './create-process-dialog.component.html',
     styleUrl: './create-process-dialog.component.scss'
 })

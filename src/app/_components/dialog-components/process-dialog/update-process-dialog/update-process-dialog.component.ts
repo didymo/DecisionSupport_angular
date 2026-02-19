@@ -5,7 +5,7 @@
  * The form will be prefilled with the existing process details. The user can make changes and update the process.
  */
 import { Component, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
@@ -16,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
     selector: 'app-update-process-dialog',
-    imports: [MatDialogModule, MatFormField, CommonModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
+    imports: [MatDialogModule, MatFormField, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
     templateUrl: './update-process-dialog.component.html',
     styleUrl: './update-process-dialog.component.scss'
 })

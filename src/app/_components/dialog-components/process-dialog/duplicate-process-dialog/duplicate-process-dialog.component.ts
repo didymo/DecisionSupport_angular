@@ -5,7 +5,7 @@
  * The form will be prefilled with the existing process details. The user can make changes and duplicate the process.
  */
 import { Component, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-duplicate-process-dialog',
-    imports: [MatDialogModule, MatFormField, CommonModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
+    imports: [MatDialogModule, MatFormField, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
     templateUrl: './duplicate-process-dialog.component.html',
     styleUrl: './duplicate-process-dialog.component.scss'
 })

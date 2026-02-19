@@ -1,89 +1,96 @@
 <!--
-  @component Build Process Steps Component
-  @description Lists the available process steps. And allows user to add new process steps.
+@component Build Process Steps Component
+@description Lists the available process steps. And allows user to add new process steps.
 -->
 
 <!-- The top container div with add step button-->
 <div class="top-container">
-    <button class="pr-addbutton" mat-fab extended (click)="addProcessStep()">
-      <mat-icon>add</mat-icon>
-      Add Step
-    </button>
-    <div class="search-div">
+  <button class="pr-addbutton" mat-fab extended (click)="addProcessStep()">
+    <mat-icon>add</mat-icon>
+    Add Step
+  </button>
+  <div class="search-div">
     <mat-form-field appearance="outline">
       <mat-icon matPrefix class="searchIcon">search</mat-icon>
       <input  matInput placeholder="Search Process Step" type="search" [(ngModel)]="searchInput" (input)="filterBySearch()">
-  </mat-form-field>
-</div>
+    </mat-form-field>
+  </div>
 </div>
 <br />
 <!-- Mat Table to display the process steps -->
-<mat-table #table [dataSource]="filteredProcessSteps" class="mat-elevation-z8" *ngIf="response">
-
+@if (response) {
+  <mat-table #table [dataSource]="filteredProcessSteps" class="mat-elevation-z8">
     <!-- Step ID Column -->
     <ng-container matColumnDef="id" class="stepid" sticky>
       <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
       <mat-cell *matCellDef="let step">{{step.id}}</mat-cell>
     </ng-container>
-
     <!-- Step Description Column -->
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
       <mat-cell *matCellDef="let step">{{step.description}}</mat-cell>
     </ng-container>
-
     <!-- Step Type Column -->
     <ng-container matColumnDef="type">
       <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
       <mat-cell *matCellDef="let step"> {{step.type}} </mat-cell>
     </ng-container>
-
     <!-- Step Required Column -->
     <ng-container matColumnDef="required">
       <mat-header-cell *matHeaderCellDef> Required </mat-header-cell>
       <mat-cell *matCellDef="let step">
-        <span *ngIf = "step.required === '1'">Yes</span>
-        <span *ngIf = "step.required === '0'">No</span>
+        @if (step.required === '1') {
+          <span>Yes</span>
+        }
+        @if (step.required === '0') {
+          <span>No</span>
+        }
       </mat-cell>
     </ng-container>
-    
     <!-- Step Reference Link Column -->
     <ng-container matColumnDef="referenceLink">
       <mat-header-cell *matHeaderCellDef> Reference Link </mat-header-cell>
       <mat-cell *matCellDef="let step">
-        <span *ngIf="!step.referenceLink || step.referenceLink.length === 0">None</span>
-        <span *ngIf="step.referenceLink && step.referenceLink.length > 0">Included</span>
+        @if (!step.referenceLink || step.referenceLink.length === 0) {
+          <span>None</span>
+        }
+        @if (step.referenceLink && step.referenceLink.length > 0) {
+          <span>Included</span>
+        }
       </mat-cell>
     </ng-container>
-
     <!-- Step Logic Column -->
     <ng-container matColumnDef="logic">
       <mat-header-cell *matHeaderCellDef> Logic </mat-header-cell>
       <mat-cell *matCellDef="let step">
-        <span *ngIf="!step.conditions|| step.conditions.length === 0">No</span>
-        <span *ngIf="step.conditions && step.conditions.length > 0">Yes</span>
+        @if (!step.conditions|| step.conditions.length === 0) {
+          <span>No</span>
+        }
+        @if (step.conditions && step.conditions.length > 0) {
+          <span>Yes</span>
+        }
       </mat-cell>
     </ng-container>
-
     <!-- Step Actions Column - View -->
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
       <mat-cell *matCellDef="let step">
         <button class="viewButton" (click) ="openViewDetailDialog(step)"> <i class="material-icons">preview</i></button>
-       <!-- <i class="material-icons">preview</i>-->
+        <!-- <i class="material-icons">preview</i>-->
       </mat-cell>
     </ng-container>
-
     <!-- Display no data available message if no process steps available -->
     <div *matNoDataRow class="noData">
-        <img src="/assets/noData.jpg" alt="No data available" />
-        <p>No Steps Found - Add Step</p>
-        <button class="addbutton" (click)="addProcessStep()">Add Step</button>
+      <img src="/assets/noData.jpg" alt="No data available" />
+      <p>No Steps Found - Add Step</p>
+      <button class="addbutton" (click)="addProcessStep()">Add Step</button>
     </div>
-
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
-<div class="div-spinner" *ngIf="!response">
-  <mat-spinner></mat-spinner>
-</div>
+  </mat-table>
+}
+@if (!response) {
+  <div class="div-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+}

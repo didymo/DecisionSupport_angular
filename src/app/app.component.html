@@ -1,9 +1,11 @@
 <!--
-  @component App component.
-  @description If the user is authenticated, display the menubar.
+@component App component.
+@description If the user is authenticated, display the menubar.
 -->
 
-<div *ngIf="router.url !== '/user/login'">
-  <app-menu />
-</div>
+@if (router.url !== '/user/login') {
+  <div>
+    <app-menu />
+  </div>
+}
 <div class="router-outlet"><router-outlet /></div>

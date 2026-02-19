@@ -7,7 +7,7 @@
  */
 
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from "@angular/common";
+
 import { DocumentUploadService } from '../../_services/document-upload.service';
 import { DocumentService } from '../../_services/document.service';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-document-upload',
-    imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatDivider, MatListModule],
+    imports: [ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatDivider, MatListModule],
     templateUrl: './document-upload.component.html',
     styleUrl: './document-upload.component.scss'
 })

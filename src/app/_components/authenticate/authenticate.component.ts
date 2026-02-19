@@ -5,7 +5,7 @@
  *  This component provides an authentication screen for the user. It's the first screen they see in DecisionSupport and they will be sent here if they ever aren't authenticated.
  */
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
 import { NgOptimizedImage } from "@angular/common";
@@ -23,10 +23,11 @@ import { MatButtonModule } from '@angular/material/button';
 })
 
 export class AuthenticateComponent {
+  protected authService = inject(AuthService);
+  private router = inject(Router);
+
   username = '';
   password = '';
-
-  constructor(protected authService: AuthService, private router: Router) {}
 
   login(): void {
     this.authService.login(this.username, this.password).subscribe({

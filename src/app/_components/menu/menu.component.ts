@@ -5,7 +5,7 @@
  *  Provides navigation between the following pages: login/out, process creator, decision support.
  */
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MatToolbar } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
@@ -21,8 +21,9 @@ import { MatIconModule } from '@angular/material/icon';
     styleUrl: './menu.component.scss'
 })
 export class MenuComponent {
+  protected authService = inject(AuthService);
+  router = inject(Router);
 
-  constructor(protected authService: AuthService,public router: Router){}
 
   logout(): void {
     this.authService.logout();

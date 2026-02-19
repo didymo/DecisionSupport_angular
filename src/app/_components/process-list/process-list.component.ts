@@ -36,6 +36,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     styleUrl: './process-list.component.scss'
 })
 export class ProcessListComponent implements OnInit {
+  private processService = inject(ProcessService);
+  private dialog = inject(MatDialog);
+  private router = inject(Router);
+
   /** Inject Mat Snack Bar */
   private snackBar = inject(MatSnackBar);
   /** Array to store all processes retrieved from the backend */
@@ -49,8 +53,6 @@ export class ProcessListComponent implements OnInit {
   displayedColumns: string[] = ['entityid', 'label', 'revisionStatus', 'createdTime', 'updatedTime', 'actions'];
   /**Boolean Value for spinner */
   response = false;
-  
-  constructor(private processService: ProcessService, private dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
     /** Fetch the list of processes and check for unsaved data when the component loads */

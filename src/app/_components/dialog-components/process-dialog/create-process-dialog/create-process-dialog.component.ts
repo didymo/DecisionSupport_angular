@@ -4,7 +4,7 @@
  * @description
  * The user can fill form fields(name, revision Status) and create a new process.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -21,6 +21,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
     styleUrl: './create-process-dialog.component.scss'
 })
 export class CreateProcessDialogComponent {
+  private fb = inject(FormBuilder);
+  dialogRef = inject<MatDialogRef<CreateProcessDialogComponent>>(MatDialogRef);
+
   /** Declare Form Group */
   form: FormGroup;
   /** Set the Revision Status Values */
@@ -30,7 +33,7 @@ export class CreateProcessDialogComponent {
     { value: 'Published', label: 'Published' }
   ];
 
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<CreateProcessDialogComponent>) {
+  constructor() {
     // Initialize the form group elements.
     this.form = this.fb.group({
       label: [''],

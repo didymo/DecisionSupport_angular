@@ -4,7 +4,7 @@
  * @description
  * The form will be prefilled with the existing process details. The user can make changes and update the process.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -21,6 +21,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
     styleUrl: './update-process-dialog.component.scss'
 })
 export class UpdateProcessDialogComponent {
+  private fb = inject(FormBuilder);
+  dialogRef = inject<MatDialogRef<UpdateProcessDialogComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+
   /** Declare Form Group */
   form: FormGroup;
   /** Set the Revision Status Values */
@@ -30,8 +34,7 @@ export class UpdateProcessDialogComponent {
     { value: 'Published', label: 'Published' }
   ];
 
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<UpdateProcessDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor() {
     // Inject the existing process details into form group elements
     this.form = this.fb.group({
       label: [this.data.process.label],

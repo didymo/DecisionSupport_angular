@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -10,8 +10,8 @@ import { MatDialogRef } from '@angular/material/dialog';
     styleUrl: './save-decision-support-dialog.component.scss'
 })
 export class SaveDecisionSupportDialogComponent {
+  dialogRef = inject<MatDialogRef<SaveDecisionSupportDialogComponent>>(MatDialogRef);
 
-  constructor(public dialogRef: MatDialogRef<SaveDecisionSupportDialogComponent>) { }
 
   /** Close the dialog when the user clicks close */
   close(): void {

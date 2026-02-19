@@ -30,6 +30,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     styleUrl: './build-process-steps.component.scss'
 })
 export class BuildProcessStepsComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private processService = inject(ProcessService);
+  private dialog = inject(MatDialog);
+
   /** Inject mat snack bar */
   private snackBar = inject(MatSnackBar);
   /** Id of the process */
@@ -48,7 +52,7 @@ export class BuildProcessStepsComponent implements OnInit {
   displayedColumns: string[] = ['id', 'description', 'type', 'required', 'referenceLink', 'logic', 'actions'];
   /** Boolean value for spinner */
   response = false;
-  constructor(private route: ActivatedRoute, private processService: ProcessService, private dialog: MatDialog) {
+  constructor() {
     /** Get and set the process ID from the route */
     this.processId = this.route.snapshot.params['id'];
     this.processName = "Process";

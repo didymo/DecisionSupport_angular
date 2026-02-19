@@ -6,7 +6,7 @@
  *
  */
 
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router} from '@angular/router';
 import {AuthService} from './auth.service';
 
@@ -21,14 +21,9 @@ import {AuthService} from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  /**
-   * Constructor to inject dependencies required for authentication and navigation.
-   *
-   * @param authService - Service that handles authentication and user role management.
-   * @param router - Router instance used for redirection.
-   */
-  constructor(private authService: AuthService, private router: Router) {
-  }
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
 
   /**
    * Determines if a route can be activated based on user authentication and roles.

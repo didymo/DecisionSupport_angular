@@ -25,13 +25,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     styleUrl: './document-upload.component.scss'
 })
 export class DocumentUploadComponent implements OnInit {
+  private documentUploadService = inject(DocumentUploadService);
+  private documentService = inject(DocumentService);
+
   selectedFile: File | null = null;
   uploadResponse: string | null = null;
   documentList: any[] = [];
   filteredDocumentList: any[] = [];
   private snackBar = inject(MatSnackBar);
-
-  constructor(private documentUploadService: DocumentUploadService, private documentService: DocumentService) { }
 
   ngOnInit() {
     this.getDocumentList();

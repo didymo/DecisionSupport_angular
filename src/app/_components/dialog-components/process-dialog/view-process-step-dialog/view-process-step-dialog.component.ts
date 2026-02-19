@@ -4,7 +4,7 @@
  * @description
  * The user can view the details of a process.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,12 +18,20 @@ import { Step } from '../../../../_classes/step';
     styleUrl: './view-process-step-dialog.component.scss'
 })
 export class ViewProcessStepDialogComponent {
+  dialogRef = inject<MatDialogRef<ViewProcessStepDialogComponent>>(MatDialogRef);
+  data = inject<{
+    step: any;
+    stepsData: any[];
+}>(MAT_DIALOG_DATA);
+
   /** Step Object to store step */
   processStep!: Step;
   /** Step array oject to store multiple steps */
   processSteps: Step[] = [];
 
-  constructor(public dialogRef: MatDialogRef<ViewProcessStepDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: { step: any; stepsData: any[] }) {
+  constructor() {
+    const data = this.data;
+
     // Inject the data to desired objects
     this.processStep = data.step;
     this.processSteps = data.stepsData;

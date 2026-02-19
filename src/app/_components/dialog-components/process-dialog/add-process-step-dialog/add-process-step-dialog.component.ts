@@ -4,7 +4,7 @@
  * @description
  * The user can create a new process step with a discription, required status, type, multiple choices, multiple conditions.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { UuidService } from '../../../../_services/uuid.service';
 import { Step } from '../../../../_classes/step';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -24,6 +24,14 @@ import { MatIconModule } from '@angular/material/icon';
     styleUrl: './add-process-step-dialog.component.scss'
 })
 export class AddProcessStepDialogComponent {
+  private uuidService = inject(UuidService);
+  dialogRef = inject<MatDialogRef<AddProcessStepDialogComponent>>(MatDialogRef);
+  data = inject<{
+    steps: any[];
+    processId: any;
+    processName: any;
+}>(MAT_DIALOG_DATA);
+
   /** Array Object to store filtered step data */
   filteredStepsData: Step[] = [];
   /** Declare Form Data */
@@ -45,7 +53,9 @@ export class AddProcessStepDialogComponent {
     { value: 'textbox', label: 'Textbox' }
   ];
 
-  constructor(private uuidService: UuidService, public dialogRef: MatDialogRef<AddProcessStepDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: { steps: any[], processId: any, processName: any }) {
+  constructor() {
+    const data = this.data;
+
     this.filteredStepsData = data.steps.filter(step => step.type !== "textbox");
     this.checkUnsavedData();
   }

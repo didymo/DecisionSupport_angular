@@ -5,7 +5,7 @@
  *  
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -25,11 +25,15 @@ import { ProcessList } from '../../../../_classes/process-list';
 })
 
 export class NewDecisionSupportDialogComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  dialogRef = inject<MatDialogRef<NewDecisionSupportDialogComponent>>(MatDialogRef);
+  private processService = inject(ProcessService);
+
 
   form: FormGroup;
   processId: ProcessId[] = []; // This array holds a list of all the processes an decision support could be created from.
 
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<NewDecisionSupportDialogComponent>, private processService: ProcessService) {
+  constructor() {
     this.form = this.fb.group({
       //variables being collected from user by the form
       name: [''], // the name of the new decision support

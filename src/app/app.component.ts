@@ -5,7 +5,7 @@
  *
  */
 
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import {RouterModule, RouterOutlet, Router} from '@angular/router';
 import {MenuComponent} from './_components/menu/menu.component';
@@ -17,6 +17,7 @@ import {MenuComponent} from './_components/menu/menu.component';
     styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(public router: Router){}
+  router = inject(Router);
+
   title = 'Decision Support';
 }

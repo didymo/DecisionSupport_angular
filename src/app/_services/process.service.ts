@@ -5,7 +5,7 @@
  *  GET (list), POST, DUPLICATE, PATCH and ARCHIVE are available for Process as a whole. GET, POST, PATCH and DELETE are avaialble for individual steps.
  */
 
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
@@ -17,9 +17,9 @@ import {AuthService} from "./auth.service";
   providedIn: 'root'
 })
 export class ProcessService {
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
 
-
-  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getProcessList(): Observable<ProcessList[]> {
     const headers = this.authService.getHeaders();

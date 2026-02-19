@@ -29,6 +29,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     styleUrl: './edit-process-steps.component.scss'
 })
 export class EditProcessStepsComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private processService = inject(ProcessService);
+  private dialog = inject(MatDialog);
+
   @ViewChild(MatTable, { static: true }) table!: MatTable<Step>;
   /** Inject Mat snack bar  */
   private snackBar = inject(MatSnackBar);
@@ -44,7 +48,7 @@ export class EditProcessStepsComponent implements OnInit {
   changeDetected = false;
   /** Boolean value for spinner */
   response = false;
-  constructor(private route: ActivatedRoute, private processService: ProcessService, private dialog: MatDialog) {
+  constructor() {
     /** Get and set the process ID from the route */
     this.processId = this.route.snapshot.params['id'];
   }

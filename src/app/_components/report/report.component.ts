@@ -6,7 +6,7 @@
  */
 
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
@@ -22,12 +22,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 
 export class ReportComponent implements OnInit {
+  private reportService = inject(ReportService);
+  private route = inject(ActivatedRoute);
+
   documentList: any[] = [];
   decisionSupportDetails: any = null;
   supportId: any;
   response = false;
 
-  constructor(private reportService: ReportService, private route: ActivatedRoute) {
+  constructor() {
     this.supportId = this.route.snapshot.params['id'];
   }
   ngOnInit(): void {

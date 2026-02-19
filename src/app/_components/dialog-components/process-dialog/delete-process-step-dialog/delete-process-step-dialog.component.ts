@@ -4,8 +4,7 @@
  * @description
  * The user can cancel or delete a process step.
  */
-import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -17,9 +16,14 @@ import { MatDialogRef } from '@angular/material/dialog';
     styleUrl: './delete-process-step-dialog.component.scss'
 })
 export class DeleteProcessStepDialogComponent {
+  dialogRef = inject<MatDialogRef<DeleteProcessStepDialogComponent>>(MatDialogRef);
+  data = inject<{
+    dependantSteps: any;
+}>(MAT_DIALOG_DATA);
+
 
   dependantSteps : any;
-  constructor(public dialogRef: MatDialogRef<DeleteProcessStepDialogComponent>, @Inject(MAT_DIALOG_DATA)  public data: {dependantSteps : any}) { 
+  constructor() { 
     this.dependantSteps  = this.data.dependantSteps ;
   }
 

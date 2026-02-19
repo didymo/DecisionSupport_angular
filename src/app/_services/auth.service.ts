@@ -5,7 +5,7 @@
  *  Deals with tokens and provides services for other components to access and confirm authentication.
  */
 
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
@@ -16,14 +16,14 @@ import {environment} from '../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   public refreshToken: string | null = null;
   public isRefreshing = false;
   private authToken: string | null = null;
   private csrfToken: string | null = null;
   private tokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-
-  constructor(private http: HttpClient, private router: Router) {
-  }
 
 
   login(username: string, password: string): Observable<any> {

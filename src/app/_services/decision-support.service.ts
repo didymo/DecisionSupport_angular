@@ -5,7 +5,7 @@
  *  GET (singular and list), POST, PATCH and ARCHIVE are available.
  */
 
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
@@ -18,8 +18,10 @@ import {LoggingService} from "./logging.service";
   providedIn: 'root'
 })
 export class DecisionSupportService {
-  constructor(private http: HttpClient, private authService: AuthService, private loggingService: LoggingService) {
-  }
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
+  private loggingService = inject(LoggingService);
+
 
   /**
    * Fetches a specific Decision Support record by its ID.

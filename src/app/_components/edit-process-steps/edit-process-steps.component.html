@@ -1,87 +1,99 @@
 <!--
-  @component Edit Process Steps Component
-  @description Lists the available process steps. And allows user to edit, delete, rearrange avialable process steps.
+@component Edit Process Steps Component
+@description Lists the available process steps. And allows user to edit, delete, rearrange avialable process steps.
 -->
 
 <!-- The top container div with save button when any changes in steps order-->
 <div class="top-container">
-    <button *ngIf="changeDetected" mat-fab extended (click)="saveChanges()" class="save-button">
-        <mat-icon>save</mat-icon>
-        Save
+  @if (changeDetected) {
+    <button mat-fab extended (click)="saveChanges()" class="save-button">
+      <mat-icon>save</mat-icon>
+      Save
     </button>
+  }
 </div>
 <br />
 <!-- Mat Table to display the process steps and with drag and drop functionality-->
-<mat-table #table [dataSource]="processSteps" class="mat-elevation-z8" cdkDropList cdkDropListData="processSteps"
-    (cdkDropListDropped)="drop($event)" *ngIf="response">
+@if (response) {
+  <mat-table #table [dataSource]="processSteps" class="mat-elevation-z8" cdkDropList cdkDropListData="processSteps"
+    (cdkDropListDropped)="drop($event)">
     <!-- Step ID Column -->
     <ng-container matColumnDef="id" sticky>
-        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-        <mat-cell *matCellDef="let step">
-            <mat-icon class="example-drag-cursor">reorder</mat-icon>
-            <span>{{step.id}}</span></mat-cell>
-    </ng-container>
-
-    <!-- Step Description Column -->
-    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let step">
+        <mat-icon class="example-drag-cursor">reorder</mat-icon>
+        <span>{{step.id}}</span></mat-cell>
+      </ng-container>
+      <!-- Step Description Column -->
+      <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
         <mat-cell *matCellDef="let step">{{step.description}}</mat-cell>
-    </ng-container>
-
-    <!-- Step Type Column -->
-    <ng-container matColumnDef="type">
+      </ng-container>
+      <!-- Step Type Column -->
+      <ng-container matColumnDef="type">
         <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
         <mat-cell *matCellDef="let step"> {{step.type}} </mat-cell>
-    </ng-container>
-
-    <!-- Step Required Column -->
-    <ng-container matColumnDef="required">
+      </ng-container>
+      <!-- Step Required Column -->
+      <ng-container matColumnDef="required">
         <mat-header-cell *matHeaderCellDef> Required </mat-header-cell>
         <mat-cell *matCellDef="let step">
-            <span *ngIf="step.required === '1'">Yes</span>
-            <span *ngIf="step.required === '0'">No</span>
+          @if (step.required === '1') {
+            <span>Yes</span>
+          }
+          @if (step.required === '0') {
+            <span>No</span>
+          }
         </mat-cell>
-    </ng-container>
-
-    <!-- Step Reference Link Column -->
-    <ng-container matColumnDef="referenceLink">
-      <mat-header-cell *matHeaderCellDef> Reference Link </mat-header-cell>
-      <mat-cell *matCellDef="let step">
-        <span *ngIf="!step.referenceLink || step.referenceLink.length === 0">None</span>
-        <span *ngIf="step.referenceLink && step.referenceLink.length > 0">Included</span>
-      </mat-cell>
-    </ng-container>
-    
-    <!-- Step Logic Column -->
-    <ng-container matColumnDef="logic">
+      </ng-container>
+      <!-- Step Reference Link Column -->
+      <ng-container matColumnDef="referenceLink">
+        <mat-header-cell *matHeaderCellDef> Reference Link </mat-header-cell>
+        <mat-cell *matCellDef="let step">
+          @if (!step.referenceLink || step.referenceLink.length === 0) {
+            <span>None</span>
+          }
+          @if (step.referenceLink && step.referenceLink.length > 0) {
+            <span>Included</span>
+          }
+        </mat-cell>
+      </ng-container>
+      <!-- Step Logic Column -->
+      <ng-container matColumnDef="logic">
         <mat-header-cell *matHeaderCellDef> Logic </mat-header-cell>
         <mat-cell *matCellDef="let step">
-            <span *ngIf="!step.conditions || step.conditions.length === 0">No</span>
-            <span *ngIf="step.conditions && step.conditions.length > 0">Yes</span>
+          @if (!step.conditions || step.conditions.length === 0) {
+            <span>No</span>
+          }
+          @if (step.conditions && step.conditions.length > 0) {
+            <span>Yes</span>
+          }
         </mat-cell>
-    </ng-container>
-    <!-- Actions Column - Edit, Delete-->
-    <ng-container matColumnDef="actions">
+      </ng-container>
+      <!-- Actions Column - Edit, Delete-->
+      <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
         <mat-cell *matCellDef="let step">
-            <button mat-mini-fab class="action-button" (click)="openEditDialog(step)">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-mini-fab class="action-button" (click)="deleteStep(step.stepUuid)">
-                <mat-icon>delete</mat-icon>
-            </button>
+          <button mat-mini-fab class="action-button" (click)="openEditDialog(step)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-mini-fab class="action-button" (click)="deleteStep(step.stepUuid)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </mat-cell>
-    </ng-container>
-    <!-- Display no data available message if no process steps available -->
-    <div *matNoDataRow class="noData">
+      </ng-container>
+      <!-- Display no data available message if no process steps available -->
+      <div *matNoDataRow class="noData">
         <img src="/assets/noData.jpg" alt="No data available" />
-        <p>No Steps Found - Add Step</p>   
+        <p>No Steps Found - Add Step</p>
+      </div>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" cdkDrag [cdkDragData]="row"></mat-row>
+    </mat-table>
+  }
+
+  @if (!response) {
+    <div class="div-spinner">
+      <mat-spinner></mat-spinner>
     </div>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" cdkDrag [cdkDragData]="row"></mat-row>
-</mat-table>
-
-<div class="div-spinner" *ngIf="!response">
-    <mat-spinner></mat-spinner>
-</div>
+  }

@@ -5,7 +5,7 @@
  *  This service handles the uploading of files, creating decision support documents, and retrieving document lists associated with decision supports.
  */
 
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Observable} from "rxjs";
 import {AuthService} from "./auth.service";
 import {HttpClient} from "@angular/common/http";
@@ -15,12 +15,12 @@ import {environment} from "../../environments/environment";
   providedIn: 'root'
 })
 export class DocumentUploadService {
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
+
   private uploadUrl = environment.fileUploadURL;
   private createEntityUrl = environment.postDecisionSupportDocumentsURL;
   filename!:string;
-
-  constructor(private http: HttpClient, private authService: AuthService) {
-  }
 
   uploadFile(file: File): Observable<any> {
     const headers = this.authService.getPOSTFileUploadHeaders()

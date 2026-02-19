@@ -73,6 +73,13 @@ const QUILL_DEFAULT_CONFIG = {
 })
 
 export class DecisionSupportComponent implements OnInit, AfterViewInit {
+  private route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
+  private decisionSupportService = inject(DecisionSupportService);
+  private documentService = inject(DocumentService);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
+
   // Variables: Rendering of the form.
   @ViewChild(DocumentUploadComponent) documentUploadComponent!: DocumentUploadComponent;
   @ViewChild('quillInstance', {static: false}) quillEditor!: any;
@@ -94,14 +101,7 @@ export class DecisionSupportComponent implements OnInit, AfterViewInit {
   private readonly MAX_CONTENT_LENGTH = 10000; // Adjust Quill based on application requirements
   private readonly ALLOWED_TAGS = /^(<p>|<\/p>|<strong>|<\/strong>|<em>|<\/em>|<u>|<\/u>|<ul>|<\/ul>|<li>|<\/li>|<ol>|<\/ol>|<a>|<\/a>)$/;
 
-  constructor(
-    private route: ActivatedRoute,
-    private authService: AuthService,
-    private decisionSupportService: DecisionSupportService,
-    private documentService: DocumentService,
-    private router: Router,
-    private dialog: MatDialog
-  ) {
+  constructor() {
     this.decisionSupportId = this.route.snapshot.params['id'];
     this.decisionSupportDetails = this.route.snapshot.params['json_string'];
   }

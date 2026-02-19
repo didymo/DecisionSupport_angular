@@ -5,18 +5,19 @@
  *
  */
 
-import {Component} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { Component, inject } from '@angular/core';
+
 import {RouterModule, RouterOutlet, Router} from '@angular/router';
 import {MenuComponent} from './_components/menu/menu.component';
 
 @Component({
     selector: 'app-root',
-    imports: [CommonModule, RouterOutlet, RouterModule, MenuComponent],
+    imports: [RouterOutlet, RouterModule, MenuComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(public router: Router){}
+  router = inject(Router);
+
   title = 'Decision Support';
 }

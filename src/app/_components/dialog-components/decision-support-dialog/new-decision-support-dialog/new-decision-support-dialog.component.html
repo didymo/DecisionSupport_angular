@@ -1,6 +1,6 @@
 <!--
-  @component NewDecisionSupportDialog Component
-  @description A component that pops up and recieves the name and process type of a new DecisionSupport.
+@component NewDecisionSupportDialog Component
+@description A component that pops up and recieves the name and process type of a new DecisionSupport.
 -->
 
 <h2 mat-dialog-title> Decision Support </h2>
@@ -17,7 +17,9 @@
     <p> What process will you follow? </p>
     <mat-form-field appearance="outline">
       <mat-select formControlName="process_id" placeholder="Select Process"  name="process_id"  required >
-        <mat-option *ngFor="let processId of processId" [value]="processId.value" > {{processId.label}} </mat-option>
+        @for (processId of processId; track processId) {
+          <mat-option [value]="processId.value" > {{processId.label}} </mat-option>
+        }
       </mat-select>
     </mat-form-field>
   </mat-dialog-content>

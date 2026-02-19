@@ -7,7 +7,7 @@
  */
 
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from "@angular/common";
+
 import { DocumentUploadService } from '../../_services/document-upload.service';
 import { DocumentService } from '../../_services/document.service';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -20,18 +20,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-document-upload',
-    imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatDivider, MatListModule],
+    imports: [ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatDivider, MatListModule],
     templateUrl: './document-upload.component.html',
     styleUrl: './document-upload.component.scss'
 })
 export class DocumentUploadComponent implements OnInit {
+  private documentUploadService = inject(DocumentUploadService);
+  private documentService = inject(DocumentService);
+
   selectedFile: File | null = null;
   uploadResponse: string | null = null;
   documentList: any[] = [];
   filteredDocumentList: any[] = [];
   private snackBar = inject(MatSnackBar);
-
-  constructor(private documentUploadService: DocumentUploadService, private documentService: DocumentService) { }
 
   ngOnInit() {
     this.getDocumentList();

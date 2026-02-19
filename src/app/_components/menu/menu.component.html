@@ -1,6 +1,6 @@
 <!--
-  @component MenuComponent
-  @description Provides navigation between pages.
+@component MenuComponent
+@description Provides navigation between pages.
 -->
 <div class="menu">
   <mat-toolbar>
@@ -9,10 +9,14 @@
     </div>
     <div class="nav-links">
       <a [routerLink]="['/home']" [ngClass]="{'active': isActive('/home')}">Home</a>
-      <a *ngIf="isAdmin()" [routerLink]="['/process']" [ngClass]="{'active': isActive('/process')}">Process Builder</a>
+      @if (isAdmin()) {
+        <a [routerLink]="['/process']" [ngClass]="{'active': isActive('/process')}">Process Builder</a>
+      }
       <a [routerLink]="['/support']" [ngClass]="{'active': isActive('/support')}">Decision Support</a>
       <a [routerLink]="['/Report-Generator']" [ngClass]="{'active': isActive('/Report-Generator')}">Generate Report</a>
     </div>
-    <button (click)="logout()" *ngIf="authService.isLoggedIn()"><mat-icon class="logout-icon">logout</mat-icon></button>
+    @if (authService.isLoggedIn()) {
+      <button (click)="logout()"><mat-icon class="logout-icon">logout</mat-icon></button>
+    }
   </mat-toolbar>
 </div>

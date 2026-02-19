@@ -1,177 +1,196 @@
 <!--
-  @component DecisionSupport Component
-  @description This is where 'DecisionSupport' happens. A process is rendered and then carried out as a decision support.
+@component DecisionSupport Component
+@description This is where 'DecisionSupport' happens. A process is rendered and then carried out as a decision support.
 -->
 
-<mat-sidenav-container autosize *ngIf="response">
-  <mat-sidenav [opened]="true" mode="side" [style.width]="sideNavWidth()">
-
-    <!-- Sidebar -->
-    <mat-nav-list>
-      <!-- For each step ... -->
-      <div *ngFor="let step of decisionSupportDetails?.steps; let i = index">
-        <div [ngClass]="{'disabled-step': !step.isVisible}">
-          <!-- Clickable area going to step. -->
-          <a class="sidebar-a"
-             role="button"
-             tabindex="0"
-             (click)="getStep(step.stepUuid)"
-             (keydown.enter)="getStep(step.stepUuid)"
-             (keydown.space)="getStep(step.stepUuid); $event.preventDefault()"
-             [ngClass]="{'active-step': oneStep?.stepUuid === step.stepUuid}">
-            <!-- Round number display icon (goes green when step is completed) -->
-            <span>
-                <ng-content select="[icon]">
-                  <button mat-mini-fab [ngClass]="{'completed-step': step.isCompleted, 'uncomplete': step}"
-                          [matTooltip]="step.description" matTooltipClass="title-hover"
-                          aria-label="Button that display a tooltip in various positions">{{ step.id }}</button>
-                </ng-content>
-              </span>
-            <!-- Text describing step (number + text) -->
-            <span class="text-container">
-                <ng-content>
-                  <span>Step {{ step.id }} - {{ step.description }}</span>
-                </ng-content>
-              </span>
-          </a>
-          <mat-divider></mat-divider>
-        </div>
-      </div>
-    </mat-nav-list>
-
-    <!-- Sidebar extension/retraction toggle button as an arrow -->
-    <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
-      <mat-icon [ngStyle]="{'color':'#accbe3'}">{{ !collapsed() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-    </button>
-
-    <!-- Toggle button as an arrow -->
-    <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
-      <mat-icon [ngStyle]="{'color':'#accbe3'}">{{ !collapsed() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-    </button>
-  </mat-sidenav>
-
-  <!-- Loop for each step of the process. -->
-  <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
-    <!-- Buttons wrapper -->
-    <div class="button-container">
-      <!-- Save Button! -->
-      <button mat-button color="primary" (click)="onSaveDraft()" type="submit" class="btn-primary">Save Draft</button>
-      <button *ngIf="lastStep" mat-button color="primary" (click)="onSave()" type="submit" class="btn-secondary">
-        Submit
-      </button>
-    </div>
-    <!-- Display the refrence link attached to the step if exist -->
-    <div *ngIf="oneStep">
-      <h2>Step {{ oneStep.id }} </h2>
-      <div class="link-container" *ngIf="oneStep.referenceLink && oneStep.referenceLink.length > 0">
-          <div class="link-sub-container-1">
-              <p><b>Supporting Links</b></p> 
-          </div>
-          <div class="link-sub-container-2">
-              <div *ngFor="let referenceLink of oneStep?.referenceLink">
-                  <p>{{referenceLink.id}}. <a class="reference-link-a" href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
-                      {{referenceLink.label}}</a>
-                  </p>
-                           
-                </div>
+@if (response) {
+  <mat-sidenav-container autosize>
+    <mat-sidenav [opened]="true" mode="side" [style.width]="sideNavWidth()">
+      <!-- Sidebar -->
+      <mat-nav-list>
+        <!-- For each step ... -->
+        @for (step of decisionSupportDetails?.steps; track step; let i = $index) {
+          <div>
+            <div [ngClass]="{'disabled-step': !step.isVisible}">
+              <!-- Clickable area going to step. -->
+              <a class="sidebar-a"
+                role="button"
+                tabindex="0"
+                (click)="getStep(step.stepUuid)"
+                (keydown.enter)="getStep(step.stepUuid)"
+                (keydown.space)="getStep(step.stepUuid); $event.preventDefault()"
+                [ngClass]="{'active-step': oneStep?.stepUuid === step.stepUuid}">
+                <!-- Round number display icon (goes green when step is completed) -->
+                <span>
+                  <ng-content select="[icon]">
+                    <button mat-mini-fab [ngClass]="{'completed-step': step.isCompleted, 'uncomplete': step}"
+                      [matTooltip]="step.description" matTooltipClass="title-hover"
+                    aria-label="Button that display a tooltip in various positions">{{ step.id }}</button>
+                  </ng-content>
+                </span>
+                <!-- Text describing step (number + text) -->
+                <span class="text-container">
+                  <ng-content>
+                    <span>Step {{ step.id }} - {{ step.description }}</span>
+                  </ng-content>
+                </span>
+              </a>
+              <mat-divider></mat-divider>
             </div>
-        </div>
-      <!-- Heading and description. -->
-      <p>{{ oneStep.description }}</p>
-
-      <!-- STEP TYPE: Radio and Text Box -->
-      <div *ngIf="oneStep.type === 'radio&text'">
-        <mat-radio-group [(ngModel)]="oneStep.answer" (change)="onRadioChange($event, oneStep)">
-          <div *ngFor="let choices of oneStep?.choices; let j = index" class="steps">
-              <span class="form-control">
-                <mat-radio-button [value]="choices.choiceUuid">{{ choices.description }}</mat-radio-button>
-              </span>
           </div>
-        </mat-radio-group>
-        <br/>
-        <!-- Further details and document upload. -->
-        <b>Please provide further details.</b><i>Optional</i><br/><br/>
-        <!--        <quill-editor [(ngModel)]="oneStep.textAnswer" (ngModelChange)="updateLocalStorage()"></quill-editor>-->
-        <quill-editor
-          [(ngModel)]="editorContent"
-          [modules]="quillConfig"
-          (onContentChanged)="onQuillContentChanged($event)"
-          [bounds]="'self'"
-          [sanitize]="true"
-          (ngModelChange)="updateLocalStorage()"
-          #quillInstance
-        >
-        </quill-editor>
-        <div *ngIf="editorError" class="error-message">{{ editorError }}</div>
+        }
+      </mat-nav-list>
+      <!-- Sidebar extension/retraction toggle button as an arrow -->
+      <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
+        <mat-icon [ngStyle]="{'color':'#accbe3'}">{{ !collapsed() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+      </button>
+      <!-- Toggle button as an arrow -->
+      <button mat-icon-button class="toggle-button" (click)="collapsed.set(!collapsed())">
+        <mat-icon [ngStyle]="{'color':'#accbe3'}">{{ !collapsed() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+      </button>
+    </mat-sidenav>
+    <!-- Loop for each step of the process. -->
+    <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
+      <!-- Buttons wrapper -->
+      <div class="button-container">
+        <!-- Save Button! -->
+        <button mat-button color="primary" (click)="onSaveDraft()" type="submit" class="btn-primary">Save Draft</button>
+        @if (lastStep) {
+          <button mat-button color="primary" (click)="onSave()" type="submit" class="btn-secondary">
+            Submit
+          </button>
+        }
       </div>
-
-      <!-- STEP TYPE: Radio -->
-      <div *ngIf="oneStep.type === 'radio'">
-        <mat-radio-group [(ngModel)]="oneStep.answer" (change)="onRadioChange($event, oneStep)">
-          <div *ngFor="let choices of oneStep?.choices; let j = index" class="steps">
-              <span class="form-control">
-                <mat-radio-button [value]="choices.choiceUuid">{{ choices.description }}</mat-radio-button>
-              </span>
+      <!-- Display the refrence link attached to the step if exist -->
+      @if (oneStep) {
+        <div>
+          <h2>Step {{ oneStep.id }} </h2>
+          @if (oneStep.referenceLink && oneStep.referenceLink.length > 0) {
+            <div class="link-container">
+              <div class="link-sub-container-1">
+                <p><b>Supporting Links</b></p>
+              </div>
+              <div class="link-sub-container-2">
+                @for (referenceLink of oneStep?.referenceLink; track referenceLink) {
+                  <div>
+                    <p>{{referenceLink.id}}. <a class="reference-link-a" href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank" rel="noopener noreferrer">
+                    {{referenceLink.label}}</a>
+                  </p>
+                </div>
+              }
+            </div>
           </div>
-        </mat-radio-group>
-
-      </div>
-
-      <!-- STEP TYPE: Checkbox and Text Box -->
-      <div *ngIf="oneStep.type === 'checkbox&text'">
-        <div *ngFor="let choice of oneStep?.choices; let j = index">
-            <span class="form-control">
-              <!-- Display the checkboxes-->
-              <mat-checkbox
-                [name]="'assessment_' + choice.choiceUuid"
-                [id]="'choice_' + choice.id"
-                [(ngModel)]="choice.selected"
-                (ngModelChange)="onCheckboxChange( choice, oneStep)">
-                {{ choice.description }}
-              </mat-checkbox>
-            </span>
-        </div>
-        <br/>
-
-        <!-- Further details and document upload. -->
-        <b>Please provide further details.</b><i>Optional</i><br/><br/>
-        <quill-editor [(ngModel)]="oneStep.textAnswer" (ngModelChange)="updateLocalStorage()"></quill-editor>
-      </div>
-
-      <!-- STEP TYPE: Checkbox -->
-      <div *ngIf="oneStep.type === 'checkbox'">
-        <div *ngFor="let choice of oneStep?.choices; let j = index">
-            <span class="form-control">
-              <!-- Display the checkboxes-->
-              <mat-checkbox
-                [name]="'assessment_' + choice.choiceUuid"
-                [id]="'choice_' + choice.id"
-                [(ngModel)]="choice.selected"
-                (ngModelChange)="onCheckboxChange( choice, oneStep)"
-              >{{ choice.description }}
-              </mat-checkbox>
-            </span>
-        </div>
-      </div>
-
-      <!-- STEP TYPE: Text Box -->
-      <div *ngIf="oneStep.type === 'textbox'">
-        <b>Please provide further details.</b><i>Optional</i><br/><br/>
-        <quill-editor [(ngModel)]="oneStep.textAnswer"
-                      (ngModelChange)="onTextAnswerChange(oneStep); updateSteps()"></quill-editor>
-
-      </div>
+        }
+        <!-- Heading and description. -->
+        <p>{{ oneStep.description }}</p>
+        <!-- STEP TYPE: Radio and Text Box -->
+        @if (oneStep.type === 'radio&text') {
+          <div>
+            <mat-radio-group [(ngModel)]="oneStep.answer" (change)="onRadioChange($event, oneStep)">
+              @for (choices of oneStep?.choices; track choices; let j = $index) {
+                <div class="steps">
+                  <span class="form-control">
+                    <mat-radio-button [value]="choices.choiceUuid">{{ choices.description }}</mat-radio-button>
+                  </span>
+                </div>
+              }
+            </mat-radio-group>
+            <br/>
+            <!-- Further details and document upload. -->
+            <b>Please provide further details.</b><i>Optional</i><br/><br/>
+            <!--        <quill-editor [(ngModel)]="oneStep.textAnswer" (ngModelChange)="updateLocalStorage()"></quill-editor>-->
+            <quill-editor
+              [(ngModel)]="editorContent"
+              [modules]="quillConfig"
+              (onContentChanged)="onQuillContentChanged($event)"
+              [bounds]="'self'"
+              [sanitize]="true"
+              (ngModelChange)="updateLocalStorage()"
+              #quillInstance
+              >
+            </quill-editor>
+            @if (editorError) {
+              <div class="error-message">{{ editorError }}</div>
+            }
+          </div>
+        }
+        <!-- STEP TYPE: Radio -->
+        @if (oneStep.type === 'radio') {
+          <div>
+            <mat-radio-group [(ngModel)]="oneStep.answer" (change)="onRadioChange($event, oneStep)">
+              @for (choices of oneStep?.choices; track choices; let j = $index) {
+                <div class="steps">
+                  <span class="form-control">
+                    <mat-radio-button [value]="choices.choiceUuid">{{ choices.description }}</mat-radio-button>
+                  </span>
+                </div>
+              }
+            </mat-radio-group>
+          </div>
+        }
+        <!-- STEP TYPE: Checkbox and Text Box -->
+        @if (oneStep.type === 'checkbox&text') {
+          <div>
+            @for (choice of oneStep?.choices; track choice; let j = $index) {
+              <div>
+                <span class="form-control">
+                  <!-- Display the checkboxes-->
+                  <mat-checkbox
+                    [name]="'assessment_' + choice.choiceUuid"
+                    [id]="'choice_' + choice.id"
+                    [(ngModel)]="choice.selected"
+                    (ngModelChange)="onCheckboxChange( choice, oneStep)">
+                    {{ choice.description }}
+                  </mat-checkbox>
+                </span>
+              </div>
+            }
+            <br/>
+            <!-- Further details and document upload. -->
+            <b>Please provide further details.</b><i>Optional</i><br/><br/>
+            <quill-editor [(ngModel)]="oneStep.textAnswer" (ngModelChange)="updateLocalStorage()"></quill-editor>
+          </div>
+        }
+        <!-- STEP TYPE: Checkbox -->
+        @if (oneStep.type === 'checkbox') {
+          <div>
+            @for (choice of oneStep?.choices; track choice; let j = $index) {
+              <div>
+                <span class="form-control">
+                  <!-- Display the checkboxes-->
+                  <mat-checkbox
+                    [name]="'assessment_' + choice.choiceUuid"
+                    [id]="'choice_' + choice.id"
+                    [(ngModel)]="choice.selected"
+                    (ngModelChange)="onCheckboxChange( choice, oneStep)"
+                    >{{ choice.description }}
+                  </mat-checkbox>
+                </span>
+              </div>
+            }
+          </div>
+        }
+        <!-- STEP TYPE: Text Box -->
+        @if (oneStep.type === 'textbox') {
+          <div>
+            <b>Please provide further details.</b><i>Optional</i><br/><br/>
+            <quill-editor [(ngModel)]="oneStep.textAnswer"
+            (ngModelChange)="onTextAnswerChange(oneStep); updateSteps()"></quill-editor>
+          </div>
+        }
         <br/><br/>
         <div>
-        <b>Add Supporting Documents.</b><i>Optional</i><br/><br/>
-        <app-document-upload></app-document-upload>
+          <b>Add Supporting Documents.</b><i>Optional</i><br/><br/>
+          <app-document-upload></app-document-upload>
+        </div>
       </div>
-      
-    </div> <!-- End of single step. -->
+      } <!-- End of single step. -->
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+}
 
-  </mat-sidenav-content>
-</mat-sidenav-container>
-
-<div class="div-spinner" *ngIf="!response">
-  <mat-spinner></mat-spinner>
-</div>
+@if (!response) {
+  <div class="div-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+}

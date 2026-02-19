@@ -1,69 +1,86 @@
 <!--
-  @component View Process Step Component
-  @description Dialog to display the complete info of a step.
+@component View Process Step Component
+@description Dialog to display the complete info of a step.
 -->
 <!-- DIalog container to display step details-->
 <div class="dialog-title">
-    <h2 mat-dialog-title>Process Step Details</h2>
-    <!-- Close Dialog Button-->
-    <button mat-icon-button aria-label="close dislog" mat-dialog-close>
-        <mat-icon class="mat-material" >close</mat-icon>
-    </button>
+  <h2 mat-dialog-title>Process Step Details</h2>
+  <!-- Close Dialog Button-->
+  <button mat-icon-button aria-label="close dislog" mat-dialog-close>
+    <mat-icon class="mat-material" >close</mat-icon>
+  </button>
 </div>
 <mat-dialog-content>
-    <!-- Step Uuid -->
-    <div class="uuid">
-        <p>Uuid: <span>{{processStep.stepUuid}}</span> </p>
-    </div>
-    <!-- Step Description-->
-    <div>
-        <h4>Description</h4>
-        <p>{{processStep.description}}</p>
-    </div>
-    <mat-divider></mat-divider>
-    <!-- Step Required Status -->
-    <div>
-        <h4>Required</h4>
-        <p *ngIf="processStep.required === '1'">Yes</p>
-        <p *ngIf="processStep.required === '0'">No</p>
-    </div>
-    <mat-divider></mat-divider>
-    <!-- Step DIsplay Type -->
-    <div>
-        <h4>Display Type</h4>
-        <p>{{processStep.type}}</p>
-    </div>
-    <mat-divider></mat-divider>
-    <!-- Step Reference Link -->
-     <div>
-        <h4>Refernce Link</h4>
-        <div *ngIf="!processStep.referenceLink || processStep.referenceLink.length === 0">None</div>
-        <div *ngIf="processStep.referenceLink && processStep.referenceLink.length > 0">
-        <div *ngFor="let referenceLink of processStep.referenceLink">
+  <!-- Step Uuid -->
+  <div class="uuid">
+    <p>Uuid: <span>{{processStep.stepUuid}}</span> </p>
+  </div>
+  <!-- Step Description-->
+  <div>
+    <h4>Description</h4>
+    <p>{{processStep.description}}</p>
+  </div>
+  <mat-divider></mat-divider>
+  <!-- Step Required Status -->
+  <div>
+    <h4>Required</h4>
+    @if (processStep.required === '1') {
+      <p>Yes</p>
+    }
+    @if (processStep.required === '0') {
+      <p>No</p>
+    }
+  </div>
+  <mat-divider></mat-divider>
+  <!-- Step DIsplay Type -->
+  <div>
+    <h4>Display Type</h4>
+    <p>{{processStep.type}}</p>
+  </div>
+  <mat-divider></mat-divider>
+  <!-- Step Reference Link -->
+  <div>
+    <h4>Refernce Link</h4>
+    @if (!processStep.referenceLink || processStep.referenceLink.length === 0) {
+      <div>None</div>
+    }
+    @if (processStep.referenceLink && processStep.referenceLink.length > 0) {
+      <div>
+        @for (referenceLink of processStep.referenceLink; track referenceLink) {
+          <div>
             <p><span>{{referenceLink.id}}. </span><a href="{{referenceLink.url}}" title="{{referenceLink.description}}" target="_blank">{{referenceLink.label}}</a></p>
-        </div>
-        </div>
-     </div>
-    <!-- Step Choices -->
-    <div>
-        <div *ngIf="processStep.type !== 'textbox'">
-            <h4>Choices</h4>
-            <div *ngFor="let choice of processStep.choices">
-                <p><span>{{choice.id}}. </span>{{choice.description}}</p>
-
-            </div>
-        </div>
-    </div>
-    <mat-divider></mat-divider>
-    <div>
-        <!-- Step Logic -->
-        <h4>Logic Condition</h4>
-        <div *ngIf="processStep.conditions.length === 0">None</div>
-        <div *ngFor="let condition of processStep.conditions">
-            <p><span>{{condition.conditionId}}. </span>{{getStepDescription(condition.stepUuid)}}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Value: <span>{{getChoiceDescription(condition.stepUuid,
-                    condition.choiceUuid)}}</span></p>
-            <mat-divider></mat-divider>
-        </div>
-    </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+  <!-- Step Choices -->
+  <div>
+    @if (processStep.type !== 'textbox') {
+      <div>
+        <h4>Choices</h4>
+        @for (choice of processStep.choices; track choice) {
+          <div>
+            <p><span>{{choice.id}}. </span>{{choice.description}}</p>
+          </div>
+        }
+      </div>
+    }
+  </div>
+  <mat-divider></mat-divider>
+  <div>
+    <!-- Step Logic -->
+    <h4>Logic Condition</h4>
+    @if (processStep.conditions.length === 0) {
+      <div>None</div>
+    }
+    @for (condition of processStep.conditions; track condition) {
+      <div>
+        <p><span>{{condition.conditionId}}. </span>{{getStepDescription(condition.stepUuid)}}</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;Value: <span>{{getChoiceDescription(condition.stepUuid,
+        condition.choiceUuid)}}</span></p>
+        <mat-divider></mat-divider>
+      </div>
+    }
+  </div>
 </mat-dialog-content>

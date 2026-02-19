@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from "@angular/core";
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {AppComponent} from './app/app.component';
@@ -40,7 +41,7 @@ const SECURE_QUILL_CONFIG = {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideZoneChangeDetection(),provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(appRoutes), provideAnimationsAsync(),
     provideQuillConfig(SECURE_QUILL_CONFIG),
   ],

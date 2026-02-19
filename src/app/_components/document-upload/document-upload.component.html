@@ -1,45 +1,53 @@
 <!--
-  @component Document Upload Component
-  @description Allows the user to upload documents attatched to decision supports.
+@component Document Upload Component
+@description Allows the user to upload documents attatched to decision supports.
 -->
 
-   <div class="upload-container">
-     <mat-icon class="upload-file-icon">upload_file</mat-icon>
-      <p class="upload-container-p">Upload File</p>
-     <!-- Select File -->
-    <button class="button" type="button" mat-button (click)="fileInput.click()"> Select File </button>
-    <input type="file" #fileInput (change)="onFileSelect($event)" style="display: none;">
+<div class="upload-container">
+  <mat-icon class="upload-file-icon">upload_file</mat-icon>
+  <p class="upload-container-p">Upload File</p>
+  <!-- Select File -->
+  <button class="button" type="button" mat-button (click)="fileInput.click()"> Select File </button>
+  <input type="file" #fileInput (change)="onFileSelect($event)" style="display: none;">
 
-    <!-- Display it. -->
-    <div *ngIf="selectedFile">
+  <!-- Display it. -->
+  @if (selectedFile) {
+    <div>
       <p>{{ selectedFile.name }} ({{ selectedFile.size }} bytes)</p>
     </div>
-    <!-- Upload it. -->
-     <div class="upload-bt-container" *ngIf="selectedFile">
+  }
+  <!-- Upload it. -->
+  @if (selectedFile) {
+    <div class="upload-bt-container">
       <button class="button" (click)="onUpload()" mat-button> Upload </button>
-     </div>
     </div>
+  }
+</div>
 
 
 <!-- List Documents -->
 <div>
-    <div *ngFor="let document of filteredDocumentList">
+  @for (document of filteredDocumentList; track document) {
+    <div>
       <br />
-      <div *ngIf="document.isVisible">
-      <mat-card appearance="outlined">
-        <mat-card-content class="card-content">
-          <div class="content">
-            Document: {{document.label}}
-            <span class="actions">
-              <button mat-mini-fab class="delete-btn" (click)="deleteDocument(document.entityId)">
-                <mat-icon >delete</mat-icon>
-              </button>
-            </span>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+      @if (document.isVisible) {
+        <div>
+          <mat-card appearance="outlined">
+            <mat-card-content class="card-content">
+              <div class="content">
+                Document: {{document.label}}
+                <span class="actions">
+                  <button mat-mini-fab class="delete-btn" (click)="deleteDocument(document.entityId)">
+                    <mat-icon >delete</mat-icon>
+                  </button>
+                </span>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      }
       <br />
       <mat-divider></mat-divider>
     </div>
-  </div>
+  }
+</div>

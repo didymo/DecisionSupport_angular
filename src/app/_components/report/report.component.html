@@ -4,43 +4,54 @@
     <button class="download" (click)="downloadJson()">Download Report</button>
   </div>
 
-  <div class="container" [ngClass]="{'no-data-container': decisionSupportDetails === null}" *ngIf="response">
-    <div *ngIf="decisionSupportDetails">
-      <div class="flex-container">
-        <div class="header-container"><br />
-          <!-- Show report metadata -->
-          <b>Report Name:</b> {{decisionSupportDetails.reportLabel}}<br />
-          <b>Process Name:</b> {{decisionSupportDetails.processLabel}}<br />
-          <b>Submitted Time:</b> {{decisionSupportDetails.submittedTime}}<br />
-          <br />
-        </div><br />
-        <div class="preview-container"><br /><br />
-          <mat-divider></mat-divider><br />
-          <div *ngFor="let support of decisionSupportDetails.steps">
-            <!-- Display the step details -->
-            <b>Q{{support.step.id}}: {{support.step.description}}</b><br />
-            <b>Answer:</b> {{support.step.answerLabel}}<br />
-            <b>Additional Explanation:</b> {{support.step.textAnswer}}<br />
-
-            <!-- Show attached files if they exist -->
-            <div *ngIf="support.attachedFiles.length > 0">
-              <b>Attached Files:</b>
-
-              <li *ngFor="let file of support.attachedFiles">{{file.label}}</li>
-
+  @if (response) {
+    <div class="container" [ngClass]="{'no-data-container': decisionSupportDetails === null}">
+      @if (decisionSupportDetails) {
+        <div>
+          <div class="flex-container">
+            <div class="header-container"><br />
+              <!-- Show report metadata -->
+              <b>Report Name:</b> {{decisionSupportDetails.reportLabel}}<br />
+              <b>Process Name:</b> {{decisionSupportDetails.processLabel}}<br />
+              <b>Submitted Time:</b> {{decisionSupportDetails.submittedTime}}<br />
+              <br />
             </div><br />
-            <mat-divider></mat-divider><br />
-          </div><br />
+            <div class="preview-container"><br /><br />
+              <mat-divider></mat-divider><br />
+              @for (support of decisionSupportDetails.steps; track support) {
+                <div>
+                  <!-- Display the step details -->
+                  <b>Q{{support.step.id}}: {{support.step.description}}</b><br />
+                  <b>Answer:</b> {{support.step.answerLabel}}<br />
+                  <b>Additional Explanation:</b> {{support.step.textAnswer}}<br />
+                  <!-- Show attached files if they exist -->
+                  @if (support.attachedFiles.length > 0) {
+                    <div>
+                      <b>Attached Files:</b>
+                      @for (file of support.attachedFiles; track file) {
+                        <li>{{file.label}}</li>
+                      }
+                    </div>
+                    }<br />
+                    <mat-divider></mat-divider><br />
+                  </div>
+                  }<br />
+                </div>
+              </div>
+            </div>
+          }
+          <!-- Display no data available message if no report available -->
+          @if (decisionSupportDetails === null) {
+            <div class="noData">
+              <img src="/assets/noData.jpg" alt="No data available" />
+              <p>No Report Found</p>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
-  <!-- Display no data available message if no report available -->
-  <div class="noData" *ngIf="decisionSupportDetails === null">
-    <img src="/assets/noData.jpg" alt="No data available" />
-    <p>No Report Found</p>
-  </div>
-  </div>
-</div>
-<div class="div-spinner" *ngIf="!response">
-  <mat-spinner></mat-spinner>
-</div>
+    @if (!response) {
+      <div class="div-spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+    }

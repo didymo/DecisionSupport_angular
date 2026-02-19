@@ -4,8 +4,8 @@
  * @description
  * The user can fill form fields(name, revision Status) and create a new process.
  */
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
@@ -16,11 +16,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
     selector: 'app-create-process-dialog',
-    imports: [MatDialogModule, MatFormField, CommonModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
+    imports: [MatDialogModule, MatFormField, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
     templateUrl: './create-process-dialog.component.html',
     styleUrl: './create-process-dialog.component.scss'
 })
 export class CreateProcessDialogComponent {
+  private fb = inject(FormBuilder);
+  dialogRef = inject<MatDialogRef<CreateProcessDialogComponent>>(MatDialogRef);
+
   /** Declare Form Group */
   form: FormGroup;
   /** Set the Revision Status Values */
@@ -30,7 +33,7 @@ export class CreateProcessDialogComponent {
     { value: 'Published', label: 'Published' }
   ];
 
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<CreateProcessDialogComponent>) {
+  constructor() {
     // Initialize the form group elements.
     this.form = this.fb.group({
       label: [''],

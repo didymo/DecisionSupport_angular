@@ -5,7 +5,7 @@
  *  
  */
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogActions, MatDialogModule } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
@@ -21,9 +21,12 @@ import { MatButtonModule } from '@angular/material/button';
 })
 
 export class RenameDecisionSupportDialogComponent {
+  private fb = inject(FormBuilder);
+  dialogRef = inject<MatDialogRef<RenameDecisionSupportDialogComponent>>(MatDialogRef);
+
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<RenameDecisionSupportDialogComponent>)
+  constructor()
   {
     this.form = this.fb.group({
       name: [''], // holds the new name of the decision-support.

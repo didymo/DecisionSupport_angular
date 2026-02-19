@@ -4,7 +4,7 @@
  * @description
  * The user can cancel or delete a process.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -16,8 +16,8 @@ import { MatDialogRef } from '@angular/material/dialog';
     styleUrl: './delete-process-dialog.component.scss'
 })
 export class DeleteProcessDialogComponent {
+  dialogRef = inject<MatDialogRef<DeleteProcessDialogComponent>>(MatDialogRef);
 
-  constructor(public dialogRef: MatDialogRef<DeleteProcessDialogComponent>) { }
 
   /** Close the dialog when the user clicks close */
   close(): void {

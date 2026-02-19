@@ -13,7 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ProcessService } from '../../_services/process.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 import { Step } from '../../_classes/step';
 import { Process } from '../../_classes/process';
 import { ViewProcessStepDialogComponent } from '../dialog-components/process-dialog/view-process-step-dialog/view-process-step-dialog.component';
@@ -25,11 +25,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
     selector: 'app-build-process-steps',
-    imports: [MatTableModule, MatProgressSpinnerModule, FormsModule, MatFormField, MatInput, MatButtonModule, MatIconModule, CommonModule, MatPrefix],
+    imports: [MatTableModule, MatProgressSpinnerModule, FormsModule, MatFormField, MatInput, MatButtonModule, MatIconModule, MatPrefix],
     templateUrl: './build-process-steps.component.html',
     styleUrl: './build-process-steps.component.scss'
 })
 export class BuildProcessStepsComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private processService = inject(ProcessService);
+  private dialog = inject(MatDialog);
+
   /** Inject mat snack bar */
   private snackBar = inject(MatSnackBar);
   /** Id of the process */
@@ -48,7 +52,7 @@ export class BuildProcessStepsComponent implements OnInit {
   displayedColumns: string[] = ['id', 'description', 'type', 'required', 'referenceLink', 'logic', 'actions'];
   /** Boolean value for spinner */
   response = false;
-  constructor(private route: ActivatedRoute, private processService: ProcessService, private dialog: MatDialog) {
+  constructor() {
     /** Get and set the process ID from the route */
     this.processId = this.route.snapshot.params['id'];
     this.processName = "Process";

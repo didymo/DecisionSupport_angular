@@ -4,7 +4,7 @@
  * @description
  * The user can discard or continue the changes.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -16,12 +16,17 @@ import { MatDialogRef } from '@angular/material/dialog';
     styleUrl: './unsaved-step-alert-dialog.component.scss'
 })
 export class UnsavedStepAlertDialogComponent {
+  dialogRef = inject<MatDialogRef<UnsavedStepAlertDialogComponent>>(MatDialogRef);
+  unSavedData = inject(MAT_DIALOG_DATA);
+
   /** ID of the unsaved Process */
   processId = " ";
   /** Name of the unsaved process */
   processName ="Process";
 
-  constructor(public dialogRef: MatDialogRef<UnsavedStepAlertDialogComponent>, @Inject(MAT_DIALOG_DATA) public unSavedData: any) {
+  constructor() {
+    const unSavedData = this.unSavedData;
+
     this.processId = unSavedData.unSavedData.processId;
     this.processName = unSavedData.unSavedData.processName;
   }

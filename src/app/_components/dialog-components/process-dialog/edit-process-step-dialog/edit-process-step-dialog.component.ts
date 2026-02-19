@@ -4,7 +4,7 @@
  * @description
  * The form will be prefilled with the existing process step details. The user can make changes and update the process step.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { UuidService } from '../../../../_services/uuid.service';
 import { Step } from '../../../../_classes/step';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -15,15 +15,22 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-edit-process-step-dialog',
-    imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, CommonModule, ReactiveFormsModule],
+    imports: [MatDialogModule, MatFormField, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, MatIconModule, ReactiveFormsModule],
     templateUrl: './edit-process-step-dialog.component.html',
     styleUrl: './edit-process-step-dialog.component.scss'
 })
 export class EditProcessStepDialogComponent {
+  private uuidService = inject(UuidService);
+  dialogRef = inject<MatDialogRef<EditProcessStepDialogComponent>>(MatDialogRef);
+  data = inject<{
+    step: any;
+    stepsData: Step[];
+}>(MAT_DIALOG_DATA);
+
   /** Declare Form Data */
   formData: any = {
     description: '',
@@ -44,7 +51,9 @@ export class EditProcessStepDialogComponent {
     { value: 'textbox', label: 'Textbox' }
   ];
 
-  constructor(private uuidService: UuidService, public dialogRef: MatDialogRef<EditProcessStepDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: { step: any; stepsData: Step[] }) {
+  constructor() {
+    const data = this.data;
+
     // Inject the existing process step details into form elements
     this.formData.description = data.step.description;
     this.formData.required = data.step.required;

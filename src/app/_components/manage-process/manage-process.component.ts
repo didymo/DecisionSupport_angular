@@ -5,14 +5,14 @@
  */
 
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { BuildProcessStepsComponent } from '../build-process-steps/build-process-steps.component';
 import { EditProcessStepsComponent } from '../edit-process-steps/edit-process-steps.component';
 import { PreviewProcessStepsComponent } from '../preview-process-steps/preview-process-steps.component';
 @Component({
     selector: 'app-manage-process',
-    imports: [MatTabsModule, CommonModule, BuildProcessStepsComponent, EditProcessStepsComponent, PreviewProcessStepsComponent],
+    imports: [MatTabsModule, BuildProcessStepsComponent, EditProcessStepsComponent, PreviewProcessStepsComponent],
     templateUrl: './manage-process.component.html',
     styleUrl: './manage-process.component.scss'
 })

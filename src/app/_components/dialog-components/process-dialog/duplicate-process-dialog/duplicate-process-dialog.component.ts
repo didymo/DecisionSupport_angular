@@ -4,8 +4,8 @@
  * @description
  * The form will be prefilled with the existing process details. The user can make changes and duplicate the process.
  */
-import { Component, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
@@ -17,11 +17,15 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-duplicate-process-dialog',
-    imports: [MatDialogModule, MatFormField, CommonModule, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
+    imports: [MatDialogModule, MatFormField, MatSelectModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
     templateUrl: './duplicate-process-dialog.component.html',
     styleUrl: './duplicate-process-dialog.component.scss'
 })
 export class DuplicateProcessDialogComponent {
+  private fb = inject(FormBuilder);
+  dialogRef = inject<MatDialogRef<DuplicateProcessDialogComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+
   /** Declare Form Group */
   form: FormGroup;
   /** Set the Revision Status Values */
@@ -31,8 +35,7 @@ export class DuplicateProcessDialogComponent {
     { value: 'Published', label: 'Published' }
   ];
 
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<DuplicateProcessDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor() {
     // Inject the existing process details into form group elements
     this.form = this.fb.group({
       label: [this.data.process.label],

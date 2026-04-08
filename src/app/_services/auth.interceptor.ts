@@ -86,77 +86,48 @@
  * - Uses a regular expression to securely identify token refresh endpoints.
  */
 
-import {HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest} from '@angular/common/http';
-import {inject} from '@angular/core';
-import {AuthService} from './auth.service';
-import {LoggingService} from './logging.service';
-import {Observable, throwError} from 'rxjs';
-import {catchError, switchMap} from 'rxjs/operators';
-import {CustomHttpError} from "../_classes/custom-http-error";
+import { HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { AuthService } from './auth.service';
+import { LoggingService } from './logging.service';
+import { CustomHttpError } from '../_classes/custom-http-error';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
-  // Dependency injection for services
+export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const authService = inject(AuthService);
   const logger = inject(LoggingService);
 
-  // Retrieve the authentication token from storage
   const authToken = authService.getAuthTokenFromStorage();
+  const isTokenEndpoint = /\/oauth\/token$/.test(req.url);
 
-  // Regex to identify token refresh requests
-  const refreshEndpointPattern = /\/oauth\/token$/;
-  const isRefreshRequest = refreshEndpointPattern.test(req.url);
-
-  // Attach Authorization header to non-refresh requests
-  if (authToken && !req.headers.has('Authorization') && !isRefreshRequest) {
-    req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
+  if (authToken && !req.headers.has('Authorization') && !isTokenEndpoint) {
+    req = req.clone({ setHeaders: { Authorization: `Bearer ${authToken}` } });
   }
 
   return next(req).pipe(
     catchError(error => {
-      logger.error('HTTP error intercepted:', {status: error.status, message: error.message});
+      logger.error('HTTP error intercepted:', { status: error.status, message: error.message });
 
-      // Handle 401 Unauthorized errors
-      if (error.status === 401) {
-        logger.warn('401 Unauthorized detected, initiating token refresh...');
-        req = req.clone({
-          headers: req.headers.delete('Authorization'),
-        });
+      if (error.status === 401 && !isTokenEndpoint) {
+        logger.warn('401 detected, attempting token refresh...');
+        req = req.clone({ headers: req.headers.delete('Authorization') });
 
         return authService.refreshTokenMethod().pipe(
-          switchMap((token: any) => {
-            // Validate the refreshed token
-            if (!token || !token.access_token) {
-              logger.error('Invalid token received during refresh. Logging out.');
-              authService.logout();
-              return throwError(() => new CustomHttpError('Invalid token received.', 401));
-            }
-
-            logger.info('Token refreshed successfully:', {access_token: token.access_token});
-
-            // Attach the refreshed token to the request
-            req = req.clone({
-              setHeaders: {
-                Authorization: `Bearer ${token.access_token}`,
-              },
-            });
-
-            // Retry the original request with the refreshed token
+          switchMap(tokenResponse => {
+            logger.info('Token refreshed successfully.');
+            req = req.clone({ setHeaders: { Authorization: `Bearer ${tokenResponse.access_token}` } });
             return next(req);
           }),
           catchError(refreshError => {
             logger.error('Token refresh failed:', refreshError);
-            authService.logout();
+            void authService.logout();
             return throwError(() => new CustomHttpError('Token refresh failed.', refreshError.status));
           })
         );
       }
 
-      // Propagate non-401 errors as CustomHttpError
-      return throwError(() => new CustomHttpError(error.message || 'Unknown HTTP error occurred.', error.status));
+      return throwError(() => new CustomHttpError(error.message || 'Unknown HTTP error.', error.status));
     })
   );
 };

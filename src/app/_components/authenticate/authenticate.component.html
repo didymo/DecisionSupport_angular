@@ -1,32 +1,11 @@
-<!--
-  @component AuthenticateComponent
-  @description This component handles user authentication, including login and logout functionality.
---> 
 <img ngSrc="/assets/Logo.png" height="180" width="190" alt="Logo" priority>
 <div class="div-wrapper">
-    <div class="div-container">
-        <!-- Title Section -->
-        <div class="title-container">
-          <h1>Decision Support Software</h1>
-            <h3>Login</h3>
-        </div>
-
+  <div class="div-container">
+    <div class="title-container">
+      <h1>Decision Support Software</h1>
+      <h3>Login</h3>
+    </div>
     <div class="form-container">
-      <!-- Form for Logging In -->
-      <form (ngSubmit)="login()" class="c">
-        <p> Username </p>
-        <mat-form-field class="username-input" appearance="outline">
-          <input matInput  type="text" id="username" placeholder="username"[(ngModel)]="username" name="username" required>
-        </mat-form-field>
-        <p> Password </p>
-        <mat-form-field class="password-input" appearance="outline">
-          <input matInput  type="password" id="password" placeholder="********" [(ngModel)]="password" name="password" required>
-        </mat-form-field>
-        <br />
-        <!-- Submit Button -->
-        <button mat-button  type="submit"> Login </button>
-      </form>
-
+      <button mat-raised-button color="primary" (click)="login()">Login with Decision Support</button>
     </div>
-    </div>
-   
+  </div>

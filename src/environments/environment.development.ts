@@ -1,36 +1,43 @@
+const BASE_URL = 'https://dsd11.didymodesigns.com.au';
+
 export const environment = {
   production: false,
 
-  //Authenticaiton Endpoints
-  apiUrl: 'https://dsd10.didymodesigns.com.au/oauth/token',
-  csrfTokenUrl: 'https://dsd10.didymodesigns.com.au/session/token',
-  getUserDataUrl: 'https://dsd10.didymodesigns.com.au/user/1?_format=json',
+  auth: {
+    issuerBaseUrl: BASE_URL,
+    authorizeEndpoint: '/oauth/authorize',
+    tokenEndpoint: '/oauth/token',
+    userInfoEndpoint: '/oauth/userinfo',
+    logoutEndpoint: '/oauth/logout',
+    clientId: 'XhmOUsSHxrZqNut3ivBbG7Y3E2_raNQmAD-Z0SH6EDo',
+    redirectUri: 'http://localhost:4200/auth/callback',
+    logoutRedirectUri: 'http://localhost:4200/user/login',
+    scopes: ['openid', 'offline_access']
+  },
 
-  //Process Endpoints
-  getProcessURL: 'https://dsd10.didymodesigns.com.au/rest/process/get/',
-  getProcessListURL: 'https://dsd10.didymodesigns.com.au/rest/process/list',
-  postProcessURL: 'https://dsd10.didymodesigns.com.au/rest/process/post',
-  duplicateProcessURL: 'https://dsd10.didymodesigns.com.au/rest/process/duplicate',
-  patchProcessURL: 'https://dsd10.didymodesigns.com.au/rest/process/patch/',
-  updateProcessURL:'https://dsd10.didymodesigns.com.au/rest/process/update/',
-  archiveProcessURL: 'https://dsd10.didymodesigns.com.au/rest/process/delete/',
+  // Process endpoints
+  getProcessURL: `${BASE_URL}/rest/process/get/`,
+  getProcessListURL: `${BASE_URL}/rest/process/list`,
+  postProcessURL: `${BASE_URL}/rest/process/post`,
+  duplicateProcessURL: `${BASE_URL}/rest/process/duplicate`,
+  patchProcessURL: `${BASE_URL}/rest/process/patch/`,
+  updateProcessURL: `${BASE_URL}/rest/process/update/`,
+  archiveProcessURL: `${BASE_URL}/rest/process/delete/`,
 
-   //Decision Support Endpoints
-   getDecisionSupportURL: 'https://dsd10.didymodesigns.com.au/rest/support/get/',
-   getDecisionSupportListURL:  'https://dsd10.didymodesigns.com.au/rest/support/list',
-   postDecisionSupportURL: 'https://dsd10.didymodesigns.com.au/rest/support/post',
-   patchDecisionSupportURL: 'https://dsd10.didymodesigns.com.au/rest/support/update/',
-   archiveDecisionSupportURL: 'https://dsd10.didymodesigns.com.au/rest/support/archive/',
+  // Decision Support endpoints
+  getDecisionSupportURL: `${BASE_URL}/rest/support/get/`,
+  getDecisionSupportListURL: `${BASE_URL}/rest/support/list`,
+  postDecisionSupportURL: `${BASE_URL}/rest/support/post`,
+  patchDecisionSupportURL: `${BASE_URL}/rest/support/update/`,
+  archiveDecisionSupportURL: `${BASE_URL}/rest/support/archive/`,
 
-  //Document Upload Endpoints
-  fileUploadURL: 'https://dsd10.didymodesigns.com.au/file/upload/decision_support_file/_/file',
-  postDecisionSupportDocumentsURL: 'https://dsd10.didymodesigns.com.au/rest/support/file/post',
-  getDecisionSupportDocumentsURL: 'https://dsd10.didymodesigns.com.au/rest/support/file/get/',
-  archiveDecisionSupportDocumentsURL: 'https://dsd10.didymodesigns.com.au/rest/support/file/delete/',
+  // Document Upload endpoints
+  fileUploadURL: `${BASE_URL}/file/upload/decision_support_file/_/file`,
+  postDecisionSupportDocumentsURL: `${BASE_URL}/rest/support/file/post`,
+  getDecisionSupportDocumentsURL: `${BASE_URL}/rest/support/file/get/`,
+  archiveDecisionSupportDocumentsURL: `${BASE_URL}/rest/support/file/archive/`,
 
-  getDecisionSupportReportURL: 'https://dsd10.didymodesigns.com.au/rest/support/report/',
-  getDecisionSupportReportListURL: 'https://dsd10.didymodesigns.com.au/rest/support/reportlist',
-  //Client
-  clientId: 'j_0y13c4wFccizwCDVVVtte-ATf3lsMeHe1VyRrGbWs',
-  clientSecret: '5e9131f8fae88ae38e28d1805cbcfae93a8b60f5'
+  // Report endpoints
+  getDecisionSupportReportURL: `${BASE_URL}/rest/support/report/`,
+  getDecisionSupportReportListURL: `${BASE_URL}/rest/support/reportlist`
 };

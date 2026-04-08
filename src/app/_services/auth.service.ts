@@ -1,239 +1,283 @@
-/**
- * @whatItDoes Manages CSRF tokens allowing the user to be authenticated through being logged-in.
- *
- * @description
- *  Deals with tokens and provides services for other components to access and confirm authentication.
- */
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable, from, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { AuthConfig } from './auth-config';
+import { AuthTokenSet } from './auth-token-set';
+import { PkceTransaction } from './pkce-transaction';
+import { TokenResponse } from './token-response';
+import { UserInfo } from './user-info';
+import { PkceService } from './pkce.service';
 
-import { Injectable, inject } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {catchError, switchMap, tap} from 'rxjs/operators';
-import {environment} from '../../environments/environment';
+const STORAGE_KEYS = {
+  tokenSet: 'dsd.auth.token-set',
+  pkceTransaction: 'dsd.auth.pkce-transaction'
+} as const;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private http = inject(HttpClient);
-  private router = inject(Router);
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+  private readonly pkce = inject(PkceService);
 
-  public refreshToken: string | null = null;
-  public isRefreshing = false;
-  private authToken: string | null = null;
-  private csrfToken: string | null = null;
-  private tokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  private readonly config: AuthConfig = environment.auth;
+  private readonly tokenSetSignal = signal<AuthTokenSet | null>(null);
+  private readonly userInfoSignal = signal<UserInfo | null>(null);
 
+  readonly tokenSet = this.tokenSetSignal.asReadonly();
+  readonly userInfo = this.userInfoSignal.asReadonly();
 
-  login(username: string, password: string): Observable<any> {
-    const url = environment.apiUrl;
-    const body = new URLSearchParams();
-    body.set('grant_type', 'password');
-    body.set('client_id', environment.clientId);
-    body.set('client_secret', environment.clientSecret);
-    body.set('username', username);
-    body.set('password', password);
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded'
-      })
-    };
-    return this.http.post(url, body.toString(), options).pipe(
-      tap((res: any) => {
-        console.log('Login response:', res); // Log the entire response
-        if (res.access_token && res.refresh_token) {
-          this.setTokens(res.access_token, res.refresh_token);
-          this.getUserData();
-        } else {
-          console.error('Tokens not found in response');
-        }
-      }),
-      switchMap(() => this.getCsrfToken()),
-      catchError(this.handleError)
-    );
+  readonly isAuthenticated = computed(() => {
+    const tokenSet = this.tokenSetSignal();
+    return !!tokenSet && !this.isExpired(tokenSet);
+  });
+
+  constructor() {
+    this.restoreTokenSet();
   }
 
-  setTokens(accessToken: string, refreshToken: string): void {
+  async startLogin(): Promise<void> {
+    const state = this.pkce.createState();
+    const { verifier, challenge } = await this.pkce.createVerifierAndChallenge();
 
-    console.log('Setting tokens with values:', {accessToken, refreshToken});
+    const transaction: PkceTransaction = { state, verifier, createdAt: Date.now() };
+    sessionStorage.setItem(STORAGE_KEYS.pkceTransaction, JSON.stringify(transaction));
+    window.location.assign(this.buildAuthorizeUrl(state, challenge));
+  }
 
-    if (accessToken && refreshToken) {
-      this.authToken = accessToken;
-      this.refreshToken = refreshToken;
-      localStorage.setItem('access_token', accessToken);
-      localStorage.setItem('refresh_token', refreshToken);
-      console.log('Tokens set:', {accessToken, refreshToken});
-    } else {
-      console.error('Invalid tokens provided:', {accessToken, refreshToken});
+  async handleCallback(searchParams: URLSearchParams): Promise<void> {
+    const callbackError = searchParams.get('error');
+    if (callbackError) {
+      const description = searchParams.get('error_description') ?? 'Authorization failed.';
+      console.error(`OAuth callback error: ${callbackError}: ${description}`);
+      await this.router.navigate(['/user/login']);
+      return;
+    }
+
+    const code = searchParams.get('code');
+    const returnedState = searchParams.get('state');
+    const transaction = this.getTransaction();
+
+    if (!code || !returnedState || !transaction) {
+      console.error('Missing callback parameters or PKCE transaction.');
+      await this.router.navigate(['/user/login']);
+      return;
+    }
+
+    if (transaction.state !== returnedState) {
+      console.error('State mismatch — possible CSRF attempt.');
+      await this.router.navigate(['/user/login']);
+      return;
+    }
+
+    try {
+      const tokenResponse = await this.exchangeCode(code, transaction.verifier);
+      this.saveTokenSet(tokenResponse);
+      this.clearTransaction();
+      await this.loadUserInfo();
+      await this.router.navigate(['/home']);
+    } catch (error) {
+      console.error('Token exchange failed:', error);
+      await this.router.navigate(['/user/login']);
     }
   }
 
+  // Used by the interceptor for silent token refresh.
+  refreshTokenMethod(): Observable<TokenResponse> {
+    const tokenSet = this.tokenSetSignal();
+    if (!tokenSet?.refreshToken) {
+      return throwError(() => new Error('No refresh token available.'));
+    }
+
+    const body = new HttpParams({
+      fromObject: {
+        grant_type: 'refresh_token',
+        client_id: this.config.clientId,
+        refresh_token: tokenSet.refreshToken
+      }
+    });
+
+    return this.http.post<TokenResponse>(this.tokenUrl, body.toString(), {
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+    }).pipe(
+      tap(response => this.saveTokenSet(response, tokenSet))
+    );
+  }
+
+  async loadUserInfo(): Promise<void> {
+    const tokenSet = this.tokenSetSignal();
+    if (!tokenSet) return;
+
+    try {
+      const userInfo = await this.http.get<UserInfo>(this.userInfoUrl, {
+        headers: new HttpHeaders({ Authorization: `Bearer ${tokenSet.accessToken}` })
+      }).toPromise();
+
+      if (userInfo) {
+        this.userInfoSignal.set(userInfo);
+      }
+    } catch (error) {
+      console.error('Failed to load user info:', error);
+    }
+  }
+
+  async logout(): Promise<void> {
+    const tokenSet = this.tokenSetSignal();
+    try {
+      await this.http.post(this.logoutUrl, null, {
+        headers: tokenSet ? new HttpHeaders({ Authorization: `Bearer ${tokenSet.accessToken}` }) : undefined,
+        withCredentials: true
+      }).toPromise();
+    } catch {
+      // Continue with local logout even if server logout fails.
+    } finally {
+      this.clearLocalSession();
+      window.location.replace(this.config.logoutRedirectUri);
+    }
+  }
+
+  // Kept for backward compatibility with existing services.
   getToken(): string | null {
-    return localStorage.getItem('access_token');
+    return this.tokenSetSignal()?.accessToken ?? null;
   }
 
   getAuthTokenFromStorage(): string | null {
     return this.getToken();
   }
 
-  getUserRole(): string | null {
-    return localStorage.getItem('user_role')
-  }
-
   getHeaders(): HttpHeaders {
-    const headers = new HttpHeaders({
+    return new HttpHeaders({
       'Authorization': `Bearer ${this.getToken()}`,
       'Content-Type': 'application/json'
     });
-
-    if (this.csrfToken) {
-      headers.append('X-CSRF-Token', this.csrfToken);
-    }
-
-    return headers;
   }
 
   getPOSTFileUploadHeaders(): HttpHeaders {
     const token = this.getToken();
-    const csrfToken = this.getCsrfTokenFromStorage();
-    if (!token || !csrfToken) {
-      throw new Error('Authentication tokens are missing');
+    if (!token) {
+      throw new Error('No access token available.');
     }
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`,
-      'Accept': 'application/vnd.api+json',
-      'X-CSRF-Token': csrfToken
+      'Accept': 'application/vnd.api+json'
     });
-  }
-
-  getCsrfTokenFromStorage(): string | null {
-    if (!this.csrfToken) {
-      this.csrfToken = localStorage.getItem('csrf_token');
-    }
-    return this.csrfToken;
-  }
-
-  refreshTokenMethod(): Observable<any> {
-
-    console.log('Attempting to refresh token'); // Log start of token refresh
-
-
-    this.refreshToken = localStorage.getItem("refresh_token")
-    const url = environment.apiUrl;
-
-    // const formData = new FormData();
-    // formData.append('grant_type', 'refresh_token');
-    // formData.append('refresh_token', this.refreshToken || '');
-    // formData.append('client_id', environment.clientId);
-    // formData.append('client_secret', environment.clientSecret);
-
-    // Attempting different format of the body
-    const body = new URLSearchParams();
-    body.set('grant_type', 'refresh_token');
-    body.set('client_id', environment.clientId);
-    body.set('client_secret', environment.clientSecret);
-    body.set('refresh_token', this.refreshToken || '');
-
-    // body.set('refresh_token', this.refreshToken as string);
-    // console.log('Refresh token:', this.refreshToken);
-    // console.log('Requesting token refresh at URL:', url);
-    // console.log('Request body:', body.toString());
-
-    // const body = {
-    //   grant_type: 'refresh_token',
-    //   client_id: environment.clientId,
-    //   client_secret: environment.clientSecret,
-    //   refresh_token: this.refreshToken || ''
-    // };
-
-
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded'
-        // 'Content-Type': 'application/json'
-      })
-    };
-
-    // return this.http.post(url, body.toString(), options).pipe(
-    //   tap((res: any) => this.setTokens(res.access_token, res.refresh_token)),
-    //   catchError(this.handleError)
-    // );
-    return this.http.post(url, body.toString(), options).pipe(
-    // return this.http.post(url, formData, options).pipe(
-      tap((res: any) => {
-        console.log('Token refresh response received:', res); // Log response
-        this.setTokens(res.access_token, res.refresh_token);
-      }),
-      catchError(error => {
-        console.error('Token refresh failed with error:', error.message);
-        console.error('Error in token refresh:', error); // Log the error in detail
-        return throwError(error);
-      })
-    );
-  }
-
-  logout(): void {
-    this.authToken = null;
-    this.refreshToken = null;
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user_role');
-    localStorage.removeItem('csrf_token');
-    this.router.navigate(['/user/login']);
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    return this.isAuthenticated();
   }
 
-  getTokenSubject(): BehaviorSubject<string | null> {
-    return this.tokenSubject;
+  getUserInfo(): UserInfo | null {
+    return this.userInfoSignal();
   }
 
-  //Check user data and role. by default user will have user role
-  private getUserData() {
-    const headers = this.getHeaders();
-    return this.http.get<any>(environment.getUserDataUrl, {headers})
-      .subscribe(
-        (response) => {
-          let roles = ['user'];// default role
-          if (response.roles && response.roles.length > 0) {
-            roles = response.roles.map((role: any) => role.target_id);
-          }
-          // Set user roles in local storage
-          localStorage.setItem("user_role", JSON.stringify(roles));
-        },
-        (error) => {
-          // Log error and set default role
-          localStorage.setItem("user_role", JSON.stringify(['user']));
-          console.error("Error fetching user data:", error);
-        }
-      );
+  private get tokenUrl(): string {
+    return `${this.config.issuerBaseUrl}${this.config.tokenEndpoint}`;
   }
 
-  private getCsrfToken(): Observable<string> {
-    if (this.csrfToken) {
-      return of(this.csrfToken);
-    }
-    const url = environment.csrfTokenUrl;
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authToken}`
+  private get userInfoUrl(): string {
+    return `${this.config.issuerBaseUrl}${this.config.userInfoEndpoint}`;
+  }
+
+  private get logoutUrl(): string {
+    return `${this.config.issuerBaseUrl}${this.config.logoutEndpoint}`;
+  }
+
+  private buildAuthorizeUrl(state: string, challenge: string): string {
+    const params = new URLSearchParams({
+      response_type: 'code',
+      client_id: this.config.clientId,
+      redirect_uri: this.config.redirectUri,
+      scope: this.config.scopes.join(' '),
+      state,
+      code_challenge: challenge,
+      code_challenge_method: 'S256',
+      prompt: 'login'
     });
-    return this.http.get(url, {responseType: 'text', headers}).pipe(
-      tap((token: string) => {
-        this.csrfToken = token;
-        localStorage.setItem('csrf_token', token);
-        console.log('CSRF token set:', token);
-      }),
-      catchError(this.handleError)
-    );
+    return `${this.config.issuerBaseUrl}${this.config.authorizeEndpoint}?${params.toString()}`;
   }
 
-  private handleError(error: HttpErrorResponse) {
-    console.error('An error occurred:', error);
-    this.logout();
-    return throwError(() => new Error('Something went wrong; please try again later.'));
+  private async exchangeCode(code: string, verifier: string): Promise<TokenResponse> {
+    const body = new HttpParams({
+      fromObject: {
+        grant_type: 'authorization_code',
+        client_id: this.config.clientId,
+        code,
+        redirect_uri: this.config.redirectUri,
+        code_verifier: verifier
+      }
+    });
 
+    return this.http.post<TokenResponse>(this.tokenUrl, body.toString(), {
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+    }).toPromise() as Promise<TokenResponse>;
+  }
+
+  private saveTokenSet(response: TokenResponse, current: AuthTokenSet | null = null): void {
+    const scopes = this.resolveScopes(response.scope, current);
+    const tokenSet: AuthTokenSet = {
+      tokenType: response.token_type,
+      accessToken: response.access_token,
+      refreshToken: response.refresh_token ?? current?.refreshToken ?? null,
+      idToken: response.id_token ?? current?.idToken ?? null,
+      expiresIn: response.expires_in,
+      issuedAt: Date.now(),
+      scopes
+    };
+    this.tokenSetSignal.set(tokenSet);
+    localStorage.setItem(STORAGE_KEYS.tokenSet, JSON.stringify(tokenSet));
+  }
+
+  private restoreTokenSet(): void {
+    const stored = localStorage.getItem(STORAGE_KEYS.tokenSet);
+    if (!stored) return;
+    try {
+      const tokenSet = JSON.parse(stored) as AuthTokenSet;
+      if (!this.isExpired(tokenSet)) {
+        this.tokenSetSignal.set(tokenSet);
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.tokenSet);
+      }
+    } catch {
+      localStorage.removeItem(STORAGE_KEYS.tokenSet);
+    }
+  }
+
+  private clearLocalSession(): void {
+    this.tokenSetSignal.set(null);
+    this.userInfoSignal.set(null);
+    localStorage.removeItem(STORAGE_KEYS.tokenSet);
+    sessionStorage.removeItem(STORAGE_KEYS.pkceTransaction);
+  }
+
+  private getTransaction(): PkceTransaction | null {
+    const stored = sessionStorage.getItem(STORAGE_KEYS.pkceTransaction);
+    if (!stored) return null;
+    try {
+      return JSON.parse(stored) as PkceTransaction;
+    } catch {
+      return null;
+    }
+  }
+
+  private clearTransaction(): void {
+    sessionStorage.removeItem(STORAGE_KEYS.pkceTransaction);
+  }
+
+  private isExpired(tokenSet: AuthTokenSet): boolean {
+    return Date.now() >= tokenSet.issuedAt + tokenSet.expiresIn * 1000;
+  }
+
+  private resolveScopes(scope: TokenResponse['scope'], current: AuthTokenSet | null): string[] {
+    if (Array.isArray(scope)) return scope;
+    if (typeof scope === 'string') {
+      const scopes = scope.split(' ').filter(s => s.length > 0);
+      if (scopes.length > 0) return scopes;
+    }
+    return current?.scopes ?? [...this.config.scopes];
   }
 }

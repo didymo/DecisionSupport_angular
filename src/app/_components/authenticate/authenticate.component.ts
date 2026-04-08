@@ -6,40 +6,20 @@
  */
 
 import { Component, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../_services/auth.service';
-import { NgOptimizedImage } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { MatFormField } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { NgOptimizedImage } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../_services/auth.service';
 
-//
 @Component({
-    selector: 'app-authenticate',
-    imports: [RouterModule, FormsModule, MatFormField, MatInputModule, MatButtonModule, NgOptimizedImage],
-    templateUrl: './authenticate.component.html',
-    styleUrl: './authenticate.component.scss'
+  selector: 'app-authenticate',
+  imports: [MatButtonModule, NgOptimizedImage],
+  templateUrl: './authenticate.component.html',
+  styleUrl: './authenticate.component.scss'
 })
-
 export class AuthenticateComponent {
-  protected authService = inject(AuthService);
-  private router = inject(Router);
-
-  username = '';
-  password = '';
+  private readonly authService = inject(AuthService);
 
   login(): void {
-    this.authService.login(this.username, this.password).subscribe({
-      next: (res) => {
-        this.authService.setTokens(res.access_token, res.refresh_token);
-        this.router.navigate(['/home']);
-      },
-      error: (err) => {
-        console.error('Login error', err);
-        alert('Login failed. Please check your username and password.');
-      }
-    });
+    void this.authService.startLogin();
   }
-
 }

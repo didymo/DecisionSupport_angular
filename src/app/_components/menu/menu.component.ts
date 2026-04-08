@@ -26,14 +26,14 @@ export class MenuComponent {
 
 
   logout(): void {
-    this.authService.logout();
+    void this.authService.logout();
   }
   isActive(route: string): boolean{
     return this.router.url === route;
   }
+  // TODO: Restore role-based admin check once role claims are available in userinfo.
   isAdmin(): boolean {
-    const userRole = this.authService.getUserRole();
-    return userRole ? userRole.includes('administrator') : false; 
+    return false;
   }
 }
 

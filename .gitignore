@@ -49,3 +49,6 @@ audit.json
 src/environments/*.bak
 src/environments/script_to_dev.sh
 src/environments/script_to_prod.sh
+
+# Local test scripts
+test_scripts/*.sh

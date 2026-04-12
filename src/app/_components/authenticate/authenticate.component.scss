@@ -20,7 +20,7 @@ img {
   position: relative;
   z-index: 1;
   background-color: #fff;
-  max-width: 390px;
+  max-width: 460px;
   border: 2px solid #ddd;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -46,13 +46,25 @@ img {
 button {
   background-color: #143354;
   color: #fff !important;
-  width: 30%;
+  width: 100%;
   font-size: 20px;
   border-radius: 5px;
 }
 
 button:hover {
   background-color: rgb(0, 0, 0);
+}
+
+.redirect-notice {
+  margin-top: 12px;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2em;
+  white-space: nowrap;
 }
 
 h2 {

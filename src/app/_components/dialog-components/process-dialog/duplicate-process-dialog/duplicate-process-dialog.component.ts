@@ -55,9 +55,11 @@ export class DuplicateProcessDialogComponent {
   onDuplicate(): void {
     // Check is form valid and submit the form if its valid
     if (this.form.valid) {
-      // Build the complte process structure
+      // Only send the fields Drupal's duplicateProcess() accepts.
+      // Do not spread this.data — it carries the full ProcessList object
+      // including entityId, revisionId, timestamps, etc. which must not be
+      // passed to ::create() on the backend.
       const duplicatedProcess = {
-        ...this.data,
         label: this.form.value.label,
         revision_status: this.form.value.revision_status,
         json_string: this.data.process.json_string

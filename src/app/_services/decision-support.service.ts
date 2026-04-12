@@ -209,6 +209,8 @@ export class DecisionSupportService {
     }
     const headers = this.authService.getHeaders();
     this.loggingService.info('Patch URL:', `${environment.patchDecisionSupportURL}${decisionSupportId}`);
+    // Drupal: ArchiveDecisionSupportResource DELETE /rest/support/archive/{decisionSupportId}
+    // Uses DELETE (not PATCH). No request body — ID is in the URL only. {headers} is the second argument (options), which is correct for http.delete().
     return this.http.delete<DecisionSupport>(`${environment.archiveDecisionSupportURL}${decisionSupportId}`, {headers});
   }
 }

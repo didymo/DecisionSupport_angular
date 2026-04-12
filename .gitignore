@@ -47,6 +47,7 @@ audit.json
 
 # Local environment swap scripts and backups
 src/environments/*.bak
+src/environments/*.d10d11
 src/environments/script_to_dev.sh
 src/environments/script_to_prod.sh
 

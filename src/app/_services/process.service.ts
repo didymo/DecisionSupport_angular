@@ -43,7 +43,9 @@ export class ProcessService {
   
   archiveProcess(processId:string): Observable<any>{
     const headers = this.authService.getHeaders();
-    return this.http.patch<Process>(`${environment.archiveProcessURL}${processId}`,{headers}); 
+    // Drupal: DeleteProcessResource PATCH /rest/process/delete/{processId}
+    // No request body — the ID is in the URL only. null body required; {headers} must be the third argument (options).
+    return this.http.patch<Process>(`${environment.archiveProcessURL}${processId}`, null, {headers});
   }
 
   //Step Functions: GET POST PATCH DELETE

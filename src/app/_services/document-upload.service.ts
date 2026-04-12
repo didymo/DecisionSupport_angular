@@ -54,7 +54,9 @@ export class DocumentUploadService {
 
   archiveDecisionSupportDocument(fileId: string){
     const headers =this.authService.getHeaders();
-    return this.http.patch<any[]>(`${environment.archiveDecisionSupportDocumentsURL}${fileId}`, {headers});
+    // Drupal: ArchiveDecisionSupportFileResource PATCH /rest/support/file/archive/{fileId}
+    // No request body — the ID is in the URL only. null body required; {headers} must be the third argument (options).
+    return this.http.patch<any[]>(`${environment.archiveDecisionSupportDocumentsURL}${fileId}`, null, {headers});
   }
 
   getDocumentlist(decisionSupportId:string){

@@ -53,3 +53,6 @@ src/environments/script_to_prod.sh
 
 # Local test scripts
 test_scripts/*.sh
+
+# Coordination and analysis artifacts — not project code.
+coordination_notes/

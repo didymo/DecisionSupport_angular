@@ -13,7 +13,9 @@
         <a [routerLink]="['/process']" [ngClass]="{'active': isActive('/process')}">Process Builder</a>
       }
       <a [routerLink]="['/support']" [ngClass]="{'active': isActive('/support')}">Decision Support</a>
-      <a [routerLink]="['/Report-Generator']" [ngClass]="{'active': isActive('/Report-Generator')}">Generate Report</a>
+      @if (isAdmin()) {
+        <a [routerLink]="['/Report-Generator']" [ngClass]="{'active': isActive('/Report-Generator')}">Generate Report</a>
+      }
     </div>
     @if (authService.isLoggedIn()) {
       <button (click)="logout()"><mat-icon class="logout-icon">logout</mat-icon></button>

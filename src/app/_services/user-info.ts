@@ -8,4 +8,5 @@ export interface UserInfo {
   locale?: string;
   zoneinfo?: string;
   updated_at?: number;
+  roles?: string[];
 }

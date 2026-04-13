@@ -31,9 +31,8 @@ export class MenuComponent {
   isActive(route: string): boolean{
     return this.router.url === route;
   }
-  // TODO: Restore role-based admin check once role claims are available in userinfo.
   isAdmin(): boolean {
-    return false;
+    return this.authService.userInfo()?.roles?.includes('process_builder') ?? false;
   }
 }
 

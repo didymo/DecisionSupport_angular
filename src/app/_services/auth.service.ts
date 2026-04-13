@@ -38,6 +38,11 @@ export class AuthService {
 
   constructor() {
     this.restoreTokenSet();
+    // If a valid token was restored (e.g. page reload), load user info so that
+    // role-based guards and menu visibility work without a fresh login.
+    if (this.isAuthenticated()) {
+      void this.loadUserInfo();
+    }
   }
 
   async startLogin(): Promise<void> {

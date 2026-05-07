@@ -10,10 +10,11 @@ export const environment = {
     tokenEndpoint: '/oauth/token',
     userInfoEndpoint: '/oauth/userinfo',
     logoutEndpoint: '/oauth/logout',
+    logoutSessionEndpoint: '/oauth/logout/session',
     clientId: 'XhmOUsSHxrZqNut3ivBbG7Y3E2_raNQmAD-Z0SH6EDo',
     redirectUri: `${ANGULAR_APP_URL}/auth/callback`,
     logoutRedirectUri: `${ANGULAR_APP_URL}/user/login`,
-    scopes: ['openid', 'offline_access']
+    scopes: ['openid', 'offline_access', 'process_builder']
   },
 
   // Process endpoints

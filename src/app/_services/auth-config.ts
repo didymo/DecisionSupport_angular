@@ -4,6 +4,7 @@ export interface AuthConfig {
   tokenEndpoint: string;
   userInfoEndpoint: string;
   logoutEndpoint: string;
+  logoutSessionEndpoint: string;
   clientId: string;
   redirectUri: string;
   logoutRedirectUri: string;

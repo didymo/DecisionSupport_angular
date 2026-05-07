@@ -40,8 +40,11 @@ export class AuthService {
     this.restoreTokenSet();
     // If a valid token was restored (e.g. page reload), load user info so that
     // role-based guards and menu visibility work without a fresh login.
+    // Deferred with queueMicrotask to avoid NG0200: authInterceptor calls
+    // inject(AuthService) per-request, which cycles back here if the HTTP call
+    // is made synchronously while AuthService is still being constructed.
     if (this.isAuthenticated()) {
-      void this.loadUserInfo();
+      queueMicrotask(() => void this.loadUserInfo());
     }
   }
 
@@ -132,6 +135,7 @@ export class AuthService {
 
   async logout(): Promise<void> {
     const tokenSet = this.tokenSetSignal();
+    const sessionLogoutUrl = this.buildSessionLogoutUrl();
     try {
       await this.http.post(this.logoutUrl, null, {
         headers: tokenSet ? new HttpHeaders({ Authorization: `Bearer ${tokenSet.accessToken}` }) : undefined,
@@ -141,7 +145,7 @@ export class AuthService {
       // Continue with local logout even if server logout fails.
     } finally {
       this.clearLocalSession();
-      window.location.replace(this.config.logoutRedirectUri);
+      window.location.replace(sessionLogoutUrl);
     }
   }
 
@@ -190,6 +194,13 @@ export class AuthService {
 
   private get logoutUrl(): string {
     return `${this.config.issuerBaseUrl}${this.config.logoutEndpoint}`;
+  }
+
+  private buildSessionLogoutUrl(): string {
+    const params = new URLSearchParams({
+      return_to: this.config.logoutRedirectUri,
+    });
+    return `${this.config.issuerBaseUrl}${this.config.logoutSessionEndpoint}?${params.toString()}`;
   }
 
   private buildAuthorizeUrl(state: string, challenge: string): string {

@@ -1,4 +1,4 @@
-const DRUPAL_BASE_URL = 'https://dsd11.didymodesigns.com.au';
+const DRUPAL_BASE_URL = 'https://decisionsupportb11.corporatememory.com.au';
 const ANGULAR_APP_URL = 'https://decisionsupport.corporatememory.com.au';
 
 export const environment = {

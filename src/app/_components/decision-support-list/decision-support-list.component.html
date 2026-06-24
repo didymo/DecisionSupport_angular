@@ -60,7 +60,7 @@
       <div *matNoDataRow class="noData">
         <img src="/assets/noData.jpg" alt="No data available" />
         <p>No Process Found - Add Process</p>
-        <button class="addbutton"> Add Decision Support </button>
+        <button class="addbutton" type="button" (click)="addDecisionSupport()"> Add Decision Support </button>
       </div>
       <!-- Display the first row of headings. -->
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
